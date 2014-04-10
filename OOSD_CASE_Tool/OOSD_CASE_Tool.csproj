@@ -171,6 +171,8 @@
     <EmbeddedResource Include="OOSDRibbon.resx">
       <DependentUpon>OOSDRibbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Stencils\Flow Diagram Stencil.vssx" />
+    <None Include="Stencils\Object Stencil.vssx" />
     <None Include="OOSD_CASE_Tool_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -189,6 +191,7 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Stencils\Relation Editor Stencil.vssx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>
