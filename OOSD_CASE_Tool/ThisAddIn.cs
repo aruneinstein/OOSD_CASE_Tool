@@ -16,6 +16,7 @@ namespace OOSD_CASE_Tool
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            // addjkalsjfas;lfjasl;
         }
 
         #region VSTO generated code
