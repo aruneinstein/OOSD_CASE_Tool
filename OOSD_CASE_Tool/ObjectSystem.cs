@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Visio = Microsoft.Office.Interop.Visio;
+using System.Windows.Forms;
+
+namespace OOSD_CASE_Tool
+{
+    /// <summary>
+    /// Class for working with the Object Editor CSC.
+    /// </summary>
+    internal class ObjectSystem
+    {
+        /// <summary>
+        /// Display a form where user can enter information for a C-Object
+        /// attribute. Update the corresponding Shape with applicable info
+        /// upon form close.
+        /// </summary>
+        /// <param name="Shape">
+        /// The Shape to apply applicable info to.
+        /// </param>
+        public void getCObjAttributesForm(Visio.Shape Shape)
+        {
+            Form attrEditorForm = new C_Obj_Attribute_Editor();
+            attrEditorForm.ShowDialog();
+        }
+    }
+}
