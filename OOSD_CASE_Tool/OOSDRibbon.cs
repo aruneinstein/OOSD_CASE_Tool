@@ -8,13 +8,15 @@ namespace OOSD_CASE_Tool
 {
     public partial class OOSDRibbon
     {
+        
         private void OOSDRibbon_Load(object sender, RibbonUIEventArgs e)
         {
 
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void openObjStencilBtn_Click(object sender, RibbonControlEventArgs e)
         {
+
 
         }
     }

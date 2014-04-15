@@ -57,7 +57,7 @@
             // 
             this.openObjStencilBtn.Label = "Open Stencil";
             this.openObjStencilBtn.Name = "openObjStencilBtn";
-            this.openObjStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.openObjStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openObjStencilBtn_Click);
             // 
             // OOSDRibbon
             // 

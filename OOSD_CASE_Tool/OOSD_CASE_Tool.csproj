@@ -171,9 +171,9 @@
     <EmbeddedResource Include="OOSDRibbon.resx">
       <DependentUpon>OOSDRibbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="OOSD_CASE_Tool_TemporaryKey.pfx" />
     <None Include="Stencils\Flow Diagram Stencil.vssx" />
     <None Include="Stencils\Object Stencil.vssx" />
-    <None Include="OOSD_CASE_Tool_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -211,7 +211,7 @@
     <ManifestKeyFile>OOSD_CASE_Tool_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>94255A2C107BB9E2E165ACFC57FA155D158F6275</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A3F434DC4F948E7D45A1CBC72EB7FDEE5894E2BC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
