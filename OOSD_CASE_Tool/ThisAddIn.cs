@@ -12,12 +12,19 @@ namespace OOSD_CASE_Tool
     public partial class ThisAddIn
     {
         /// <summary>
+        /// Class that handles all Object Editor functionality.
+        /// </summary>
+        private ObjectSystem objectSystem;
+
+        /// <summary>
         /// Loads this addin in Visio.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            objectSystem = new ObjectSystem();
+
             // Register event handlers
             this.Application.BeforeShapeTextEdit += Application_BeforeShapeTextEdit;
         }
@@ -38,12 +45,14 @@ namespace OOSD_CASE_Tool
             switch (shapeMasterName)
             {
                 case Utilities.C_OBJ_MASTER_NAME:
-                    MessageBox.Show(shapeMasterName);
+                    objectSystem.getCObjAttributesForm(Shape);
                     break;
                 default:
                     break;
             }
         }
+
+  
 
         /// <summary>
         /// Unloads this addin in Visio.
