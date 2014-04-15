@@ -10,13 +10,33 @@ namespace OOSD_CASE_Tool
 {
     public partial class ThisAddIn
     {
+        /// <summary>
+        /// Loads this addin in Visio.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
         }
 
+        /// <summary>
+        /// Unloads this addin in Visio.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
             // addjkalsjfas;lfjasl;
+        }
+
+        /// <summary>
+        /// Creates custom ribbon and adds it to Visio UI.
+        /// </summary>
+        /// <returns>Custom ribbon.</returns>
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            return Globals.Factory.GetRibbonFactory().CreateRibbonManager(
+                new Microsoft.Office.Tools.Ribbon.IRibbonExtension[] { new OOSDRibbon() });
         }
 
         #region VSTO generated code
