@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
+using Visio = Microsoft.Office.Interop.Visio;
 
 namespace OOSD_CASE_Tool
 {
     public partial class OOSDRibbon
     {
+        /// <summary>
+        /// The Application hosting this addin.
+        /// </summary>
+        Visio.Application app;
 
         /// <summary>
         /// Loads this custom ribbon.
@@ -24,17 +29,19 @@ namespace OOSD_CASE_Tool
         /// </param>
         private void OOSDRibbon_Load(object sender, RibbonUIEventArgs e)
         {
-            
+            app = Globals.ThisAddIn.Application;
         }
 
         /// <summary>
-        /// Displays the Object Stencil in the stencil dock in Visio.
+        /// On click of Open Stencil button, open and display the Object Stencil
+        /// in the stencil dock in Visio.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void openObjStencilBtn_Click(object sender, RibbonControlEventArgs e)
         {
-        
+            app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME, 
+                (short) Visio.VisOpenSaveArgs.visOpenDocked);
         }
     }
 }
