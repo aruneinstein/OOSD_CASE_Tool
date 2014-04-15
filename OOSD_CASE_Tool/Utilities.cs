@@ -12,6 +12,16 @@ namespace OOSD_CASE_Tool
     public sealed class Utilities
     {
         /// <summary>
+        /// Name of the C-Object Master Shape as defined in the Object Stencil.
+        /// </summary>
+        public const string C_OBJ_MASTER_NAME = "C-Object";
+
+        /// <summary>
+        /// Name of the ADT-Object Master Shape as defined in the Object Stencil.
+        /// </summary>
+        public const string ADT_OBJ_MASTER_NAME = "ADT-Object";
+
+        /// <summary>
         /// The name of the stencil that contains Object shapes.
         /// </summary>
         public const string OBJECT_STENCIL_NAME = "Object Stencil.vssx";
