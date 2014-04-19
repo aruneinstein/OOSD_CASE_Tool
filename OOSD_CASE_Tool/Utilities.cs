@@ -12,14 +12,19 @@ namespace OOSD_CASE_Tool
     public sealed class Utilities
     {
         /// <summary>
-        /// Name of the C-Object Master Shape as defined in the Object Stencil.
+        /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
         /// </summary>
         public const string C_OBJ_MASTER_NAME = "C-Object";
 
         /// <summary>
-        /// Name of the ADT-Object Master Shape as defined in the Object Stencil.
+        /// Name of the Abstract Data Type Object Master Shape as defined in the Object Stencil.
         /// </summary>
         public const string ADT_OBJ_MASTER_NAME = "ADT-Object";
+
+        /// <summary>
+        /// Name of the State Machine Object Master Shape as defined in the Object Stencil.
+        /// </summary>
+        public const string SM_OBJ_MASTER_NAME = "SM-Object";
 
         /// <summary>
         /// The name of the stencil that contains Object shapes.
