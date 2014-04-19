@@ -1,6 +1,6 @@
 ﻿namespace OOSD_CASE_Tool
 {
-    partial class C_Obj_Attribute_Editor
+    partial class SM_Obj_Attribute_Form
     {
         /// <summary>
         /// Required designer variable.
@@ -30,19 +30,17 @@
         {
             this.SuspendLayout();
             // 
-            // C_Obj_Attribute_Editor
+            // SM_Obj_Attribute_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "C_Obj_Attribute_Editor";
-            this.Text = "C Object Attributes Editor";
-            this.Load += new System.EventHandler(this.C_Obj_Attribute_Editor_Load);
+            this.Name = "SM_Obj_Attribute_Form";
+            this.Text = "SM Object Attributes Editor";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }

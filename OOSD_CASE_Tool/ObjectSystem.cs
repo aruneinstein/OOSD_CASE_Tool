@@ -21,9 +21,23 @@ namespace OOSD_CASE_Tool
         /// <param name="Shape">
         /// The Shape to apply applicable info to.
         /// </param>
-        public void getCObjAttributesForm(Visio.Shape Shape)
+        internal void getCObjAttributesForm(Visio.Shape Shape)
         {
-            Form attrEditorForm = new C_Obj_Attribute_Editor();
+            Form attrEditorForm = new C_Obj_Attribute_Form();
+            attrEditorForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Display a form where user can enter information for a SM-Object
+        /// attribute. Update the corresponding Shape with applicable info
+        /// upon form close.
+        /// </summary>
+        /// <param name="Shape">
+        /// The Shape to apply applicable info to.
+        /// </param>
+        internal void getSMObjAttributesForm(Visio.Shape Shape)
+        {
+            Form attrEditorForm = new SM_Obj_Attribute_Form();
             attrEditorForm.ShowDialog();
         }
     }

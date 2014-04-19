@@ -47,6 +47,9 @@ namespace OOSD_CASE_Tool
                 case Utilities.C_OBJ_MASTER_NAME:
                     objectSystem.getCObjAttributesForm(Shape);
                     break;
+                case Utilities.SM_OBJ_MASTER_NAME:
+                    objectSystem.getSMObjAttributesForm(Shape);
+                    break;
                 default:
                     break;
             }

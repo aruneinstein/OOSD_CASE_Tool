@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace OOSD_CASE_Tool
 {
-    public partial class C_Obj_Attribute_Editor : Form
+    public partial class C_Obj_Attribute_Form : Form
     {
-        public C_Obj_Attribute_Editor()
+        public C_Obj_Attribute_Form()
         {
             InitializeComponent();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void C_Obj_Attribute_Editor_Load(object sender, EventArgs e)
