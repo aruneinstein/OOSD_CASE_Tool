@@ -180,19 +180,25 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="C_Obj_Attribute_Editor.cs">
+    <Compile Include="C_Obj_Attribute_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="C_Obj_Attribute_Editor.Designer.cs">
-      <DependentUpon>C_Obj_Attribute_Editor.cs</DependentUpon>
+    <Compile Include="C_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SM_Obj_Attribute_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SM_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
-    <EmbeddedResource Include="C_Obj_Attribute_Editor.resx">
-      <DependentUpon>C_Obj_Attribute_Editor.cs</DependentUpon>
+    <EmbeddedResource Include="C_Obj_Attribute_Form.resx">
+      <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -210,6 +216,9 @@
     <Content Include="Stencils\Object Stencil.vssx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="SM_Obj_Attribute_Form.resx">
+      <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="OOSD_CASE_Tool_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
