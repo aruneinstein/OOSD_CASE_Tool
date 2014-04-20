@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.53</ApplicationVersion>
+    <ApplicationVersion>1.0.0.67</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -180,6 +180,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ADT_Obj_Attribute_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ADT_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="C_Obj_Attribute_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
       <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="ADT_Obj_Attribute_Form.resx">
+      <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="C_Obj_Attribute_Form.resx">
       <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
     </EmbeddedResource>

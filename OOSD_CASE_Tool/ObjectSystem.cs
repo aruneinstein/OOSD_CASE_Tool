@@ -37,7 +37,7 @@ namespace OOSD_CASE_Tool
         /// </param>
         internal void getSMObjAttributesForm(Visio.Shape Shape)
         {
-            Form attrEditorForm = new SM_Obj_Attribute_Form();
+            Form attrEditorForm = new SM_Obj_Attribute_Form(Shape);
             attrEditorForm.ShowDialog();
         }
 
