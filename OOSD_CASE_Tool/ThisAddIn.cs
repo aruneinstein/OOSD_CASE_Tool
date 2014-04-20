@@ -51,7 +51,7 @@ namespace OOSD_CASE_Tool
                 Visio.Pages pages = doc.Pages;
 
                 // Adds a different page for each remaining Subsystem.
-                pages.Add().Name = Utilities.ER_EDITOR_PAGE;
+                pages.Add().Name = Utilities.RELATION_EDITOR_PAGE;
                 pages.Add().Name = Utilities.FLOW_EDITOR_PAGE;
                 pages.Add().Name = Utilities.ARCHITECTURE_CHART_PAGE;
 
@@ -65,10 +65,66 @@ namespace OOSD_CASE_Tool
                 // Opens the Object Stencil & have it docked to the Stencil Window
                 app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME,
                 (short)Visio.VisOpenSaveArgs.visOpenDocked);
-            }
 
+                // Event handlers that loads the appropriate stencil for a particular
+                // page and unloads all other stencils when the Active Page changes.
+                app.BeforeWindowPageTurn += app_BeforeWindowPageTurn;
+                app.WindowTurnedToPage += app_WindowTurnedToPage;
+            }
         }
 
+        /// <summary>
+        /// Event handler called after a different page is actived. Loads the
+        /// appropriate stencil for this page.
+        /// </summary>
+        /// <param name="Window"></param>
+        private void app_WindowTurnedToPage(Visio.Window Window)
+        {
+            string activePage = Window.Page.Name;
+            string stencilPath = Utilities.getStencilPath();
+
+            // Not all pages has an associated stencil
+            bool stencilExists = true;
+
+            switch (activePage)
+            {
+                case Utilities.OBJECT_EDITOR_PAGE:
+                    stencilPath += Utilities.OBJECT_STENCIL_NAME;
+                    break;
+                case Utilities.RELATION_EDITOR_PAGE:
+                    stencilPath += Utilities.RELATION_STENCIL_NAME;
+                    break;
+                case Utilities.FLOW_EDITOR_PAGE:
+                    stencilPath += Utilities.FLOW_STENCIL_NAME;
+                    break;
+                default:
+                    stencilExists = false;
+                    break;
+            }
+
+            if (stencilExists)
+            {
+                app.Documents.OpenEx(stencilPath,
+                    (short)Visio.VisOpenSaveArgs.visOpenDocked);
+            }
+        }
+
+        /// <summary>
+        /// Event handler called before a different page is activated. Unloads
+        /// all docked stencil windows.
+        /// </summary>
+        /// <param name="Window"></param>
+        private void app_BeforeWindowPageTurn(Visio.Window Window)
+        {
+            Visio.Documents docs = app.Documents;
+            foreach (Visio.Document d in docs)
+            {
+                if (d.Type == Visio.VisDocumentTypes.visTypeStencil)
+                {
+                    d.Close();
+                }
+            }
+        }
 
         /// <summary>
         /// This event handler is called after user double-clicks on a Shape,
