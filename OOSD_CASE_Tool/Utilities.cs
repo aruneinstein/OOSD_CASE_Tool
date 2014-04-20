@@ -21,7 +21,7 @@ namespace OOSD_CASE_Tool
         /// <summary>
         /// Name of the Entity Relationship Editor Page.
         /// </summary>
-        public const string ER_EDITOR_PAGE = "ER Editor";
+        public const string RELATION_EDITOR_PAGE = "Relation Editor";
 
         /// <summary>
         /// Name of the Flow Diagrams Editor Page.
