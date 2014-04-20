@@ -12,6 +12,11 @@ namespace OOSD_CASE_Tool
     public partial class ThisAddIn
     {
         /// <summary>
+        /// Instance of the Application that this add-in belongs to.
+        /// </summary>
+        private Visio.Application app;
+
+        /// <summary>
         /// Class that handles all Object Editor functionality.
         /// </summary>
         private ObjectSystem objectSystem;
@@ -23,11 +28,42 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            app = this.Application;
+
             objectSystem = new ObjectSystem();
 
             // Register event handlers
-            this.Application.BeforeShapeTextEdit += Application_BeforeShapeTextEdit;
+            app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
+            app.DocumentCreated += app_DocumentCreated;
         }
+
+        /// <summary>
+        /// Event handler called after a Document has been created.
+        /// </summary>
+        /// <param name="doc">The created Document.</param>
+        private void app_DocumentCreated(Visio.Document doc)
+        {
+            // If the Document created is a drawing file, setup the initial set
+            // of Pages. Create different Pages for each System (Object, ER, Flow).
+            if (doc.Type == Visio.VisDocumentTypes.visTypeDrawing)
+            {
+                Visio.Pages pages = doc.Pages;
+
+                // By default, Visio opens with one page
+                // Rename first page to be for the Object Editor
+                foreach (Visio.Page p in pages)
+                {
+                    p.Name = Utilities.OBJECT_EDITOR_PAGE;
+                }
+
+                // Adds a different page for each remaining Subsystem.
+                pages.Add().Name = Utilities.ER_EDITOR_PAGE;
+                pages.Add().Name = Utilities.FLOW_EDITOR_PAGE;
+                pages.Add().Name = Utilities.ARCHITECTURE_CHART_PAGE;
+            }
+
+        }
+
 
         /// <summary>
         /// This event handler is called after user double-clicks on a Shape,
@@ -36,7 +72,7 @@ namespace OOSD_CASE_Tool
         /// <param name="Shape">
         /// The Shape that is going to be opened for text editing.
         /// </param>
-        private void Application_BeforeShapeTextEdit(Visio.Shape Shape)
+        private void app_BeforeShapeTextEdit(Visio.Shape Shape)
         {
             // If a Shape is part of a group, the Master Name is the same
             // name as the group's Master name
@@ -55,7 +91,11 @@ namespace OOSD_CASE_Tool
             }
         }
 
-  
+
+        private void addPage()
+        {
+             
+        }
 
         /// <summary>
         /// Unloads this addin in Visio.
@@ -64,7 +104,6 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
-            // addjkalsjfas;lfjasl;
         }
 
         /// <summary>

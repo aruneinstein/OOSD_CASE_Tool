@@ -13,6 +13,13 @@ namespace OOSD_CASE_Tool
     /// </summary>
     internal class ObjectSystem
     {
+        private Visio.Application app;
+
+        public ObjectSystem()
+        {
+            app = Globals.ThisAddIn.Application;
+        }
+
         /// <summary>
         /// Display a form where user can enter information for a C-Object
         /// attribute. Update the corresponding Shape with applicable info
@@ -40,6 +47,5 @@ namespace OOSD_CASE_Tool
             Form attrEditorForm = new SM_Obj_Attribute_Form(Shape);
             attrEditorForm.ShowDialog();
         }
-
     }
 }

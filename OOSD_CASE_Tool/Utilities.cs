@@ -14,6 +14,26 @@ namespace OOSD_CASE_Tool
     public sealed class Utilities
     {
         /// <summary>
+        /// Name of the Object Editor Page.
+        /// </summary>
+        public const string OBJECT_EDITOR_PAGE = "Object Editor";
+
+        /// <summary>
+        /// Name of the Entity Relationship Editor Page.
+        /// </summary>
+        public const string ER_EDITOR_PAGE = "ER Editor";
+
+        /// <summary>
+        /// Name of the Flow Diagrams Editor Page.
+        /// </summary>
+        public const string FLOW_EDITOR_PAGE = "Flow Editor";
+
+        /// <summary>
+        /// Name of the Architecture Charts Page.
+        /// </summary>
+        public const string ARCHITECTURE_CHART_PAGE = "Architecture Chart";
+
+        /// <summary>
         /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
         /// </summary>
         public const string C_OBJ_MASTER_NAME = "C-Object";
