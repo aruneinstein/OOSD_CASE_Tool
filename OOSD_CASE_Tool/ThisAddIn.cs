@@ -45,6 +45,7 @@ namespace OOSD_CASE_Tool
         {
             // If the Document created is a drawing file, setup the initial set
             // of Pages. Create different Pages for each System (Object, ER, Flow).
+            // Only done if this is a new Drawing file.
             if (doc.Type == Visio.VisDocumentTypes.visTypeDrawing)
             {
                 Visio.Pages pages = doc.Pages;
@@ -59,7 +60,7 @@ namespace OOSD_CASE_Tool
                 // Pages Collection index starts at 1.
                 Visio.Page firstPage = pages[1];
                 firstPage.Name = Utilities.OBJECT_EDITOR_PAGE;
-                firstPage.OpenDrawWindow();
+                app.ActiveWindow.Page = firstPage.Name;
 
                 // Opens the Object Stencil & have it docked to the Stencil Window
                 app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME,
