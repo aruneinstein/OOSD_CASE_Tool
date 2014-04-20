@@ -49,17 +49,21 @@ namespace OOSD_CASE_Tool
             {
                 Visio.Pages pages = doc.Pages;
 
-                // By default, Visio opens with one page
-                // Rename first page to be for the Object Editor
-                foreach (Visio.Page p in pages)
-                {
-                    p.Name = Utilities.OBJECT_EDITOR_PAGE;
-                }
-
                 // Adds a different page for each remaining Subsystem.
                 pages.Add().Name = Utilities.ER_EDITOR_PAGE;
                 pages.Add().Name = Utilities.FLOW_EDITOR_PAGE;
                 pages.Add().Name = Utilities.ARCHITECTURE_CHART_PAGE;
+
+                // By default, Visio opens with one page
+                // Rename first page to be for the Object Editor
+                // Pages Collection index starts at 1.
+                Visio.Page firstPage = pages[1];
+                firstPage.Name = Utilities.OBJECT_EDITOR_PAGE;
+                firstPage.OpenDrawWindow();
+
+                // Opens the Object Stencil & have it docked to the Stencil Window
+                app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME,
+                (short)Visio.VisOpenSaveArgs.visOpenDocked);
             }
 
         }
