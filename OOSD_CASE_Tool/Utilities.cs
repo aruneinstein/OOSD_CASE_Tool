@@ -9,90 +9,10 @@ using System.Windows.Forms;
 namespace OOSD_CASE_Tool
 {
     /// <summary>
-    /// Contains utility methods/variables used elsewhere in the project.
+    /// Contains utility methods used elsewhere in the project.
     /// </summary>
     public sealed class Utilities
     {
-        /// <summary>
-        /// Name of the Object Editor Page.
-        /// </summary>
-        public const string OBJECT_EDITOR_PAGE = "Object Editor";
-
-        /// <summary>
-        /// Name of the Entity Relationship Editor Page.
-        /// </summary>
-        public const string RELATION_EDITOR_PAGE = "Relation Editor";
-
-        /// <summary>
-        /// Name of the Flow Diagrams Editor Page.
-        /// </summary>
-        public const string FLOW_EDITOR_PAGE = "Flow Editor";
-
-        /// <summary>
-        /// Name of the Architecture Charts Page.
-        /// </summary>
-        public const string ARCHITECTURE_CHART_PAGE = "Architecture Chart";
-
-        /// <summary>
-        /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
-        /// </summary>
-        public const string C_OBJ_MASTER_NAME = "C-Object";
-
-        /// <summary>
-        /// Name of the Abstract Data Type Object Master Shape as defined in the Object Stencil.
-        /// </summary>
-        public const string ADT_OBJ_MASTER_NAME = "ADT-Object";
-
-        /// <summary>
-        /// Name of the State Machine Object Master Shape as defined in the Object Stencil.
-        /// </summary>
-        public const string SM_OBJ_MASTER_NAME = "SM-Object";
-
-        /// <summary>
-        /// The name of the stencil that contains Object shapes.
-        /// </summary>
-        public const string OBJECT_STENCIL_NAME = "Object Stencil.vssx";
-
-        /// <summary>
-        /// The name of the stencil that contains Flow Diagram shapes.
-        /// </summary>
-        public const string FLOW_STENCIL_NAME = "Flow Diagram Stencil.vssx";
-
-        /// <summary>
-        /// The name of the stencil that contains Relation Editor shapes.
-        /// </summary>
-        public const string RELATION_STENCIL_NAME = "Relation Editor Stencil.vssx";
-
-        /// <summary>
-        /// Index of the Shape Data Section in a Shapesheet.
-        /// </summary>
-        public const short SHAPE_DATA_SECTION = (short)Visio.VisSectionIndices.visSectionProp;
-
-        /// <summary>
-        /// Index of the Value Cell in the Data Section of a Shapesheet.
-        /// </summary>
-        public const short DATA_SECTION_VALUE_CELL = (short)Visio.VisCellIndices.visCustPropsValue;
-
-        /// <summary>
-        /// Index of the Label Cell in the Data Section of a Shapesheet.
-        /// </summary>
-        public const short DATA_SECTION_LABEL_CELL = (short)Visio.VisCellIndices.visCustPropsLabel;
-
-        /// <summary>
-        /// Returns the path to the Stencils folder.
-        /// </summary>
-        /// <returns></returns>
-        public static string getStencilPath()
-        {
-            // Get the assembly information, which has runtime info
-            System.Reflection.Assembly assemblyInfo = System.Reflection.Assembly.GetExecutingAssembly();
-
-            // CodeBase is the location of the ClickOnce deployment files
-            Uri uriCodeBase = new Uri(assemblyInfo.CodeBase);
-            string clickOnceLocation = System.IO.Path.GetDirectoryName(uriCodeBase.LocalPath.ToString());
-
-            return clickOnceLocation += @"\Stencils\";
-        }
 
         /// <summary>
         /// Inserts a Shape Data section into a Shape's Shapesheet, if it doesn't exist.
@@ -102,10 +22,10 @@ namespace OOSD_CASE_Tool
         {
             // Only insert Shape Data section into the Shape's Shapesheet if it doesn't exist
             // return value of 0 means section doesn't exists
-            short sectionStatus = Shape.get_SectionExists(SHAPE_DATA_SECTION, 0);
+            short sectionStatus = Shape.get_SectionExists(CaseTypes.SHAPE_DATA_SECTION, 0);
             if (sectionStatus == 0)
             {
-                Shape.AddSection(SHAPE_DATA_SECTION);   
+                Shape.AddSection(CaseTypes.SHAPE_DATA_SECTION);   
             }
         }
 
@@ -129,19 +49,19 @@ namespace OOSD_CASE_Tool
             short cellExists = Shape.get_CellExists(cellName, 0);
             if (cellExists == 0)
             {
-                rowIndex = Shape.AddNamedRow(SHAPE_DATA_SECTION, rowName,
+                rowIndex = Shape.AddNamedRow(CaseTypes.SHAPE_DATA_SECTION, rowName,
                     (short)Visio.VisRowTags.visTagDefault);
             } else {
                 rowIndex = Shape.get_CellsRowIndex(cellName);
             }
 
-            Visio.Cell valueCell = Shape.get_CellsSRC(SHAPE_DATA_SECTION, 
-                rowIndex, DATA_SECTION_VALUE_CELL);
+            Visio.Cell valueCell = Shape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                rowIndex, CaseTypes.DS_VALUE_CELL);
 
             valueCell.Formula = '"' + value + '"';
 
-            Visio.Cell labelCell = Shape.get_CellsSRC(SHAPE_DATA_SECTION,
-                rowIndex, DATA_SECTION_LABEL_CELL);
+            Visio.Cell labelCell = Shape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                rowIndex, CaseTypes.DS_LABEL_CELL);
 
             labelCell.Formula = '"' + rowName + '"';
         }
@@ -169,7 +89,7 @@ namespace OOSD_CASE_Tool
         /// <param name="rowName">The name of the row to delete.</param>
         public static void deleteDataSectionRow(Visio.Shape Shape, string rowName)
         {
-            short numRows = Shape.get_RowCount(SHAPE_DATA_SECTION);
+            short numRows = Shape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
 
             rowName = Utilities.spaceToUnderscore(rowName);
 
@@ -179,12 +99,12 @@ namespace OOSD_CASE_Tool
             short startIndex = --numRows;
             for (short r = startIndex; r >= 0; --r)
             {
-                Visio.Cell labelCell = Shape.get_CellsSRC(SHAPE_DATA_SECTION, r, DATA_SECTION_LABEL_CELL);
+                Visio.Cell labelCell = Shape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, r, CaseTypes.DS_LABEL_CELL);
 
                 string labelValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
                 if (labelValue.StartsWith(rowName))
                 {
-                    Shape.DeleteRow(SHAPE_DATA_SECTION, r);
+                    Shape.DeleteRow(CaseTypes.SHAPE_DATA_SECTION, r);
                 }
             }
         }
@@ -246,6 +166,47 @@ namespace OOSD_CASE_Tool
                     c.Text = "";
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns all the Shapes currently on the given Page.
+        /// </summary>
+        /// <param name="page">Page with the Shapes.</param>
+        /// <returns>List of Shapes.</returns>
+        public static List<Visio.Shape> getAllShapesOnPage(Visio.Page page)
+        {
+            List<Visio.Shape> shapesList = new List<Visio.Shape>();
+
+            Visio.Shapes shapes = page.Shapes;
+            foreach (Visio.Shape s in shapes)
+            {
+                shapesList.Add(s);
+            }
+
+            return shapesList;
+        }
+
+        /// <summary>
+        /// Returns the list of text inside of all Shapes on the given Page.
+        /// </summary>
+        /// <param name="page">Page to get Shapes.</param>
+        /// <returns>List of Shape text.</returns>
+        public static List<string> getAllShapeNames(Visio.Page page)
+        {
+            List<Visio.Shape> shapes = getAllShapesOnPage(page);
+            return shapes.ConvertAll<string>(x => x.Text);
+        }
+
+        /// <summary>
+        /// Returns the list of text inside of all Shapes in which the given Shape
+        /// is also on the same Page.
+        /// </summary>
+        /// <param name="shape">Shape to get the Page.</param>
+        /// <returns>List of Shape text.</returns>
+        public static List<string> getAllShapeNames(Visio.Shape shape)
+        {
+            List<Visio.Shape> shapeList = getAllShapesOnPage(shape.ContainingPage);
+            return shapeList.ConvertAll<string>(x => x.Text);
         }
     }
 }

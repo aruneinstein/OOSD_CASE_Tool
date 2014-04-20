@@ -186,6 +186,7 @@
     <Compile Include="ADT_Obj_Attribute_Form.Designer.cs">
       <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="CaseTypes.cs" />
     <Compile Include="C_Obj_Attribute_Form.cs">
       <SubType>Form</SubType>
     </Compile>

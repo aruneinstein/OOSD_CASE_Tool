@@ -86,6 +86,7 @@
             this.objNameListBox.Name = "objNameListBox";
             this.objNameListBox.Size = new System.Drawing.Size(251, 56);
             this.objNameListBox.TabIndex = 5;
+            this.objNameListBox.SelectedIndexChanged += new System.EventHandler(this.objNameListBox_SelectedIndexChanged);
             // 
             // deleteOperationBtn
             // 

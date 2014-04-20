@@ -40,7 +40,7 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void openObjStencilBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME, 
+            app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.OBJECT_STENCIL, 
                 (short) Visio.VisOpenSaveArgs.visOpenDocked);
         }
     }
