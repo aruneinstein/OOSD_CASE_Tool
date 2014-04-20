@@ -51,19 +51,19 @@ namespace OOSD_CASE_Tool
                 Visio.Pages pages = doc.Pages;
 
                 // Adds a different page for each remaining Subsystem.
-                pages.Add().Name = Utilities.RELATION_EDITOR_PAGE;
-                pages.Add().Name = Utilities.FLOW_EDITOR_PAGE;
-                pages.Add().Name = Utilities.ARCHITECTURE_CHART_PAGE;
+                pages.Add().Name = CaseTypes.RELATION_PAGE;
+                pages.Add().Name = CaseTypes.FLOW_PAGE;
+                pages.Add().Name = CaseTypes.ARCHITECTURE_PAGE;
 
                 // By default, Visio opens with one page
                 // Rename first page to be for the Object Editor
                 // Pages Collection index starts at 1.
                 Visio.Page firstPage = pages[1];
-                firstPage.Name = Utilities.OBJECT_EDITOR_PAGE;
+                firstPage.Name = CaseTypes.OBJECT_PAGE;
                 app.ActiveWindow.Page = firstPage.Name;
 
                 // Opens the Object Stencil & have it docked to the Stencil Window
-                app.Documents.OpenEx(Utilities.getStencilPath() + Utilities.OBJECT_STENCIL_NAME,
+                app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.OBJECT_STENCIL,
                 (short)Visio.VisOpenSaveArgs.visOpenDocked);
 
                 // Event handlers that loads the appropriate stencil for a particular
@@ -81,21 +81,21 @@ namespace OOSD_CASE_Tool
         private void app_WindowTurnedToPage(Visio.Window Window)
         {
             string activePage = Window.Page.Name;
-            string stencilPath = Utilities.getStencilPath();
+            string stencilPath = CaseTypes.stencilPath();
 
             // Not all pages has an associated stencil
             bool stencilExists = true;
 
             switch (activePage)
             {
-                case Utilities.OBJECT_EDITOR_PAGE:
-                    stencilPath += Utilities.OBJECT_STENCIL_NAME;
+                case CaseTypes.OBJECT_PAGE:
+                    stencilPath += CaseTypes.OBJECT_STENCIL;
                     break;
-                case Utilities.RELATION_EDITOR_PAGE:
-                    stencilPath += Utilities.RELATION_STENCIL_NAME;
+                case CaseTypes.RELATION_PAGE:
+                    stencilPath += CaseTypes.RELATION_STENCIL;
                     break;
-                case Utilities.FLOW_EDITOR_PAGE:
-                    stencilPath += Utilities.FLOW_STENCIL_NAME;
+                case CaseTypes.FLOW_PAGE:
+                    stencilPath += CaseTypes.FLOW_STENCIL;
                     break;
                 default:
                     stencilExists = false;
@@ -141,10 +141,10 @@ namespace OOSD_CASE_Tool
 
             switch (shapeMasterName)
             {
-                case Utilities.C_OBJ_MASTER_NAME:
+                case CaseTypes.C_OBJ_MASTER:
                     objectSystem.getCObjAttributesForm(Shape);
                     break;
-                case Utilities.SM_OBJ_MASTER_NAME:
+                case CaseTypes.SM_OBJ_MASTER:
                     objectSystem.getSMObjAttributesForm(Shape);
                     break;
                 default:
@@ -152,11 +152,6 @@ namespace OOSD_CASE_Tool
             }
         }
 
-
-        private void addPage()
-        {
-             
-        }
 
         /// <summary>
         /// Unloads this addin in Visio.

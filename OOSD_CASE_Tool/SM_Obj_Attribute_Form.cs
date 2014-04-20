@@ -32,7 +32,7 @@ namespace OOSD_CASE_Tool
         private void SM_Obj_Attribute_Form_Load(object sender, EventArgs e)
         {
             // TODO: Loads all of the Shape's list of objects from its Shapesheet Data Section.
-
+            objNameListBox.Items.AddRange(Utilities.getAllShapeNames(ownerShape).ToArray<string>());
 
             // Loads all of the Shape's list of operations from its Shapesheet Data Section.
             loadOperationNameList();
@@ -45,6 +45,8 @@ namespace OOSD_CASE_Tool
                 displayOperationProperties(opName);
             }
         }
+
+
 
         /// <summary>
         /// Displays the operation's properties in the operationPropertiesGroupBox.
@@ -71,11 +73,11 @@ namespace OOSD_CASE_Tool
 
             // All operation rows are stored in the form: 
             // op_[operation_name]_[operation_property] in the Label Cell
-            short numRows = ownerShape.get_RowCount(Utilities.SHAPE_DATA_SECTION);
+            short numRows = ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
             for (short r = 0; r < numRows; ++r)
             {
-                Visio.Cell labelCell = ownerShape.get_CellsSRC(Utilities.SHAPE_DATA_SECTION,
-                    r, Utilities.DATA_SECTION_LABEL_CELL);
+                Visio.Cell labelCell = ownerShape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                    r, CaseTypes.DS_LABEL_CELL);
 
                 string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
 
@@ -234,6 +236,11 @@ namespace OOSD_CASE_Tool
                 string opName = operationNameListBox.SelectedItem.ToString();
                 displayOperationProperties(opName);
             }
+        }
+
+        private void objNameListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
     }
