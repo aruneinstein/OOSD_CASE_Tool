@@ -28,6 +28,16 @@ namespace OOSD_CASE_Tool
         public const string FLOW_PAGE = "Flow Editor";
 
         /// <summary>
+        /// Page for displaying the generated object hierarchy diagram.
+        /// </summary>
+        public const string OBJECT_DIAGRAM_PAGE = "Generated Object Hierarchy";
+
+        /// <summary>
+        /// Page for displaying the generated data model with 'is-a' and 'has-a' relationship.
+        /// </summary>
+        public const string DATA_MODEL_DIAGRAM_PAGE = "Generated Data Model";
+
+        /// <summary>
         /// Name of the Architecture Charts Page.
         /// </summary>
         public const string ARCHITECTURE_PAGE = "Architecture Chart";

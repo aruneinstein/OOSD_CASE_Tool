@@ -35,6 +35,20 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
+        /// Display a form where user can enter information for a ADT-Object
+        /// attribute. Update the corresponding Shape with applicable info
+        /// upon form close.
+        /// </summary>
+        /// <param name="Shape">
+        /// The Shape to apply applicable info to.
+        /// </param>
+        internal void getADTObjAttributesForm(Visio.Shape Shape)
+        {
+            //Form attrEditorForm = new SM_Obj_Attribute_Form(Shape);
+            //attrEditorForm.ShowDialog();
+        }
+
+        /// <summary>
         /// Display a form where user can enter information for a SM-Object
         /// attribute. Update the corresponding Shape with applicable info
         /// upon form close.
