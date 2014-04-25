@@ -19,10 +19,17 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private Visio.Shape ownerShape;
 
+        /// <summary>
+        /// List of shapes on this Page.
+        /// </summary>
+        private List<Visio.Shape> pageShapes;
+
+
         public SM_Obj_Attribute_Form(Visio.Shape Shape)
         {
             InitializeComponent();
             ownerShape = Shape;
+            pageShapes = Utilities.getAllShapesOnPage(Shape.ContainingPage);
 
             // Shape Data section stores all attributes for the Shape
             // as defined by the user through this form.
@@ -31,11 +38,16 @@ namespace OOSD_CASE_Tool
 
         private void SM_Obj_Attribute_Form_Load(object sender, EventArgs e)
         {
-            // TODO: Loads all of the Shape's list of objects from its Shapesheet Data Section.
-            objNameListBox.Items.AddRange(Utilities.getAllShapeNames(ownerShape).ToArray<string>());
+            // Loads all of the page's list of objects into objListListBox.
+            loadObjListListBox();
+
+            // Loads all of the Shape's current list of objects from its Shape
+            // Data Section into the objNameListbox
+            loadObjNameListBox();
 
             // Loads all of the Shape's list of operations from its Shapesheet Data Section.
             loadOperationNameList();
+
             // Sets the first operation in the list, if there is any, as the selected item
             // in the ListBox and displays its properties in the Operation Properties.
             if (operationNameListBox.Items.Count > 0)
@@ -46,6 +58,30 @@ namespace OOSD_CASE_Tool
             }
         }
 
+        /// <summary>
+        /// Loads the list of names tied to this Shape from its Shape Data Section.
+        /// </summary>
+        private void loadObjNameListBox()
+        {
+            HashSet<string> objList = Utilities.getDSLabelCells(ownerShape, "obj_");
+            objNameListBox.Items.AddRange(objList.ToArray());
+        }
+
+        /// <summary>
+        /// Loads the list of Objects found on the Object Editor Page into the
+        /// objListListBox. Only load C & ADT Object names.
+        /// </summary>
+        private void loadObjListListBox()
+        {
+            foreach (Visio.Shape s in pageShapes)
+            {
+                string shapeMaster = s.Master.Name;
+                if (shapeMaster != CaseTypes.SM_OBJ_MASTER)
+                {
+                    objListListBox.Items.Add(s.Text);
+                }
+            }
+        }
 
 
         /// <summary>
@@ -69,32 +105,9 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private void loadOperationNameList()
         {
-            HashSet<string> operationSet = new HashSet<string>();
+            HashSet<string> opsList = Utilities.getDSLabelCells(ownerShape, "op_");
 
-            // All operation rows are stored in the form: 
-            // op_[operation_name]_[operation_property] in the Label Cell
-            short numRows = ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
-            for (short r = 0; r < numRows; ++r)
-            {
-                Visio.Cell labelCell = ownerShape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
-                    r, CaseTypes.DS_LABEL_CELL);
-
-                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
-
-                // we are only interested in operation-related rows
-                if (labelCellValue.StartsWith("op_"))
-                {
-                    // we are only interested in the operation name
-                    int startIndex = labelCellValue.IndexOf('_') + 1;
-                    int endIndex = labelCellValue.LastIndexOf('_');
-                    int opNameLen = endIndex - startIndex;
-                    string opName = labelCellValue.Substring(startIndex, opNameLen);
-
-                    operationSet.Add(Utilities.underscoreToSpace(opName));
-                }
-            }
-
-            operationNameListBox.Items.AddRange(operationSet.ToArray());
+            operationNameListBox.Items.AddRange(opsList.ToArray());
         }
 
         /// <summary>
@@ -241,6 +254,48 @@ namespace OOSD_CASE_Tool
         private void objNameListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void objListListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds an item from the objListListBox to the objNameListBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addObjBtn_Click(object sender, EventArgs e)
+        {
+            object selected = objListListBox.SelectedItem;
+            if (selected != null)
+            {
+                objNameListBox.Items.Add(selected);
+
+                // Adds the name of this item to this Shape's Data Section.
+                string objName = selected.ToString();
+                string rowName = "obj_" + objName + "_";
+                Utilities.setDataSectionValueCell(ownerShape, rowName, objName);
+            }
+        }
+
+        /// <summary>
+        /// Removes an item from the objNameListBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void removeObjBtn_Click(object sender, EventArgs e)
+        {
+            object selected = objNameListBox.SelectedItem;
+            if (selected != null)
+            {
+                objNameListBox.Items.Remove(selected);
+
+                // Removes the name of this item from the Shape's Data Section.
+                string rowName = "obj_" + selected.ToString();
+                Utilities.deleteDataSectionRow(ownerShape, rowName);
+            }
         }
 
     }
