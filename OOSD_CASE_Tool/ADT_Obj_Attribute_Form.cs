@@ -18,7 +18,6 @@ namespace OOSD_CASE_Tool
         /// data is defined using this form.
         /// </summary>
         private Visio.Shape ownerShape;
-        private string objectName;
         private List<Operation> operationList;
         private List<string> axiomList;
 
@@ -59,15 +58,16 @@ namespace OOSD_CASE_Tool
             opObj.domain = domainTextBox.Text.Trim().ToString();
             opObj.range = rangeTextBox.Text.Trim().ToString();
             opObj.purpose = purposeTextBox.Text.Trim().ToString();
+            opObj.effects = effectsTextBox.Text.Trim().ToString();
             opObj.exceptions = getListOfExceptions();
 
             if (opObj.name.Equals("",StringComparison.Ordinal) ||
                 opObj.domain.Equals("", StringComparison.Ordinal) ||
                 opObj.range.Equals("", StringComparison.Ordinal) ||
                 opObj.purpose.Equals("", StringComparison.Ordinal) ||
-                opObj.exceptions.Count == 0)
+                opObj.effects.Equals("", StringComparison.Ordinal))
             {
-                MessageBox.Show("One/All of the required fields is/are not filled!");
+                MessageBox.Show("One/All of the required fields is/are not filled! (Including exceptions list)");
                 return;
             }
 
@@ -76,10 +76,25 @@ namespace OOSD_CASE_Tool
             domainTextBox.Clear();
             rangeTextBox.Clear();
             purposeTextBox.Clear();
+            effectsTextBox.Clear();
             exceptTextBox.Clear();
 
-            this.operationList.Add(opObj);
-            operationListBox.Items.Add(opObj.name);
+            var optn = this.operationList.Find(x => x.name.Equals(opObj.name, StringComparison.Ordinal));
+
+            if (optn == null)
+            {
+                this.operationList.Add(opObj);
+                operationListBox.Items.Add(opObj.name);
+            }
+            else
+            {
+                optn.name = opObj.name;
+                optn.domain = opObj.domain;
+                optn.range = opObj.range;
+                optn.purpose = opObj.purpose;
+                optn.effects = opObj.effects;
+                optn.exceptions = opObj.exceptions;
+            }
         }
 
         private List<string> getListOfExceptions()
@@ -96,23 +111,19 @@ namespace OOSD_CASE_Tool
 
         private void delOpButton_Click(object sender, EventArgs e)
         {
-            string opr;
-            try
-            {
-                opr = operationListBox.SelectedItem.ToString();
-            }
-            catch (NullReferenceException)
+            if (operationListBox.SelectedItem == null)
             {
                 MessageBox.Show("No object selected for deletion!");
                 return;
             }
-            
-            Operation opObj = null;
+            string opr = operationListBox.SelectedItem.ToString();
 
             if (opr.Equals("", StringComparison.Ordinal))
             {
                 MessageBox.Show("No object selected for deletion!");
             }
+            
+            Operation opObj = null;
 
             foreach (var item in operationList)
             {
@@ -122,8 +133,11 @@ namespace OOSD_CASE_Tool
                 }
             }
 
-            operationList.Remove(opObj);
-            operationListBox.Items.Remove(operationListBox.SelectedItem);
+            if (opObj != null)
+            {
+                operationList.Remove(opObj);
+                operationListBox.Items.Remove(operationListBox.SelectedItem);
+            }
         }
 
         private void operationListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -131,12 +145,33 @@ namespace OOSD_CASE_Tool
             exceptionListBox.Items.Clear();
             Operation op = operationList.Find(x => x.name == operationListBox.SelectedItem.ToString());
             exceptionListBox.Items.AddRange(op.exceptions.ToArray<string>());
+            
+            nameTextBox.Clear();
+            nameTextBox.AppendText(op.name);
+            
+            domainTextBox.Clear();
+            domainTextBox.AppendText(op.domain);
+            
+            rangeTextBox.Clear();
+            rangeTextBox.AppendText(op.range);
+            
+            purposeTextBox.Clear();
+            purposeTextBox.AppendText(op.purpose);
+            
+            effectsTextBox.Clear();
+            effectsTextBox.AppendText(op.effects);
         }
 
         private void addExceptionButton_Click(object sender, EventArgs e)
         {
             var exc = exceptTextBox.Text.ToString().Trim();
-            if (exceptionListBox.Items.Contains(exc) || exc.Equals("", StringComparison.Ordinal))
+            
+            if (exceptionListBox.Items.Contains(exc))
+            {
+                return;
+            }
+
+            if (exc.Equals("", StringComparison.Ordinal))
             {
                 MessageBox.Show("Please enter the exception information!");
                 return;
@@ -147,25 +182,24 @@ namespace OOSD_CASE_Tool
                 MessageBox.Show("No operation to associate the exception with! Please select an operation.");
                 return;
             }
+
             var op = getOperationFromOpListBox(operationListBox.SelectedItem.ToString());
-            op.exceptions.Add(exc);
-            exceptionListBox.Items.Add(exc);
+            if (!op.exceptions.Contains<string>(exc))
+            {
+                op.exceptions.Add(exc);
+                exceptionListBox.Items.Add(exc);
+            }
         }
 
         private void delExceptionButton_Click(object sender, EventArgs e)
         {
-            string exc;
-            try
-            {
-                exc = exceptionListBox.SelectedItem.ToString();
-            }
-            catch (NullReferenceException)
+            if (exceptionListBox.SelectedItem == null)
             {
                 MessageBox.Show("No object selected for deletion!");
                 return;
             }
-                
-
+            string exc = exceptionListBox.SelectedItem.ToString();
+            
             if (exc.Equals("", StringComparison.Ordinal))
             {
                 MessageBox.Show("No object selected for deletion!");
@@ -198,17 +232,14 @@ namespace OOSD_CASE_Tool
 
         private void delAxiomButton_Click(object sender, EventArgs e)
         {
-            string axm;
-            try
-            {
-                axm = axiomListBox.SelectedItem.ToString();
-            }
-            catch (NullReferenceException)
+            if (axiomListBox.SelectedItem == null)
             {
                 MessageBox.Show("No object selected for deletion!");
                 return;
             }
-            
+
+
+            string axm = axiomListBox.SelectedItem.ToString();
             if (axm.Equals("", StringComparison.Ordinal))
             {
                 MessageBox.Show("No object selected for deletion!");
@@ -223,6 +254,24 @@ namespace OOSD_CASE_Tool
         private void saveButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void axiomListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(axiomListBox.SelectedItem != null)
+            {
+                axiomTextBox.Clear();
+                axiomTextBox.AppendText(axiomListBox.SelectedItem.ToString());
+            }
+        }
+
+        private void exceptionListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (exceptionListBox.SelectedItem != null)
+            {
+                exceptTextBox.Clear();
+                exceptTextBox.AppendText(exceptionListBox.SelectedItem.ToString());
+            }
         }
     }
 
