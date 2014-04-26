@@ -30,7 +30,7 @@ namespace OOSD_CASE_Tool
         /// </param>
         internal void getCObjAttributesForm(Visio.Shape Shape)
         {
-            Form attrEditorForm = new C_Obj_Attribute_Form();
+            Form attrEditorForm = new C_Obj_Attribute_Form(Shape);
             attrEditorForm.ShowDialog();
         }
 
