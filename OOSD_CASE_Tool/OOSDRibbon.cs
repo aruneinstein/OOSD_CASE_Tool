@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using Visio = Microsoft.Office.Interop.Visio;
+using System.Windows.Forms;
 
 namespace OOSD_CASE_Tool
 {
@@ -42,6 +43,16 @@ namespace OOSD_CASE_Tool
         {
             app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.OBJECT_STENCIL, 
                 (short) Visio.VisOpenSaveArgs.visOpenDocked);
+        }
+
+        /// <summary>
+        /// Converts a Flow Diagram to an Architecture Chart.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void convertToArchChartBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            FlowSystem.convertToArchitectureChart();
         }
     }
 }

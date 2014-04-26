@@ -22,5 +22,13 @@ namespace OOSD_CASE_Tool
         {
             app = Globals.ThisAddIn.Application;
         }
+
+        /// <summary>
+        /// Converts a Flow Diagram to an Architecture Chart.
+        /// </summary>
+        public static void convertToArchitectureChart()
+        {
+            
+        }
     }
 }

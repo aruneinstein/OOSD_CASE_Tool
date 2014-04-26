@@ -38,10 +38,10 @@
             this.objectEditorGroup = this.Factory.CreateRibbonGroup();
             this.openObjStencilBtn = this.Factory.CreateRibbonButton();
             this.relationEditorGroup = this.Factory.CreateRibbonGroup();
+            this.openRelationStencilBtn = this.Factory.CreateRibbonButton();
             this.flowEditorGroup = this.Factory.CreateRibbonGroup();
             this.openFlowStencilBtn = this.Factory.CreateRibbonButton();
             this.convertToArchChartBtn = this.Factory.CreateRibbonButton();
-            this.openRelationStencilBtn = this.Factory.CreateRibbonButton();
             this.oosdTab.SuspendLayout();
             this.objectEditorGroup.SuspendLayout();
             this.relationEditorGroup.SuspendLayout();
@@ -74,6 +74,11 @@
             this.relationEditorGroup.Label = "Relation Editor";
             this.relationEditorGroup.Name = "relationEditorGroup";
             // 
+            // openRelationStencilBtn
+            // 
+            this.openRelationStencilBtn.Label = "Open Stencil";
+            this.openRelationStencilBtn.Name = "openRelationStencilBtn";
+            // 
             // flowEditorGroup
             // 
             this.flowEditorGroup.Items.Add(this.openFlowStencilBtn);
@@ -90,11 +95,7 @@
             // 
             this.convertToArchChartBtn.Label = "Convert to Chart";
             this.convertToArchChartBtn.Name = "convertToArchChartBtn";
-            // 
-            // openRelationStencilBtn
-            // 
-            this.openRelationStencilBtn.Label = "Open Stencil";
-            this.openRelationStencilBtn.Name = "openRelationStencilBtn";
+            this.convertToArchChartBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.convertToArchChartBtn_Click);
             // 
             // OOSDRibbon
             // 
