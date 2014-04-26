@@ -49,26 +49,29 @@
             this.exitBtn = new System.Windows.Forms.Button();
             this.separatorLine1 = new System.Windows.Forms.GroupBox();
             this.separatorLine2 = new System.Windows.Forms.GroupBox();
+            this.objListListBox = new System.Windows.Forms.ListBox();
             this.operationPropertiesGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // removeObjBtn
             // 
-            this.removeObjBtn.Location = new System.Drawing.Point(312, 54);
+            this.removeObjBtn.Location = new System.Drawing.Point(185, 55);
             this.removeObjBtn.Name = "removeObjBtn";
-            this.removeObjBtn.Size = new System.Drawing.Size(106, 23);
+            this.removeObjBtn.Size = new System.Drawing.Size(86, 23);
             this.removeObjBtn.TabIndex = 11;
-            this.removeObjBtn.Text = "Remove Object";
+            this.removeObjBtn.Text = "---> Remove";
             this.removeObjBtn.UseVisualStyleBackColor = true;
+            this.removeObjBtn.Click += new System.EventHandler(this.removeObjBtn_Click);
             // 
             // addObjBtn
             // 
-            this.addObjBtn.Location = new System.Drawing.Point(312, 25);
+            this.addObjBtn.Location = new System.Drawing.Point(185, 26);
             this.addObjBtn.Name = "addObjBtn";
-            this.addObjBtn.Size = new System.Drawing.Size(106, 23);
+            this.addObjBtn.Size = new System.Drawing.Size(86, 23);
             this.addObjBtn.TabIndex = 9;
-            this.addObjBtn.Text = "Add Object";
+            this.addObjBtn.Text = "Add <---";
             this.addObjBtn.UseVisualStyleBackColor = true;
+            this.addObjBtn.Click += new System.EventHandler(this.addObjBtn_Click);
             // 
             // objListLbl
             // 
@@ -84,7 +87,7 @@
             this.objNameListBox.FormattingEnabled = true;
             this.objNameListBox.Location = new System.Drawing.Point(15, 25);
             this.objNameListBox.Name = "objNameListBox";
-            this.objNameListBox.Size = new System.Drawing.Size(251, 56);
+            this.objNameListBox.Size = new System.Drawing.Size(159, 56);
             this.objNameListBox.TabIndex = 5;
             this.objNameListBox.SelectedIndexChanged += new System.EventHandler(this.objNameListBox_SelectedIndexChanged);
             // 
@@ -244,11 +247,21 @@
             this.separatorLine2.TabIndex = 19;
             this.separatorLine2.TabStop = false;
             // 
+            // objListListBox
+            // 
+            this.objListListBox.FormattingEnabled = true;
+            this.objListListBox.Location = new System.Drawing.Point(281, 25);
+            this.objListListBox.Name = "objListListBox";
+            this.objListListBox.Size = new System.Drawing.Size(159, 56);
+            this.objListListBox.TabIndex = 20;
+            this.objListListBox.SelectedIndexChanged += new System.EventHandler(this.objListListBox_SelectedIndexChanged);
+            // 
             // SM_Obj_Attribute_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 373);
+            this.Controls.Add(this.objListListBox);
             this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.exitBtn);
@@ -295,6 +308,7 @@
         private System.Windows.Forms.Button exitBtn;
         private System.Windows.Forms.GroupBox separatorLine1;
         private System.Windows.Forms.GroupBox separatorLine2;
+        private System.Windows.Forms.ListBox objListListBox;
 
     }
 }

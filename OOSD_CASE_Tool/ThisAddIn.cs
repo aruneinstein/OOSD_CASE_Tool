@@ -53,6 +53,8 @@ namespace OOSD_CASE_Tool
                 // Adds a different page for each remaining Subsystem.
                 pages.Add().Name = CaseTypes.RELATION_PAGE;
                 pages.Add().Name = CaseTypes.FLOW_PAGE;
+                pages.Add().Name = CaseTypes.OBJECT_DIAGRAM_PAGE;
+                pages.Add().Name = CaseTypes.DATA_MODEL_DIAGRAM_PAGE;
                 pages.Add().Name = CaseTypes.ARCHITECTURE_PAGE;
 
                 // By default, Visio opens with one page
@@ -74,7 +76,7 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
-        /// Event handler called after a different page is actived. Loads the
+        /// Event handler called after a different page is activated. Loads the
         /// appropriate stencil for this page.
         /// </summary>
         /// <param name="Window"></param>
@@ -97,6 +99,8 @@ namespace OOSD_CASE_Tool
                 case CaseTypes.FLOW_PAGE:
                     stencilPath += CaseTypes.FLOW_STENCIL;
                     break;
+                case CaseTypes.DATA_MODEL_DIAGRAM_PAGE:
+                case CaseTypes.OBJECT_DIAGRAM_PAGE:
                 default:
                     stencilExists = false;
                     break;

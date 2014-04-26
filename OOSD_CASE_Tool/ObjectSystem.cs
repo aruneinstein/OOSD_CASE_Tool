@@ -9,10 +9,13 @@ using System.Windows.Forms;
 namespace OOSD_CASE_Tool
 {
     /// <summary>
-    /// Class for working with the Object Editor CSC.
+    /// Class for working with the Object Editor Subsystem.
     /// </summary>
     internal class ObjectSystem
     {
+        /// <summary>
+        /// Instance of the Application that owns this AddIn.
+        /// </summary>
         private Visio.Application app;
 
         public ObjectSystem()
@@ -30,8 +33,22 @@ namespace OOSD_CASE_Tool
         /// </param>
         internal void getCObjAttributesForm(Visio.Shape Shape)
         {
-            Form attrEditorForm = new C_Obj_Attribute_Form(Shape);
+            Form attrEditorForm = new C_Obj_Attribute_Form();
             attrEditorForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Display a form where user can enter information for a ADT-Object
+        /// attribute. Update the corresponding Shape with applicable info
+        /// upon form close.
+        /// </summary>
+        /// <param name="Shape">
+        /// The Shape to apply applicable info to.
+        /// </param>
+        internal void getADTObjAttributesForm(Visio.Shape Shape)
+        {
+            //Form attrEditorForm = new SM_Obj_Attribute_Form(Shape);
+            //attrEditorForm.ShowDialog();
         }
 
         /// <summary>

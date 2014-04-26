@@ -208,5 +208,63 @@ namespace OOSD_CASE_Tool
             List<Visio.Shape> shapeList = getAllShapesOnPage(shape.ContainingPage);
             return shapeList.ConvertAll<string>(x => x.Text);
         }
+
+        /// <summary>
+        /// Returns the first Shape whose text matches the given text.
+        /// </summary>
+        /// <param name="shapes">List of shapes.</param>
+        /// <param name="text">Text that needs to match.</param>
+        /// <returns>The Shape with matching text, else null.</returns>
+        public static Visio.Shape getShapeFromText(List<Visio.Shape> shapes, string text)
+        {
+            foreach (Visio.Shape s in shapes)
+            {
+                if (s.Text == text)
+                {
+                    return s;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a list of values in the Label Cell of the Shape Data Section
+        /// for all rows with a prefix that match the rowNamePrefix. Results are
+        /// stripped of the rowNamePrefix.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="rowNamePrefix"></param>
+        /// <returns></returns>
+        public static HashSet<string> getDSLabelCells(Visio.Shape shape, string rowNamePrefix)
+        {
+            HashSet<string> labelCellsList = new HashSet<string>();
+
+            // All operation rows are stored in the form: 
+            // op_[operation_name]_[operation_property] in the Label Cell
+            short numRows = shape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+            for (short r = 0; r < numRows; ++r)
+            {
+                Visio.Cell labelCell = shape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                    r, CaseTypes.DS_LABEL_CELL);
+
+                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+
+                // we are only interested in rows with prefix
+                if (labelCellValue.StartsWith(rowNamePrefix))
+                {
+                    // we are only interested in the Label Cell value without
+                    // prefix and any postfix
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    int opNameLen = endIndex - startIndex;
+                    string opName = labelCellValue.Substring(startIndex, opNameLen);
+
+                    labelCellsList.Add(Utilities.underscoreToSpace(opName));
+                }
+            }
+
+            return labelCellsList;
+        }
     }
 }
