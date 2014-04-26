@@ -193,6 +193,7 @@
     <Compile Include="C_Obj_Attribute_Form.Designer.cs">
       <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="FlowSystem.cs" />
     <Compile Include="ObjectSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

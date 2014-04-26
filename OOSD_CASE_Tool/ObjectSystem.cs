@@ -9,10 +9,13 @@ using System.Windows.Forms;
 namespace OOSD_CASE_Tool
 {
     /// <summary>
-    /// Class for working with the Object Editor CSC.
+    /// Class for working with the Object Editor Subsystem.
     /// </summary>
     internal class ObjectSystem
     {
+        /// <summary>
+        /// Instance of the Application that owns this AddIn.
+        /// </summary>
         private Visio.Application app;
 
         public ObjectSystem()
@@ -30,7 +33,7 @@ namespace OOSD_CASE_Tool
         /// </param>
         internal void getCObjAttributesForm(Visio.Shape Shape)
         {
-            Form attrEditorForm = new C_Obj_Attribute_Form();
+            Form attrEditorForm = new C_Obj_Attribute_Form(Shape);
             attrEditorForm.ShowDialog();
         }
 
