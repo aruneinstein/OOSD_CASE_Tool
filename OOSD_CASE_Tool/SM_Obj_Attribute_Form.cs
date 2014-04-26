@@ -104,6 +104,11 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void exitBtn_Click(object sender, EventArgs e)
         {
+            if (ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION) == 0)
+            {
+                ownerShape.Delete();
+            }
+
             this.Close();
         }
 

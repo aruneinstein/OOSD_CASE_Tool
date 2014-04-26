@@ -44,8 +44,8 @@ namespace OOSD_CASE_Tool
         /// </param>
         internal void getADTObjAttributesForm(Visio.Shape Shape)
         {
-            //Form attrEditorForm = new SM_Obj_Attribute_Form(Shape);
-            //attrEditorForm.ShowDialog();
+            Form attrEditorForm = new ADT_Obj_Attribute_Form(Shape);
+            attrEditorForm.ShowDialog();
         }
 
         /// <summary>

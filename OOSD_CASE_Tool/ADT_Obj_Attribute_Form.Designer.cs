@@ -32,24 +32,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.exceptTextBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.effectsTextBox = new System.Windows.Forms.TextBox();
+            this.delExceptionButton = new System.Windows.Forms.Button();
+            this.addExceptionButton = new System.Windows.Forms.Button();
+            this.exceptionListBox = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.purposeTextBox = new System.Windows.Forms.TextBox();
             this.rangeTextBox = new System.Windows.Forms.TextBox();
             this.domainTextBox = new System.Windows.Forms.TextBox();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.delOpButton = new System.Windows.Forms.Button();
             this.addOpButton = new System.Windows.Forms.Button();
             this.operationListBox = new System.Windows.Forms.ListBox();
-            this.purposeTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.delExceptionButton = new System.Windows.Forms.Button();
-            this.addExceptionButton = new System.Windows.Forms.Button();
-            this.exceptionListBox = new System.Windows.Forms.ListBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.effectsTextBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.axiomTextBox = new System.Windows.Forms.TextBox();
@@ -91,7 +91,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.textBox7);
+            this.groupBox1.Controls.Add(this.exceptTextBox);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.effectsTextBox);
             this.groupBox1.Controls.Add(this.delExceptionButton);
@@ -114,6 +114,109 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Operation List";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(4, 316);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 28;
+            this.label8.Text = "Exceptions";
+            // 
+            // exceptTextBox
+            // 
+            this.exceptTextBox.Location = new System.Drawing.Point(64, 313);
+            this.exceptTextBox.Name = "exceptTextBox";
+            this.exceptTextBox.Size = new System.Drawing.Size(138, 20);
+            this.exceptTextBox.TabIndex = 27;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(4, 182);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Effects";
+            // 
+            // effectsTextBox
+            // 
+            this.effectsTextBox.Location = new System.Drawing.Point(46, 179);
+            this.effectsTextBox.Name = "effectsTextBox";
+            this.effectsTextBox.Size = new System.Drawing.Size(142, 20);
+            this.effectsTextBox.TabIndex = 25;
+            // 
+            // delExceptionButton
+            // 
+            this.delExceptionButton.Location = new System.Drawing.Point(290, 241);
+            this.delExceptionButton.Name = "delExceptionButton";
+            this.delExceptionButton.Size = new System.Drawing.Size(75, 23);
+            this.delExceptionButton.TabIndex = 24;
+            this.delExceptionButton.Text = " Del Except";
+            this.delExceptionButton.UseVisualStyleBackColor = true;
+            this.delExceptionButton.Click += new System.EventHandler(this.delExceptionButton_Click);
+            // 
+            // addExceptionButton
+            // 
+            this.addExceptionButton.Location = new System.Drawing.Point(290, 212);
+            this.addExceptionButton.Name = "addExceptionButton";
+            this.addExceptionButton.Size = new System.Drawing.Size(75, 23);
+            this.addExceptionButton.TabIndex = 23;
+            this.addExceptionButton.Text = "Add Except";
+            this.addExceptionButton.UseVisualStyleBackColor = true;
+            this.addExceptionButton.Click += new System.EventHandler(this.addExceptionButton_Click);
+            // 
+            // exceptionListBox
+            // 
+            this.exceptionListBox.FormattingEnabled = true;
+            this.exceptionListBox.Location = new System.Drawing.Point(8, 212);
+            this.exceptionListBox.Name = "exceptionListBox";
+            this.exceptionListBox.Size = new System.Drawing.Size(279, 95);
+            this.exceptionListBox.TabIndex = 22;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(194, 157);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(46, 13);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "Purpose";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(195, 130);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Domain";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 157);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Range";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(5, 129);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Name";
+            // 
+            // purposeTextBox
+            // 
+            this.purposeTextBox.Location = new System.Drawing.Point(241, 154);
+            this.purposeTextBox.Name = "purposeTextBox";
+            this.purposeTextBox.Size = new System.Drawing.Size(124, 20);
+            this.purposeTextBox.TabIndex = 17;
             // 
             // rangeTextBox
             // 
@@ -144,6 +247,7 @@
             this.delOpButton.TabIndex = 13;
             this.delOpButton.Text = "Del Op";
             this.delOpButton.UseVisualStyleBackColor = true;
+            this.delOpButton.Click += new System.EventHandler(this.delOpButton_Click);
             // 
             // addOpButton
             // 
@@ -153,6 +257,7 @@
             this.addOpButton.TabIndex = 12;
             this.addOpButton.Text = "Add Op";
             this.addOpButton.UseVisualStyleBackColor = true;
+            this.addOpButton.Click += new System.EventHandler(this.addOpButton_Click);
             // 
             // operationListBox
             // 
@@ -161,107 +266,7 @@
             this.operationListBox.Name = "operationListBox";
             this.operationListBox.Size = new System.Drawing.Size(279, 95);
             this.operationListBox.TabIndex = 11;
-            // 
-            // purposeTextBox
-            // 
-            this.purposeTextBox.Location = new System.Drawing.Point(241, 154);
-            this.purposeTextBox.Name = "purposeTextBox";
-            this.purposeTextBox.Size = new System.Drawing.Size(124, 20);
-            this.purposeTextBox.TabIndex = 17;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 129);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Name";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 157);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 13);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "Range";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(195, 130);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(43, 13);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Domain";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(194, 157);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 13);
-            this.label6.TabIndex = 21;
-            this.label6.Text = "Purpose";
-            // 
-            // delExceptionButton
-            // 
-            this.delExceptionButton.Location = new System.Drawing.Point(290, 241);
-            this.delExceptionButton.Name = "delExceptionButton";
-            this.delExceptionButton.Size = new System.Drawing.Size(75, 23);
-            this.delExceptionButton.TabIndex = 24;
-            this.delExceptionButton.Text = " Del Except";
-            this.delExceptionButton.UseVisualStyleBackColor = true;
-            // 
-            // addExceptionButton
-            // 
-            this.addExceptionButton.Location = new System.Drawing.Point(290, 212);
-            this.addExceptionButton.Name = "addExceptionButton";
-            this.addExceptionButton.Size = new System.Drawing.Size(75, 23);
-            this.addExceptionButton.TabIndex = 23;
-            this.addExceptionButton.Text = "Add Except";
-            this.addExceptionButton.UseVisualStyleBackColor = true;
-            // 
-            // exceptionListBox
-            // 
-            this.exceptionListBox.FormattingEnabled = true;
-            this.exceptionListBox.Location = new System.Drawing.Point(8, 212);
-            this.exceptionListBox.Name = "exceptionListBox";
-            this.exceptionListBox.Size = new System.Drawing.Size(279, 95);
-            this.exceptionListBox.TabIndex = 22;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 182);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
-            this.label7.TabIndex = 26;
-            this.label7.Text = "Effects";
-            // 
-            // effectsTextBox
-            // 
-            this.effectsTextBox.Location = new System.Drawing.Point(46, 179);
-            this.effectsTextBox.Name = "effectsTextBox";
-            this.effectsTextBox.Size = new System.Drawing.Size(142, 20);
-            this.effectsTextBox.TabIndex = 25;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(4, 316);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 13);
-            this.label8.TabIndex = 28;
-            this.label8.Text = "Exceptions";
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(64, 313);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(138, 20);
-            this.textBox7.TabIndex = 27;
+            this.operationListBox.SelectedIndexChanged += new System.EventHandler(this.operationListBox_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -301,6 +306,7 @@
             this.delAxiomButton.TabIndex = 13;
             this.delAxiomButton.Text = " Del Axiom";
             this.delAxiomButton.UseVisualStyleBackColor = true;
+            this.delAxiomButton.Click += new System.EventHandler(this.delAxiomButton_Click);
             // 
             // addAxiomButton
             // 
@@ -310,6 +316,7 @@
             this.addAxiomButton.TabIndex = 12;
             this.addAxiomButton.Text = "Add Axiom";
             this.addAxiomButton.UseVisualStyleBackColor = true;
+            this.addAxiomButton.Click += new System.EventHandler(this.addAxiomButton_Click);
             // 
             // axiomListBox
             // 
@@ -327,6 +334,7 @@
             this.saveButton.TabIndex = 30;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // cancelButton
             // 
@@ -336,6 +344,7 @@
             this.cancelButton.TabIndex = 31;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // ADT_Obj_Attribute_Form
             // 
@@ -351,6 +360,7 @@
             this.Controls.Add(this.adtNameTextBox);
             this.Name = "ADT_Obj_Attribute_Form";
             this.Text = "ADT Object Attributes Editor";
+            this.Load += new System.EventHandler(this.ADT_Obj_Attribute_Form_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -367,7 +377,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox exceptTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox effectsTextBox;
         private System.Windows.Forms.Button delExceptionButton;

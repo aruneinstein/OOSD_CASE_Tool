@@ -151,6 +151,9 @@ namespace OOSD_CASE_Tool
                 case CaseTypes.SM_OBJ_MASTER:
                     objectSystem.getSMObjAttributesForm(Shape);
                     break;
+                case CaseTypes.ADT_OBJ_MASTER:
+                    objectSystem.getADTObjAttributesForm(Shape);
+                    break;
                 default:
                     break;
             }
