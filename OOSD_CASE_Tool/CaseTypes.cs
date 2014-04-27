@@ -79,6 +79,23 @@ namespace OOSD_CASE_Tool
         public const string TRANSFORM_CONNECTOR_MASTER = "Transform Connector";
 
         /// <summary>
+        /// Name of the Dynamic Connector Shape as defined in the OOSD General Stencil.
+        /// A Dynamic Connector is a line shape that connects and glues two shapes together.
+        /// </summary>
+        public const string OOSD_CONNECTOR = "Connector";
+
+        /// <summary>
+        /// Name of a Rectangular Shape as defined in the OOSD General Stencil.
+        /// A Rectangle has connection points in which it can be connected to other shapes.
+        /// </summary>
+        public const string OOSD_RECTANGLE = "Rectangle";
+
+        /// <summary>
+        /// The name of the stencil that contains general/miscellaneous shapes.
+        /// </summary>
+        public const string OOSD_GENERAL_STENCIL = "OOSD General Stencil.vssx";
+
+        /// <summary>
         /// The name of the stencil that contains Object shapes.
         /// </summary>
         public const string OBJECT_STENCIL = "Object Stencil.vssx";

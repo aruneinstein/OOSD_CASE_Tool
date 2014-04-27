@@ -319,5 +319,88 @@ namespace OOSD_CASE_Tool
 
             return null;
         }
+
+        /// <summary>
+        /// Retrieves a stencil document if it's open, else open it according to
+        /// the openArgument.
+        /// </summary>
+        /// <param name="documents">Documents collection to look for Stencil.</param>
+        /// <param name="stencilName">Name of the stencil.</param>
+        /// <param name="openArg">How to open the stencil.</param>
+        /// <returns></returns>
+        public static Visio.Document getStencil(Visio.Documents documents, string stencilName,
+            Visio.VisOpenSaveArgs openArg)
+        {
+            // if stencil is already open, return reference to it
+            Visio.Document stencil = documents[stencilName];
+
+            if (stencil == null)
+            {
+                // Stencil isn't open, so open it
+                string stencilPath = CaseTypes.stencilPath();
+                stencil = documents.OpenEx(stencilPath, (short) openArg);
+            }
+
+            return stencil;
+        }
+
+        /// <summary>
+        /// Gets a Master by the masterName.
+        /// </summary>
+        /// <param name="app">Application in which all Documents resides.</param>
+        /// <param name="stencilName">Name of the Stencil in which the Master resides.</param>
+        /// <param name="masterName">Name of the Master to get.</param>
+        /// <returns></returns>
+        public static Visio.Master getMasterFromStencil(Visio.Application app, 
+            string stencilName, string masterName)
+        {
+            Visio.Document stencil = getStencil(app.Documents, stencilName, 
+                Visio.VisOpenSaveArgs.visOpenHidden);
+            return stencil.Masters[masterName];
+        }
+
+        /// <summary>
+        /// Connects a fromShape to a toShape using a Dynamic Connector.
+        /// </summary>
+        /// <param name="page">Page to drop the Shapes in.</param>
+        /// <param name="fromShape">The Shape to start the connection at.</param>
+        /// <param name="toShape">The Shape to end the connection at.</param>
+        /// <param name="fromXPercent">
+        /// X coordinate (in percent of the fromShape's width) to Glue</param>
+        /// <param name="fromYPercent">
+        /// Y coordinate (in percent of the fromShape's height) to Glue.</param>
+        /// <param name="toXPercent">
+        /// X coordinate (in percent of the toShape's width) to Glue.</param>
+        /// <param name="toYPercent">
+        /// X coordinate (in percent of the toShape's width) to Glue.</param>
+        public static void glueShapesWithDynamicConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
+            double fromXPercent, double fromYPercent, double toXPercent, double toYPercent)
+        {
+            Visio.Documents appDocuments = page.Application.Documents;
+
+            // We only want to get the Dynamic Connector Master from the Stencil,
+            // so keep the stencil hidden since user won't need to use it.
+            Visio.Document stencil = getStencil(appDocuments, CaseTypes.OOSD_GENERAL_STENCIL,
+                Visio.VisOpenSaveArgs.visOpenHidden);
+
+            Visio.Master connectorMaster = stencil.Masters[CaseTypes.OOSD_CONNECTOR];
+            Visio.Shape connector = page.Drop(connectorMaster, 0, 0);
+
+            // The Dynamic Connector has an end point and a begin point, which are
+            // the glue points used to connect to shapes. These points are stored 
+            // in the 1-D Endpoints Shapesheet section.
+            Visio.Cell beginCell = connector.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowXForm1D,
+                (short)Visio.VisCellIndices.vis1DBeginX);
+            Visio.Cell endCell = connector.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowXForm1D,
+                (short)Visio.VisCellIndices.vis1DEndX);
+
+            // Connect the connector end points to the from and to shapes
+            beginCell.GlueToPos(fromShape, fromXPercent, fromYPercent);
+            endCell.GlueToPos(toShape, toXPercent, toYPercent);
+        }
     }
 }
