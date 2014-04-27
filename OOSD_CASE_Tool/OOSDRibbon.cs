@@ -52,7 +52,8 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void convertToArchChartBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            FlowSystem.convertToArchitectureChart();
+            FlowSystem flowEditor = new FlowSystem();
+            flowEditor.convertToArchitectureChart();
         }
     }
 }

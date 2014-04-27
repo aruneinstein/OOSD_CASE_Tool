@@ -268,5 +268,56 @@ namespace OOSD_CASE_Tool
 
             return labelCellsList;
         }
+
+        /// <summary>
+        /// Retrieves the Page matching the given name.
+        /// </summary>
+        /// <param name="app">List of Pages in which Page resides.</param>
+        /// <param name="name">Name of page to retrieve.</param>
+        /// <returns>The Page object matching the given name, else null.</returns>
+        public static Visio.Page getPage(Visio.Pages pages, string name)
+        {
+            foreach (Visio.Page p in pages)
+            {
+                if (p.Name == name)
+                {
+                    return p;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Retrieves a Drawing Page matching the given name.
+        /// </summary>
+        /// <param name="name">Name of page to retrieve.</param>
+        /// <returns>Drawing Page matching name.</returns>
+        public static Visio.Page getDrawingPage(Visio.Application app, string name)
+        {
+            Visio.Pages pages = getPages(app, Visio.VisDocumentTypes.visTypeDrawing);
+            return getPage(pages, name);
+        }
+
+
+        /// <summary>
+        /// Returns all pages in a Document of type type.
+        /// </summary>
+        /// <param name="app">Application that contains the list of Documents.</param>
+        /// <param name="type">The type of document in which to get the pages.</param>
+        /// <returns>Pages collection, else null.</returns>
+        public static Visio.Pages getPages(Visio.Application app, Visio.VisDocumentTypes type)
+        {
+            Visio.Documents docs = app.Documents;
+            foreach (Visio.Document d in docs)
+            {
+                if (d.Type == type)
+                {
+                    return d.Pages;
+                }
+            }
+
+            return null;
+        }
     }
 }

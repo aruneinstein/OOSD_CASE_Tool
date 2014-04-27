@@ -62,21 +62,21 @@ namespace OOSD_CASE_Tool
         /// A transform center shape is the root of a Transform Center and is the root
         /// of all processes active in the Transform Center.
         /// </summary>
-        public const string TRANSFORM_CENTER_MASTER = "Transform-Center";
+        public const string TRANSFORM_CENTER_MASTER = "Transform Center";
 
         /// <summary>
         /// Name of the Transform-Process Master Shape as defined in the Flow Diagram Stencil.
         /// A Transform Process is a process that operates on the data that comes into the
         /// Transform Center and is children of the Transform Center node.
         /// </summary>
-        public const string TRANSFORM_PROCESS_MASTER = "Transform-Process";
+        public const string TRANSFORM_PROCESS_MASTER = "Transform Process";
 
         /// <summary>
         /// Name of the Transform-Connector Master Shape as defined in the Flow Diagram stencil.
         /// A Transform Connector connects Transform Processes to each other and to the Transform Center,
         /// creating a tree-like structure.
         /// </summary>
-        public const string TRANSFORM_CONNECTOR_MASTER = "Transform-Connector";
+        public const string TRANSFORM_CONNECTOR_MASTER = "Transform Connector";
 
         /// <summary>
         /// The name of the stencil that contains Object shapes.
