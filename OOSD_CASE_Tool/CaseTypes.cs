@@ -62,21 +62,38 @@ namespace OOSD_CASE_Tool
         /// A transform center shape is the root of a Transform Center and is the root
         /// of all processes active in the Transform Center.
         /// </summary>
-        public const string TRANSFORM_CENTER_MASTER = "Transform-Center";
+        public const string TRANSFORM_CENTER_MASTER = "Transform Center";
 
         /// <summary>
         /// Name of the Transform-Process Master Shape as defined in the Flow Diagram Stencil.
         /// A Transform Process is a process that operates on the data that comes into the
         /// Transform Center and is children of the Transform Center node.
         /// </summary>
-        public const string TRANSFORM_PROCESS_MASTER = "Transform-Process";
+        public const string TRANSFORM_PROCESS_MASTER = "Transform Process";
 
         /// <summary>
         /// Name of the Transform-Connector Master Shape as defined in the Flow Diagram stencil.
         /// A Transform Connector connects Transform Processes to each other and to the Transform Center,
         /// creating a tree-like structure.
         /// </summary>
-        public const string TRANSFORM_CONNECTOR_MASTER = "Transform-Connector";
+        public const string TRANSFORM_CONNECTOR_MASTER = "Transform Connector";
+
+        /// <summary>
+        /// Name of the Dynamic Connector Shape as defined in the OOSD General Stencil.
+        /// A Dynamic Connector is a line shape that connects and glues two shapes together.
+        /// </summary>
+        public const string OOSD_CONNECTOR = "Connector";
+
+        /// <summary>
+        /// Name of a Rectangular Shape as defined in the OOSD General Stencil.
+        /// A Rectangle has connection points in which it can be connected to other shapes.
+        /// </summary>
+        public const string OOSD_RECTANGLE = "Rectangle";
+
+        /// <summary>
+        /// The name of the stencil that contains general/miscellaneous shapes.
+        /// </summary>
+        public const string OOSD_GENERAL_STENCIL = "OOSD General Stencil.vssx";
 
         /// <summary>
         /// The name of the stencil that contains Object shapes.
