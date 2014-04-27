@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.adtNameTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -62,22 +60,6 @@
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // adtNameTextBox
-            // 
-            this.adtNameTextBox.Location = new System.Drawing.Point(88, 36);
-            this.adtNameTextBox.Name = "adtNameTextBox";
-            this.adtNameTextBox.Size = new System.Drawing.Size(172, 20);
-            this.adtNameTextBox.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Object Name";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -108,7 +90,7 @@
             this.groupBox1.Controls.Add(this.delOpButton);
             this.groupBox1.Controls.Add(this.addOpButton);
             this.groupBox1.Controls.Add(this.operationListBox);
-            this.groupBox1.Location = new System.Drawing.Point(18, 75);
+            this.groupBox1.Location = new System.Drawing.Point(18, 36);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(371, 341);
             this.groupBox1.TabIndex = 6;
@@ -174,6 +156,7 @@
             this.exceptionListBox.Name = "exceptionListBox";
             this.exceptionListBox.Size = new System.Drawing.Size(279, 95);
             this.exceptionListBox.TabIndex = 22;
+            this.exceptionListBox.SelectedIndexChanged += new System.EventHandler(this.exceptionListBox_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -275,7 +258,7 @@
             this.groupBox2.Controls.Add(this.delAxiomButton);
             this.groupBox2.Controls.Add(this.addAxiomButton);
             this.groupBox2.Controls.Add(this.axiomListBox);
-            this.groupBox2.Location = new System.Drawing.Point(18, 436);
+            this.groupBox2.Location = new System.Drawing.Point(18, 397);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(371, 170);
             this.groupBox2.TabIndex = 29;
@@ -325,10 +308,11 @@
             this.axiomListBox.Name = "axiomListBox";
             this.axiomListBox.Size = new System.Drawing.Size(279, 95);
             this.axiomListBox.TabIndex = 11;
+            this.axiomListBox.SelectedIndexChanged += new System.EventHandler(this.axiomListBox_SelectedIndexChanged);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(18, 616);
+            this.saveButton.Location = new System.Drawing.Point(18, 597);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(131, 37);
             this.saveButton.TabIndex = 30;
@@ -338,7 +322,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(167, 616);
+            this.cancelButton.Location = new System.Drawing.Point(277, 597);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(117, 37);
             this.cancelButton.TabIndex = 31;
@@ -356,8 +340,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.adtNameTextBox);
             this.Name = "ADT_Obj_Attribute_Form";
             this.Text = "ADT Object Attributes Editor";
             this.Load += new System.EventHandler(this.ADT_Obj_Attribute_Form_Load);
@@ -372,8 +354,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox adtNameTextBox;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label8;
