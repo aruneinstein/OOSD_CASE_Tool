@@ -111,5 +111,17 @@ namespace OOSD_CASE_Tool
         {
             printProperties(app.ActivePage.Shapes);
         }
+
+        private void openRelationStencilBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.RELATION_STENCIL,
+                (short)Visio.VisOpenSaveArgs.visOpenDocked);
+        }
+
+        private void openFlowStencilBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.FLOW_STENCIL,
+                (short)Visio.VisOpenSaveArgs.visOpenDocked);
+        }
     }
 }

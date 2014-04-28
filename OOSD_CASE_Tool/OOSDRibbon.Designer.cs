@@ -100,6 +100,7 @@
             this.openRelationStencilBtn.Label = "Open Stencil";
             this.openRelationStencilBtn.Name = "openRelationStencilBtn";
             this.openRelationStencilBtn.ShowImage = true;
+            this.openRelationStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openRelationStencilBtn_Click);
             // 
             // erToObjHierBtn
             // 
@@ -130,6 +131,7 @@
             this.openFlowStencilBtn.Label = "Open Stencil";
             this.openFlowStencilBtn.Name = "openFlowStencilBtn";
             this.openFlowStencilBtn.ShowImage = true;
+            this.openFlowStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openFlowStencilBtn_Click);
             // 
             // convertToArchChartBtn
             // 

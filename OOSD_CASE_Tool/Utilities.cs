@@ -332,13 +332,16 @@ namespace OOSD_CASE_Tool
             Visio.VisOpenSaveArgs openArg)
         {
             // if stencil is already open, return reference to it
-            Visio.Document stencil = documents[stencilName];
-
-            if (stencil == null)
+            Visio.Document stencil = null;
+            try
+            {
+                stencil = documents[stencilName];
+            }
+            catch
             {
                 // Stencil isn't open, so open it
-                string stencilPath = CaseTypes.stencilPath();
-                stencil = documents.OpenEx(stencilPath, (short) openArg);
+                string stencilPath = CaseTypes.stencilPath() + CaseTypes.OOSD_GENERAL_STENCIL;
+                stencil = documents.OpenEx(stencilPath, (short)openArg);
             }
 
             return stencil;
@@ -401,6 +404,102 @@ namespace OOSD_CASE_Tool
             // Connect the connector end points to the from and to shapes
             beginCell.GlueToPos(fromShape, fromXPercent, fromYPercent);
             endCell.GlueToPos(toShape, toXPercent, toYPercent);
+        }
+
+        /// <summary>
+        /// Returns the Height of Page in inches.
+        /// </summary>
+        /// <param name="page">Page.</param>
+        /// <returns>Page height in inches.</returns>
+        public static double getPageHeight(Visio.Page page)
+        {
+            Visio.Cell cell = page.PageSheet.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowPage,
+                (short)Visio.VisCellIndices.visPageHeight);
+
+            return cell.get_Result(Visio.VisUnitCodes.visInches);
+        }
+
+        /// <summary>
+        /// Returns the Page Width in inches.
+        /// </summary>
+        /// <param name="page">Page.</param>
+        /// <returns>Page width in inches.</returns>
+        public static double getPageWidth(Visio.Page page)
+        {
+            Visio.Cell cell = page.PageSheet.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowPage,
+                (short)Visio.VisCellIndices.visPageWidth);
+
+            return cell.get_Result(Visio.VisUnitCodes.visInches);
+        }
+
+        /// <summary>
+        /// Returns an invisible BoundingBox that defines a container in which
+        /// all shapes fall within its boundary. 
+        /// </summary>
+        /// <param name="page">Page with shapes to get a BoundingBox around.</param>
+        /// <returns>A BoundingBox.</returns>
+        public static BoundingBox getBoundingBox(Visio.Page page)
+        {
+            BoundingBox box = new BoundingBox(0.0, 0.0, 0.0, 0.0);
+
+            // Get all shapes on the page
+            Visio.Shapes allShapes = page.Shapes;
+
+            // Iterate through all Shapes, get the most upper left and most lower
+            // right Shape and use its coordinates to define the BoundingBox
+            int index = 0;
+            foreach (Visio.Shape s in allShapes)
+            {
+                // Retrieves the PinX, PinY Cell values that holds the Shape's center coordinates
+                double shapeX = s.Cells["PinX"].Result["inches"];
+                double shapeY = s.Cells["PinY"].Result["inches"];
+
+                // Get the shape's Width & Height and adds half of its value to the BoundingBox
+                // to include the whole Shape in the Box (since we are using the Shape's CENTER)
+                double halfShapeWidth = s.Cells["Width"].Result["inches"] / 2;
+                double halfShapeHeight = s.Cells["Height"].Result["inches"] / 2;
+
+                // if it's the first shape, automatically set a BoundingBox around it as a starting point.
+                if (index == 0)
+                {
+                    box.UpperLeftX = shapeX - halfShapeWidth; 
+                    box.LowerRightX = shapeX + halfShapeWidth;
+                    box.UpperLeftY = shapeY + halfShapeHeight;
+                    box.LowerRightY = shapeY - halfShapeHeight;
+                }
+                else
+                {
+                    if (shapeX < box.UpperLeftX)
+                    {
+                        // this shape is more left than the current BoundingBox left boundary.
+                        box.UpperLeftX = shapeX - halfShapeWidth;
+                    }
+                    else if (shapeX > box.LowerRightX)
+                    {
+                        // this shape is more right than the current BoundingBox right boundary.
+                        box.LowerRightX = shapeX + halfShapeWidth;
+                    }
+
+                    if (shapeY > box.UpperLeftY)
+                    {
+                        // this shape is higher than the current BoundingBox top boundary.
+                        box.UpperLeftY = shapeY + halfShapeHeight;
+                    }
+                    else if (shapeY < box.LowerRightY)
+                    {
+                        // this shape is lower than the current BoundingBox bottom boundary.
+                        box.LowerRightY = shapeY - halfShapeHeight;
+                    }
+                }
+
+                ++index;
+            }
+
+            return box;
         }
     }
 }

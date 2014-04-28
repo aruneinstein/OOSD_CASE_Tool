@@ -148,5 +148,6 @@ namespace OOSD_CASE_Tool
             Uri uriCodeBase = new Uri(assemblyInfo.CodeBase);
             return System.IO.Path.GetDirectoryName(uriCodeBase.LocalPath.ToString());
         }
+
     }
 }
