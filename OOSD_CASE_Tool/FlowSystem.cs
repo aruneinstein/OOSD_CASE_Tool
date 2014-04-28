@@ -79,7 +79,7 @@ namespace OOSD_CASE_Tool
             // Gets all shapes that are connected to the root shape through a connector
             // (such as through a 1-D Dynamic Connector)
             List<int> shapeIDs = new List<int>(
-                (int[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesOutgoingNodes, ""));
+                (int[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesAllNodes, ""));
 
             // Gets all shapes that are glued to the root shape (as in, it is connected
             // directly to the root shape.
@@ -124,7 +124,7 @@ namespace OOSD_CASE_Tool
             List<Visio.Shape> process, List<Visio.Shape> outputs)
         {
             // Space to leave open between shapes
-            double yPad = .5, xPad = .5;
+            double yPad = .5, xPad = .1;
 
             // sets the first open position to start dropping shapes onto the page
             // into the field variables drawXPos, drawYPos.
@@ -162,9 +162,9 @@ namespace OOSD_CASE_Tool
             drawYPos -= nodeHeight / 2 + yPad;
             int childrenCount = inputs.Count + process.Count + outputs.Count;
             double totalWidth = childrenCount * (nodeWidth + xPad);
-            drawXPos = drawXPos - (totalWidth / 2) + nodeWidth;
+            drawXPos = drawXPos - (totalWidth / 2) + (nodeWidth / 2) + xPad;
 
-            double pad = nodeWidth / 2 + xPad; // distance from one center of a shape to another center
+            double pad = nodeWidth + xPad; // distance from one center of a shape to another center
             List<Visio.Shape> inputChildren = dropShapes(outputPage, nodeMaster, inputs, pad);
             List<Visio.Shape> processChildren = dropShapes(outputPage, nodeMaster, process, pad);
             List<Visio.Shape> outputChildren = dropShapes(outputPage, nodeMaster, outputs, pad);
