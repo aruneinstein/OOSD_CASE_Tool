@@ -140,5 +140,6 @@ namespace OOSD_CASE_Tool
 
             return clickOnceLocation += @"\Stencils\";
         }
+
     }
 }
