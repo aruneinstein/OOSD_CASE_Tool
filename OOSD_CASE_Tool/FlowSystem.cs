@@ -97,11 +97,33 @@ namespace OOSD_CASE_Tool
         private void outputChart(Visio.Page outputPage, Visio.Shape root, List<Visio.Shape> inputs,
             List<Visio.Shape> process, List<Visio.Shape> outputs)
         {
+            double pageWidth = Utilities.getPageWidth(outputPage);
+            double pageHeight = Utilities.getPageHeight(outputPage);
+
             // Get a Rectangle Master from the OOSD General Stencil to serve
             // as the container for each Node in the chart.
             Visio.Master nodeMaster = Utilities.getMasterFromStencil(app, CaseTypes.OOSD_GENERAL_STENCIL,
                 CaseTypes.OOSD_RECTANGLE);
-            
+
+            // Root of the Architecture Chart
+            Visio.Shape transformRoot = outputPage.Drop(nodeMaster, drawXPos, drawYPos);
+            transformRoot.Text = root.Text;
+
+            // Use the root node width and height as the basis for performing layout
+            double nodeHeight = transformRoot.Cells["Height"].Result["inches"];
+            double nodeWidth = transformRoot.Cells["Width"].Result["inches"];
+
+            // Root of the Input subtree
+            Visio.Shape inputRoot = outputPage.Drop(nodeMaster, drawXPos, --drawYPos);
+            inputRoot.Text = @"Input";
+
+            // Root of the Process subtree
+            Visio.Shape processRoot = outputPage.Drop(nodeMaster, ++drawXPos, drawYPos);
+            processRoot.Text = @"Process";
+
+            // Root of the Output subtree
+            Visio.Shape outputRoot = outputPage.Drop(nodeMaster, ++drawXPos, drawYPos);
+            outputRoot.Text = @"Output";
         }
 
         /// <summary>
