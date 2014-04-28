@@ -37,14 +37,14 @@
             this.oosdTab = this.Factory.CreateRibbonTab();
             this.objectEditorGroup = this.Factory.CreateRibbonGroup();
             this.openObjStencilBtn = this.Factory.CreateRibbonButton();
+            this.objToDictBtn = this.Factory.CreateRibbonButton();
             this.relationEditorGroup = this.Factory.CreateRibbonGroup();
             this.openRelationStencilBtn = this.Factory.CreateRibbonButton();
+            this.erToObjHierBtn = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.flowEditorGroup = this.Factory.CreateRibbonGroup();
             this.openFlowStencilBtn = this.Factory.CreateRibbonButton();
             this.convertToArchChartBtn = this.Factory.CreateRibbonButton();
-            this.erToObjHierBtn = this.Factory.CreateRibbonButton();
-            this.objToDictBtn = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
             this.oosdTab.SuspendLayout();
             this.objectEditorGroup.SuspendLayout();
             this.relationEditorGroup.SuspendLayout();
@@ -74,6 +74,13 @@
             this.openObjStencilBtn.ShowImage = true;
             this.openObjStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openObjStencilBtn_Click);
             // 
+            // objToDictBtn
+            // 
+            this.objToDictBtn.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
+            this.objToDictBtn.Label = "Generate Data Dictionary";
+            this.objToDictBtn.Name = "objToDictBtn";
+            this.objToDictBtn.ShowImage = true;
+            // 
             // relationEditorGroup
             // 
             this.relationEditorGroup.Items.Add(this.openRelationStencilBtn);
@@ -88,6 +95,21 @@
             this.openRelationStencilBtn.Label = "Open Stencil";
             this.openRelationStencilBtn.Name = "openRelationStencilBtn";
             this.openRelationStencilBtn.ShowImage = true;
+            this.openRelationStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openRelationStencilBtn_Click);
+            // 
+            // erToObjHierBtn
+            // 
+            this.erToObjHierBtn.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
+            this.erToObjHierBtn.Label = "Convert to Object Hierarchy";
+            this.erToObjHierBtn.Name = "erToObjHierBtn";
+            this.erToObjHierBtn.ShowImage = true;
+            // 
+            // button1
+            // 
+            this.button1.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
+            this.button1.Label = "Convert to Object Hierarchy";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
             // 
             // flowEditorGroup
             // 
@@ -102,6 +124,7 @@
             this.openFlowStencilBtn.Label = "Open Stencil";
             this.openFlowStencilBtn.Name = "openFlowStencilBtn";
             this.openFlowStencilBtn.ShowImage = true;
+            this.openFlowStencilBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.openFlowStencilBtn_Click);
             // 
             // convertToArchChartBtn
             // 
@@ -110,27 +133,6 @@
             this.convertToArchChartBtn.Name = "convertToArchChartBtn";
             this.convertToArchChartBtn.ShowImage = true;
             this.convertToArchChartBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.convertToArchChartBtn_Click);
-            // 
-            // erToObjHierBtn
-            // 
-            this.erToObjHierBtn.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
-            this.erToObjHierBtn.Label = "Convert to Object Hierarchy";
-            this.erToObjHierBtn.Name = "erToObjHierBtn";
-            this.erToObjHierBtn.ShowImage = true;
-            // 
-            // objToDictBtn
-            // 
-            this.objToDictBtn.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
-            this.objToDictBtn.Label = "Generate Data Dictionary";
-            this.objToDictBtn.Name = "objToDictBtn";
-            this.objToDictBtn.ShowImage = true;
-            // 
-            // button1
-            // 
-            this.button1.Image = global::OOSD_CASE_Tool.Properties.Resources.play;
-            this.button1.Label = "Convert to Object Hierarchy";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
             // 
             // OOSDRibbon
             // 

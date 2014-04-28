@@ -55,5 +55,17 @@ namespace OOSD_CASE_Tool
             FlowSystem flowEditor = new FlowSystem();
             flowEditor.convertToArchitectureChart();
         }
+
+        private void openRelationStencilBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.RELATION_STENCIL,
+                (short)Visio.VisOpenSaveArgs.visOpenDocked);
+        }
+
+        private void openFlowStencilBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.FLOW_STENCIL,
+                (short)Visio.VisOpenSaveArgs.visOpenDocked);
+        }
     }
 }
