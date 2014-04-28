@@ -55,5 +55,61 @@ namespace OOSD_CASE_Tool
             FlowSystem flowEditor = new FlowSystem();
             flowEditor.convertToArchitectureChart();
         }
+
+        private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            printProperties(app.ActivePage.Shapes);
+        }
+
+        public static void printProperties(Visio.Shapes shapes)
+        {
+            string res = "";
+            // Look at each shape in the collection.
+            foreach (Visio.Shape shape in shapes)
+            {
+                // Use this index to look at each row in the properties 
+                // section.
+                short iRow = (short)Visio.VisRowIndices.visRowFirst;
+
+                // While there are stil rows to look at.
+                while (shape.get_CellsSRCExists(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    iRow,
+                    (short)Visio.VisCellIndices.visCustPropsValue,
+                    (short)0) != 0)
+                {
+                    // Get the label and value of the current property.
+                    string label = shape.get_CellsSRC(
+                            (short)Visio.VisSectionIndices.visSectionProp,
+                            iRow,
+                            (short)Visio.VisCellIndices.visCustPropsLabel
+                        ).get_ResultStr(Visio.VisUnitCodes.visNoCast);
+
+                    string value = shape.get_CellsSRC(
+                            (short)Visio.VisSectionIndices.visSectionProp,
+                            iRow,
+                            (short)Visio.VisCellIndices.visCustPropsValue
+                        ).get_ResultStr(Visio.VisUnitCodes.visNoCast);
+
+                    // Print the results.
+                    res += (string.Format(
+                        "Shape={0} Label={1} Value={2}\r\n",
+                        shape.Name, label, value));
+
+                    // Move to the next row in the properties section.
+                    iRow++;
+                }
+
+                // Now look at child shapes in the collection.
+                if (shape.Master == null && shape.Shapes.Count > 0)
+                    printProperties(shape.Shapes);
+            }
+            MessageBox.Show(res);
+        }
+
+        private void shapeInfoButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            printProperties(app.ActivePage.Shapes);
+        }
     }
 }

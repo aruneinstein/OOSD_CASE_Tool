@@ -30,12 +30,12 @@ namespace OOSD_CASE_Tool
         /// <summary>
         /// Page for displaying the generated object hierarchy diagram.
         /// </summary>
-        public const string OBJECT_DIAGRAM_PAGE = "Generated Object Hierarchy";
+        public const string OBJECT_DIAGRAM_PAGE = "Object Hierarchy";
 
         /// <summary>
         /// Page for displaying the generated data model with 'is-a' and 'has-a' relationship.
         /// </summary>
-        public const string DATA_MODEL_DIAGRAM_PAGE = "Generated Data Model";
+        public const string DATA_MODEL_DIAGRAM_PAGE = "Data Model";
 
         /// <summary>
         /// Name of the Architecture Charts Page.
@@ -131,14 +131,22 @@ namespace OOSD_CASE_Tool
         /// <returns>Path to the Stencils folder including trailing '\'.</returns>
         public static string stencilPath()
         {
+            string pth = getClickOnceLocation();
+            return pth += @"\Stencils\";
+        }
+
+        /// <summary>
+        /// Returns the path of the code base.
+        /// </summary>
+        /// <returns> path of code base </returns>
+        public static string getClickOnceLocation()
+        {
             // Get the assembly information, which has runtime info
             System.Reflection.Assembly assemblyInfo = System.Reflection.Assembly.GetExecutingAssembly();
 
             // CodeBase is the location of the ClickOnce deployment files
             Uri uriCodeBase = new Uri(assemblyInfo.CodeBase);
-            string clickOnceLocation = System.IO.Path.GetDirectoryName(uriCodeBase.LocalPath.ToString());
-
-            return clickOnceLocation += @"\Stencils\";
+            return System.IO.Path.GetDirectoryName(uriCodeBase.LocalPath.ToString());
         }
     }
 }

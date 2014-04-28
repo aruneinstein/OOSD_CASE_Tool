@@ -198,6 +198,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RelationEditor.cs" />
     <Compile Include="SM_Obj_Attribute_Form.cs">
       <SubType>Form</SubType>
     </Compile>

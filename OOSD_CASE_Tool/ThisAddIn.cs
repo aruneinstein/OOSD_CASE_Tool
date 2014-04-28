@@ -33,8 +33,14 @@ namespace OOSD_CASE_Tool
             objectSystem = new ObjectSystem();
 
             // Register event handlers
+            app.ShapeAdded += app_ShapeAdded;
             app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
             app.DocumentCreated += app_DocumentCreated;
+        }
+
+        private void app_ShapeAdded(Visio.Shape Shape)
+        {
+            app_BeforeShapeTextEdit(Shape);
         }
 
         /// <summary>
