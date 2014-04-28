@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -101,6 +102,18 @@ namespace OOSD_CASE_Tool
                     break;
                 case CaseTypes.RELATION_PAGE:
                     stencilPath += CaseTypes.RELATION_STENCIL;
+
+                    foreach (Visio.Page p in Window.Document.Pages)
+                    {
+                        if (p.Name == CaseTypes.OBJECT_PAGE)
+                        {
+                            foreach (var item in Utilities.getAllShapesOnPage(p))
+                            {
+                                item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                            }
+                        }
+                    }
                     break;
                 case CaseTypes.FLOW_PAGE:
                     stencilPath += CaseTypes.FLOW_STENCIL;
@@ -127,6 +140,7 @@ namespace OOSD_CASE_Tool
         private void app_BeforeWindowPageTurn(Visio.Window Window)
         {
             Visio.Documents docs = app.Documents;
+
             foreach (Visio.Document d in docs)
             {
                 if (d.Type == Visio.VisDocumentTypes.visTypeStencil)

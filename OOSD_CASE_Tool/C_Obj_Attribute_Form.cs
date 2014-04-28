@@ -113,6 +113,7 @@ namespace OOSD_CASE_Tool
             saveObjectName();
             saveAttribute();
         }
+
         private void saveObjectName()
         {
             // Shape Data section format
@@ -130,6 +131,7 @@ namespace OOSD_CASE_Tool
                 string rowName = "c_" + cObjectName + "_";
 
                 Utilities.setDataSectionValueCell(ownerShape, rowName, cObjectName);
+                ownerShape.Name = cObjectName;
             }
 
         }
