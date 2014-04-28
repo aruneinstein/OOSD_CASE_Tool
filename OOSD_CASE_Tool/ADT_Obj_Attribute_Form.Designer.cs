@@ -56,6 +56,8 @@
             this.axiomListBox = new System.Windows.Forms.ListBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.adtObjectNameLbl = new System.Windows.Forms.Label();
+            this.adtObjectNameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -90,7 +92,7 @@
             this.groupBox1.Controls.Add(this.delOpButton);
             this.groupBox1.Controls.Add(this.addOpButton);
             this.groupBox1.Controls.Add(this.operationListBox);
-            this.groupBox1.Location = new System.Drawing.Point(18, 36);
+            this.groupBox1.Location = new System.Drawing.Point(12, 74);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(371, 341);
             this.groupBox1.TabIndex = 6;
@@ -258,7 +260,7 @@
             this.groupBox2.Controls.Add(this.delAxiomButton);
             this.groupBox2.Controls.Add(this.addAxiomButton);
             this.groupBox2.Controls.Add(this.axiomListBox);
-            this.groupBox2.Location = new System.Drawing.Point(18, 397);
+            this.groupBox2.Location = new System.Drawing.Point(12, 421);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(371, 170);
             this.groupBox2.TabIndex = 29;
@@ -312,7 +314,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(18, 597);
+            this.saveButton.Location = new System.Drawing.Point(12, 597);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(131, 37);
             this.saveButton.TabIndex = 30;
@@ -322,7 +324,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(277, 597);
+            this.cancelButton.Location = new System.Drawing.Point(266, 597);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(117, 37);
             this.cancelButton.TabIndex = 31;
@@ -330,11 +332,30 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
+            // adtObjectNameLbl
+            // 
+            this.adtObjectNameLbl.AutoSize = true;
+            this.adtObjectNameLbl.Location = new System.Drawing.Point(17, 43);
+            this.adtObjectNameLbl.Name = "adtObjectNameLbl";
+            this.adtObjectNameLbl.Size = new System.Drawing.Size(97, 13);
+            this.adtObjectNameLbl.TabIndex = 32;
+            this.adtObjectNameLbl.Text = "ADT Object Name:";
+            // 
+            // adtObjectNameTextBox
+            // 
+            this.adtObjectNameTextBox.Location = new System.Drawing.Point(121, 43);
+            this.adtObjectNameTextBox.Name = "adtObjectNameTextBox";
+            this.adtObjectNameTextBox.Size = new System.Drawing.Size(175, 20);
+            this.adtObjectNameTextBox.TabIndex = 33;
+            this.adtObjectNameTextBox.TextChanged += new System.EventHandler(this.adtObjectNameTextBox_TextChanged);
+            // 
             // ADT_Obj_Attribute_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 662);
+            this.ClientSize = new System.Drawing.Size(395, 662);
+            this.Controls.Add(this.adtObjectNameTextBox);
+            this.Controls.Add(this.adtObjectNameLbl);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.groupBox2);
@@ -382,5 +403,7 @@
         private System.Windows.Forms.ListBox axiomListBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Label adtObjectNameLbl;
+        private System.Windows.Forms.TextBox adtObjectNameTextBox;
     }
 }

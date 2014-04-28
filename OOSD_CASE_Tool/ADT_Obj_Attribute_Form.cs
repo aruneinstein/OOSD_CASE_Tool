@@ -35,12 +35,56 @@ namespace OOSD_CASE_Tool
 
         private void ADT_Obj_Attribute_Form_Load(object sender, EventArgs e)
         {
-            if (ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION) > 0)
-            {
-                // load all operations and exceptions into lists and onto list boxes.
-            }
+           loadObject();
         }
+        private void loadObject()
+        {
+            HashSet<string> operationSet = new HashSet<string>();
+            short numRows = ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+            for (short r = 0; r < numRows; ++r)
+            {
+                Visio.Cell labelCell = ownerShape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                    r, CaseTypes.DS_LABEL_CELL);
 
+                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+
+                if (labelCellValue.StartsWith("adt_"))
+                {
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    int opNameLen = endIndex - startIndex;
+                    string adtObjName = labelCellValue.Substring(startIndex, opNameLen);
+                    adtObjectNameTextBox.Text = adtObjName;
+                }
+                if (labelCellValue.EndsWith("name"))
+                {
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    int opNameLen = endIndex - startIndex;
+                    string opName = labelCellValue.Substring(startIndex, opNameLen);
+                    Operation opObj = new Operation();
+                    string rowName = "op_" + opName + "_";
+                    opObj.name = Utilities.getDataSectionValueCell(ownerShape, rowName + "name");
+                    opObj.domain = Utilities.getDataSectionValueCell(ownerShape, rowName + "domain");
+                    opObj.range = Utilities.getDataSectionValueCell(ownerShape, rowName + "range");
+                    opObj.purpose = Utilities.getDataSectionValueCell(ownerShape, rowName + "purpose");
+                    opObj.effects = Utilities.getDataSectionValueCell(ownerShape, rowName + "effects");
+                    if (Utilities.getDataSectionValueCell(ownerShape, rowName + "exceptions_list").Any())
+                    {
+                        opObj.exceptions = Utilities.getDataSectionValueCell(ownerShape, rowName + "exceptions_list").Split(',').Select(a => a.Trim()).ToList();
+                    }
+                    this.operationList.Add(opObj);
+                    operationListBox.Items.Add(opObj.name);
+                }
+                if (labelCellValue.StartsWith("axiom"))
+                {
+                    string rowName = "axiom_list";
+                    axiomList = Utilities.getDataSectionValueCell(ownerShape, rowName).Split(',').Select(a => a.Trim()).ToList();
+                    axiomListBox.DataSource = axiomList;
+                }
+            }
+            //operationListBox.Items.AddRange(operationSet.ToArray());
+        }
         private void cancelButton_Click(object sender, EventArgs e)
         {
             if (ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION) == 0)
@@ -53,6 +97,7 @@ namespace OOSD_CASE_Tool
 
         private void addOpButton_Click(object sender, EventArgs e)
         {
+            exceptionListBox.Items.Clear();
             Operation opObj = new Operation();
             opObj.name = nameTextBox.Text.Trim().ToString();
             opObj.domain = domainTextBox.Text.Trim().ToString();
@@ -95,6 +140,13 @@ namespace OOSD_CASE_Tool
                 optn.effects = opObj.effects;
                 optn.exceptions = opObj.exceptions;
             }
+            exceptionListBox.Items.Clear();
+            nameTextBox.Clear();
+            domainTextBox.Clear();
+            rangeTextBox.Clear();
+            purposeTextBox.Clear();
+            effectsTextBox.Clear();
+            exceptTextBox.Clear();
         }
 
         private List<string> getListOfExceptions()
@@ -189,6 +241,13 @@ namespace OOSD_CASE_Tool
                 op.exceptions.Add(exc);
                 exceptionListBox.Items.Add(exc);
             }
+            exceptTextBox.Clear();
+            nameTextBox.Clear();
+            domainTextBox.Clear();
+            rangeTextBox.Clear();
+            purposeTextBox.Clear();
+            effectsTextBox.Clear();
+            exceptTextBox.Clear();
         }
 
         private void delExceptionButton_Click(object sender, EventArgs e)
@@ -209,7 +268,8 @@ namespace OOSD_CASE_Tool
             var op = getOperationFromOpListBox(operationListBox.SelectedItem.ToString());
             op.exceptions.Remove(exc);
             exceptionListBox.Items.Remove(exceptionListBox.SelectedItem);
-            exceptionListBox.SetSelected(0, true);
+            //exceptionListBox.SetSelected(0, true);
+            exceptTextBox.Clear();
         }
 
         private Operation getOperationFromOpListBox(string selop)
@@ -228,6 +288,7 @@ namespace OOSD_CASE_Tool
 
             axiomList.Add(axm);
             axiomListBox.Items.Add(axm);
+            axiomTextBox.Clear();
         }
 
         private void delAxiomButton_Click(object sender, EventArgs e)
@@ -248,14 +309,61 @@ namespace OOSD_CASE_Tool
 
             axiomList.Remove(axm);
             axiomListBox.Items.Remove(axiomListBox.SelectedItem);
-            axiomListBox.SetSelected(0, true);
+            //axiomListBox.SetSelected(0, true);
+            axiomTextBox.Clear();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            saveObjectName();
+            saveOperations();
+            //saveAxioms();
+        }
+        private void saveObjectName()
+        {
+            // Shape Data section format
+            //    row name                         :: Value cell
+            // adt_[object name]_                  :: [adt object name]
+
+            string adtObjectName = adtObjectNameTextBox.Text.Trim();
+            // Must have an object name
+            if (adtObjectName == "")
+            {
+                MessageBox.Show("Must enter an Object Name.");
+            }
+            else
+            {
+                string rowName = "adt_" + adtObjectName + "_object";
+
+                Utilities.setDataSectionValueCell(ownerShape, rowName, adtObjectName);
+                ownerShape.Name = adtObjectName;
+            }
 
         }
-
+        private void saveOperations()
+        {
+            foreach (var o in operationList)
+            {
+                string rowName = "op_" + o.name + "_";
+                Utilities.setDataSectionValueCell(ownerShape, rowName + "name", o.name);
+                string damainName = o.domain;
+                Utilities.setDataSectionValueCell(ownerShape, rowName + "domain", damainName);
+                string rangeName = o.range;
+                Utilities.setDataSectionValueCell(ownerShape, rowName + "range", rangeName);
+                string purposeName = o.purpose;
+                Utilities.setDataSectionValueCell(ownerShape, rowName + "purpose", purposeName);
+                string effectsName = o.effects;
+                Utilities.setDataSectionValueCell(ownerShape, rowName + "effects", effectsName);
+                if (o.exceptions.Any())
+                {
+                    string exceptionsName = String.Join(", ", o.exceptions.ToArray());
+                    Utilities.setDataSectionValueCell(ownerShape, rowName + "exceptions_list", exceptionsName);
+                }
+                string axiomName = "axiom_";
+                Utilities.setDataSectionValueCell(ownerShape, axiomName + "list", String.Join(", ", axiomList.ToArray()));
+            }
+            this.Close();
+        }
         private void axiomListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(axiomListBox.SelectedItem != null)
@@ -272,6 +380,11 @@ namespace OOSD_CASE_Tool
                 exceptTextBox.Clear();
                 exceptTextBox.AppendText(exceptionListBox.SelectedItem.ToString());
             }
+        }
+
+        private void adtObjectNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
