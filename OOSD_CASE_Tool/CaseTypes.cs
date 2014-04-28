@@ -78,6 +78,10 @@ namespace OOSD_CASE_Tool
         /// </summary>
         public const string TRANSFORM_CONNECTOR_MASTER = "Transform Connector";
 
+        public const string TRANSFORM_INPUT_MASTER = "Transform Input";
+
+        public const string TRANSFORM_OUTPUT_MASTER = "Transform Output";
+
         /// <summary>
         /// Name of the Dynamic Connector Shape as defined in the OOSD General Stencil.
         /// A Dynamic Connector is a line shape that connects and glues two shapes together.
