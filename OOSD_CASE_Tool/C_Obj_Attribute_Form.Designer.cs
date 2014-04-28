@@ -86,6 +86,7 @@
             this.cObjectNameText.Name = "cObjectNameText";
             this.cObjectNameText.Size = new System.Drawing.Size(223, 20);
             this.cObjectNameText.TabIndex = 3;
+            this.cObjectNameText.TextChanged += new System.EventHandler(this.cObjectNameText_TextChanged);
             // 
             // attributeListLbl
             // 

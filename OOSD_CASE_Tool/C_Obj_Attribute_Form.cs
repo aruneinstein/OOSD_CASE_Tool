@@ -237,5 +237,10 @@ namespace OOSD_CASE_Tool
             }
         }
 
+        private void cObjectNameText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
