@@ -32,32 +32,36 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private List<Visio.Shape> transformCenters;
 
-
+        /// <summary>
+        /// Creates an instance of the FlowSystem to work with Flow Diagrams.
+        /// </summary>
         public FlowSystem()
         {
             app = Globals.ThisAddIn.Application;
             transformCenters = new List<Visio.Shape>();
-
-            
         }
 
         /// <summary>
         /// Converts a Flow Diagram to an Architecture Chart. By Default, retrieves
         /// shapes from the FLOW_PAGE and outputs to ARCHITECTURE_PAGE.
         /// </summary>
-        public void convertToArchitectureChart()
+        /// <param name="selection">Selection of Shapes which contains Diagram to convert.</param>
+        /// <param name="outputPage">Page to output the Chart.</param>
+        public void convertToArchitectureChart(Visio.Selection selection, Visio.Page outputPage)
         {
-            Visio.Page inputPage = Utilities.getDrawingPage(app, CaseTypes.FLOW_PAGE);
-            Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.ARCHITECTURE_PAGE);
-
-            // Grabs all shapes on the Flow Editor page and separate them by type flow diagram.
-            List<Visio.Shape> allShapes = Utilities.getAllShapesOnPage(inputPage);
+            List<Visio.Shape> allShapes = new List<Visio.Shape>();
+            // retrieve all shapes in the selection
+            foreach (Visio.Shape s in selection)
+            {
+                allShapes.Add(s);
+            }
 
             // grabs the root node of each Flow Diagram
             // i.e. a Transform-Center shape for a Transform Center Diagram,
             // a Transaction-Center shape for a Transaction Driven Diagram
             filterRootNodes(allShapes);
 
+            Visio.Page inputPage = selection.ContainingPage;
             foreach (Visio.Shape s in transformCenters)
             {
                 transformToArchChart(inputPage, outputPage, s);
@@ -202,6 +206,13 @@ namespace OOSD_CASE_Tool
             return shapesDropped;
         }
 
+        /// <summary>
+        /// Creates a Dynamic Connector and, for each child node, connect it to
+        /// the root node.
+        /// </summary>
+        /// <param name="page">Page on which to output the Shapes.</param>
+        /// <param name="root">The root node of the output Architecture Chart.</param>
+        /// <param name="children">The children nodes.</param>
         private void glueRootToChildren(Visio.Page page, Visio.Shape root, List<Visio.Shape> children)
         {
             // Since this is an Architecture Chart, all connection points of root
@@ -260,8 +271,6 @@ namespace OOSD_CASE_Tool
                 {
                     transformCenters.Add(s);
                 }
-
-                // TODO: Add branches for Transaction-Driven Diagram
             }
         }
     }

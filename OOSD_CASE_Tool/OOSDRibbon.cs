@@ -46,14 +46,27 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
-        /// Converts a Flow Diagram to an Architecture Chart.
+        /// Converts the selected Flow Diagram to an Architecture Chart.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void convertToArchChartBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            FlowSystem flowEditor = new FlowSystem();
-            flowEditor.convertToArchitectureChart();
+            // The user needs to select one or more Transform Center node of a Transform
+            // Center Diagram to start the conversion.
+            Visio.Selection selection = app.ActiveWindow.Selection;
+
+            if (selection.Count == 0)
+            {
+                MessageBox.Show("Select a Data Flow Diagram to Convert.");
+            }
+            else
+            {
+                // Outputs the resulting Chart on the Architecture Chart Page.
+                Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.ARCHITECTURE_PAGE);
+                FlowSystem flowEditor = new FlowSystem();
+                flowEditor.convertToArchitectureChart(selection, outputPage);
+            }
         }
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
