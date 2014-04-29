@@ -44,27 +44,24 @@
             this.attributeDomainText = new System.Windows.Forms.TextBox();
             this.attributeNameText = new System.Windows.Forms.TextBox();
             this.attributePropGrpBox = new System.Windows.Forms.GroupBox();
-            this.separatorLineOne = new System.Windows.Forms.GroupBox();
-            this.separatorLineTwo = new System.Windows.Forms.GroupBox();
-            this.separatorLineThree = new System.Windows.Forms.GroupBox();
             this.attributePropGrpBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // applyBtn
             // 
-            this.applyBtn.Location = new System.Drawing.Point(41, 365);
+            this.applyBtn.Location = new System.Drawing.Point(9, 126);
             this.applyBtn.Name = "applyBtn";
-            this.applyBtn.Size = new System.Drawing.Size(75, 23);
+            this.applyBtn.Size = new System.Drawing.Size(101, 31);
             this.applyBtn.TabIndex = 0;
-            this.applyBtn.Text = "Apply";
+            this.applyBtn.Text = "Add / Save";
             this.applyBtn.UseVisualStyleBackColor = true;
             this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
             // 
             // exitBtn
             // 
-            this.exitBtn.Location = new System.Drawing.Point(429, 365);
+            this.exitBtn.Location = new System.Drawing.Point(371, 393);
             this.exitBtn.Name = "exitBtn";
-            this.exitBtn.Size = new System.Drawing.Size(75, 23);
+            this.exitBtn.Size = new System.Drawing.Size(105, 28);
             this.exitBtn.TabIndex = 1;
             this.exitBtn.Text = "Exit";
             this.exitBtn.UseVisualStyleBackColor = true;
@@ -73,7 +70,7 @@
             // cObjectNameLbl
             // 
             this.cObjectNameLbl.AutoSize = true;
-            this.cObjectNameLbl.Location = new System.Drawing.Point(38, 23);
+            this.cObjectNameLbl.Location = new System.Drawing.Point(9, 24);
             this.cObjectNameLbl.Name = "cObjectNameLbl";
             this.cObjectNameLbl.Size = new System.Drawing.Size(82, 13);
             this.cObjectNameLbl.TabIndex = 2;
@@ -82,7 +79,7 @@
             // 
             // cObjectNameText
             // 
-            this.cObjectNameText.Location = new System.Drawing.Point(126, 23);
+            this.cObjectNameText.Location = new System.Drawing.Point(97, 24);
             this.cObjectNameText.Name = "cObjectNameText";
             this.cObjectNameText.Size = new System.Drawing.Size(223, 20);
             this.cObjectNameText.TabIndex = 3;
@@ -91,7 +88,7 @@
             // attributeListLbl
             // 
             this.attributeListLbl.AutoSize = true;
-            this.attributeListLbl.Location = new System.Drawing.Point(38, 65);
+            this.attributeListLbl.Location = new System.Drawing.Point(9, 66);
             this.attributeListLbl.Name = "attributeListLbl";
             this.attributeListLbl.Size = new System.Drawing.Size(68, 13);
             this.attributeListLbl.TabIndex = 4;
@@ -101,7 +98,7 @@
             // 
             this.attributeListBox.FormattingEnabled = true;
             this.attributeListBox.HorizontalScrollbar = true;
-            this.attributeListBox.Location = new System.Drawing.Point(41, 81);
+            this.attributeListBox.Location = new System.Drawing.Point(12, 82);
             this.attributeListBox.Name = "attributeListBox";
             this.attributeListBox.Size = new System.Drawing.Size(311, 108);
             this.attributeListBox.TabIndex = 5;
@@ -109,17 +106,17 @@
             // 
             // newAttributeBtn
             // 
-            this.newAttributeBtn.Location = new System.Drawing.Point(407, 81);
+            this.newAttributeBtn.Location = new System.Drawing.Point(358, 126);
             this.newAttributeBtn.Name = "newAttributeBtn";
-            this.newAttributeBtn.Size = new System.Drawing.Size(97, 23);
+            this.newAttributeBtn.Size = new System.Drawing.Size(97, 31);
             this.newAttributeBtn.TabIndex = 6;
-            this.newAttributeBtn.Text = "New Attribute";
+            this.newAttributeBtn.Text = "Clear Form";
             this.newAttributeBtn.UseVisualStyleBackColor = true;
             this.newAttributeBtn.Click += new System.EventHandler(this.newAttributeBtn_Click);
             // 
             // delAttributeBtn
             // 
-            this.delAttributeBtn.Location = new System.Drawing.Point(407, 120);
+            this.delAttributeBtn.Location = new System.Drawing.Point(379, 82);
             this.delAttributeBtn.Name = "delAttributeBtn";
             this.delAttributeBtn.Size = new System.Drawing.Size(97, 23);
             this.delAttributeBtn.TabIndex = 7;
@@ -192,58 +189,31 @@
             this.attributePropGrpBox.Controls.Add(this.attributeDomainText);
             this.attributePropGrpBox.Controls.Add(this.attributeDiscriptionLbl);
             this.attributePropGrpBox.Controls.Add(this.attributeNameText);
+            this.attributePropGrpBox.Controls.Add(this.newAttributeBtn);
             this.attributePropGrpBox.Controls.Add(this.attributeNameLbl);
+            this.attributePropGrpBox.Controls.Add(this.applyBtn);
             this.attributePropGrpBox.Controls.Add(this.attributeDomainLbl);
-            this.attributePropGrpBox.Location = new System.Drawing.Point(42, 214);
+            this.attributePropGrpBox.Location = new System.Drawing.Point(13, 215);
             this.attributePropGrpBox.Name = "attributePropGrpBox";
-            this.attributePropGrpBox.Size = new System.Drawing.Size(463, 126);
+            this.attributePropGrpBox.Size = new System.Drawing.Size(463, 163);
             this.attributePropGrpBox.TabIndex = 15;
             this.attributePropGrpBox.TabStop = false;
             this.attributePropGrpBox.Text = "Attribute Property";
             this.attributePropGrpBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // separatorLineOne
-            // 
-            this.separatorLineOne.Location = new System.Drawing.Point(42, 49);
-            this.separatorLineOne.Name = "separatorLineOne";
-            this.separatorLineOne.Size = new System.Drawing.Size(462, 10);
-            this.separatorLineOne.TabIndex = 16;
-            this.separatorLineOne.TabStop = false;
-            // 
-            // separatorLineTwo
-            // 
-            this.separatorLineTwo.Location = new System.Drawing.Point(41, 195);
-            this.separatorLineTwo.Name = "separatorLineTwo";
-            this.separatorLineTwo.Size = new System.Drawing.Size(459, 10);
-            this.separatorLineTwo.TabIndex = 17;
-            this.separatorLineTwo.TabStop = false;
-            // 
-            // separatorLineThree
-            // 
-            this.separatorLineThree.Location = new System.Drawing.Point(41, 346);
-            this.separatorLineThree.Name = "separatorLineThree";
-            this.separatorLineThree.Size = new System.Drawing.Size(462, 10);
-            this.separatorLineThree.TabIndex = 18;
-            this.separatorLineThree.TabStop = false;
-            // 
             // C_Obj_Attribute_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 402);
-            this.Controls.Add(this.separatorLineThree);
-            this.Controls.Add(this.separatorLineTwo);
-            this.Controls.Add(this.separatorLineOne);
+            this.ClientSize = new System.Drawing.Size(501, 439);
             this.Controls.Add(this.attributePropGrpBox);
             this.Controls.Add(this.delAttributeBtn);
-            this.Controls.Add(this.newAttributeBtn);
             this.Controls.Add(this.attributeListBox);
             this.Controls.Add(this.attributeListLbl);
             this.Controls.Add(this.cObjectNameText);
             this.Controls.Add(this.cObjectNameLbl);
             this.Controls.Add(this.exitBtn);
-            this.Controls.Add(this.applyBtn);
-            //this.cName = "C_Obj_Attribute_Form";
+            this.Name = "C_Obj_Attribute_Form";
             this.Text = "C Object Attributes Editor";
             this.Load += new System.EventHandler(this.C_Obj_Attribute_Form_Load);
             this.attributePropGrpBox.ResumeLayout(false);
@@ -271,9 +241,6 @@
         private System.Windows.Forms.TextBox attributeDomainText;
         private System.Windows.Forms.TextBox attributeNameText;
         private System.Windows.Forms.GroupBox attributePropGrpBox;
-        private System.Windows.Forms.GroupBox separatorLineOne;
-        private System.Windows.Forms.GroupBox separatorLineTwo;
-        private System.Windows.Forms.GroupBox separatorLineThree;
 
     }
 }
