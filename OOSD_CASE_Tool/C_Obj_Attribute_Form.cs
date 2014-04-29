@@ -77,6 +77,7 @@ namespace OOSD_CASE_Tool
                 }
             }
             cObjectNameText.Text = cName;
+            ownerShape.Text = cName;
         }
         private void loadAttributeNameList()
         {
@@ -131,7 +132,7 @@ namespace OOSD_CASE_Tool
                 string rowName = "c_" + cObjectName + "_";
 
                 Utilities.setDataSectionValueCell(ownerShape, rowName, cObjectName);
-                ownerShape.Name = cObjectName;
+                ownerShape.Text = cObjectName;
             }
 
         }

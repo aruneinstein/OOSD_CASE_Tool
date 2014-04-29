@@ -41,7 +41,15 @@ namespace OOSD_CASE_Tool
 
         private void app_ShapeAdded(Visio.Shape Shape)
         {
-            app_BeforeShapeTextEdit(Shape);
+            string shapePage = Shape.ContainingPage.Name;
+            // Don't ask for information when generating or copying objects, since info is already 
+            // expected to be present in the shape at this point in time.
+            if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal) ||
+                shapePage.Equals(CaseTypes.FLOW_PAGE, StringComparison.Ordinal))
+            {
+                app_BeforeShapeTextEdit(Shape);    
+            }
+            
         }
 
         /// <summary>
@@ -104,20 +112,23 @@ namespace OOSD_CASE_Tool
                 case CaseTypes.RELATION_PAGE:
                     stencilPath += CaseTypes.RELATION_STENCIL;
 
+                    HashSet<string> currentPageShapes = new HashSet<string>();
+                    foreach (Visio.Shape s in app.ActivePage.Shapes)
+                    {
+                        currentPageShapes.Add(s.NameU);
+                    }
+
                     foreach (Visio.Page p in Window.Document.Pages)
                     {
                         if (p.Name == CaseTypes.OBJECT_PAGE)
                         {
                             foreach (var item in Utilities.getAllShapesOnPage(p))
-                            {
-                                foreach (Visio.Shape s in app.ActivePage.Shapes)
-	                            {
-		                            if (!s.NameU.Equals(item.NameU))
-                                    {
-                                        item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
-                                        app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
-                                    }
-	                            }
+                            {            
+		                        if (!currentPageShapes.Contains(item.NameU))
+                                {
+                                    item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                    app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                }
                             }
                             break;
                         }
@@ -167,22 +178,33 @@ namespace OOSD_CASE_Tool
         {
             // If a Shape is part of a group, the Master Name is the same
             // name as the group's Master name
-            string shapeMasterName = Shape.Master.Name;
-
-            switch (shapeMasterName)
+            try
             {
-                case CaseTypes.C_OBJ_MASTER:
-                    objectSystem.getCObjAttributesForm(Shape);
-                    break;
-                case CaseTypes.SM_OBJ_MASTER:
-                    objectSystem.getSMObjAttributesForm(Shape);
-                    break;
-                case CaseTypes.ADT_OBJ_MASTER:
-                    objectSystem.getADTObjAttributesForm(Shape);
-                    break;
-                default:
-                    break;
+                string shapeMasterName;
+                if (Shape.Master != null)
+                {
+                    shapeMasterName = Shape.Master.Name;
+
+                    switch (shapeMasterName)
+                    {
+                        case CaseTypes.C_OBJ_MASTER:
+                            objectSystem.getCObjAttributesForm(Shape);
+                            break;
+                        case CaseTypes.SM_OBJ_MASTER:
+                            objectSystem.getSMObjAttributesForm(Shape);
+                            break;
+                        case CaseTypes.ADT_OBJ_MASTER:
+                            objectSystem.getADTObjAttributesForm(Shape);
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
 
