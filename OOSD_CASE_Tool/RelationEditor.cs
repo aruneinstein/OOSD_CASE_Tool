@@ -15,5 +15,13 @@ namespace OOSD_CASE_Tool
         {
             app = Globals.ThisAddIn.Application;
         }
+
+        #region Object Hierarchy Diagram
+
+        #endregion
+
+        #region Activity Diagram Generation
+
+        #endregion
     }
 }
