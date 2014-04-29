@@ -3,14 +3,10 @@
   <xs:element name="C_Obj_Attribute_Form">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="C_Obj_Name" type="xs:string" />
+        <xs:element name="C_Obj_Name" />
         <xs:element name="C_Obj_Attribute">
           <xs:complexType>
-            <xs:simpleContent>
-              <xs:extension base="xs:string">
-                <xs:attribute name="key" type="xs:string" use="required" />
-              </xs:extension>
-            </xs:simpleContent>
+            <xs:attribute name="key" type="xs:string" use="required" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
