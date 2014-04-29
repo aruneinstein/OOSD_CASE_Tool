@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using Visio = Microsoft.Office.Interop.Visio;
 
 namespace OOSD_CASE_Tool
@@ -21,6 +23,18 @@ namespace OOSD_CASE_Tool
         private List<Operation> operationList;
         private List<string> axiomList;
 
+        [XmlElement("ADT_Obj_Name")]
+        public string ADT_Object_Name
+        { get; set; }
+
+        [XmlElement("ADT_Obj_Operation")]
+        public string ADT_Object_Operation
+        { get; set; }
+
+        [XmlElement("ADT_Obj_Axiom")]
+        public string ADT_Object_Axiom
+        { get; set; }
+
         public ADT_Obj_Attribute_Form(Visio.Shape shape)
         {
             InitializeComponent();
@@ -31,6 +45,14 @@ namespace OOSD_CASE_Tool
             // Shape Data section stores all attributes for the Shape
             // as defined by the user through this form.
             Utilities.insertShapeDataSection(ownerShape);
+        }
+
+        static public void SerializeToXML(ADT_Obj_Attribute_Form ADT_Obj)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ADT_Obj_Attribute_Form));
+            TextWriter textWriter = new StreamWriter("ADT_Obj.xml");
+            serializer.Serialize(textWriter, ADT_Obj);
+            textWriter.Close();
         }
 
         private void ADT_Obj_Attribute_Form_Load(object sender, EventArgs e)
