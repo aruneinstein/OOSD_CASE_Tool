@@ -105,11 +105,6 @@ namespace OOSD_CASE_Tool
         public const string OBJECT_STENCIL = "Object Stencil.vssx";
 
         /// <summary>
-        /// The name of the stencil that contains the Objects that were created with editor.
-        /// </summary>
-        public const string TMP_OBJECT_STENCIL = "Temporary Object Stencil.vssx";
-
-        /// <summary>
         /// The name of the stencil that contains Flow Diagram shapes.
         /// </summary>
         public const string FLOW_STENCIL = "Flow Diagram Stencil.vssx";

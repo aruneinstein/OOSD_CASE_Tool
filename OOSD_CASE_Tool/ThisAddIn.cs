@@ -89,7 +89,7 @@ namespace OOSD_CASE_Tool
         /// <param name="Window"></param>
         private void app_WindowTurnedToPage(Visio.Window Window)
         {
-            string activePage = Window.Page.Name;
+            string activePage = app.ActivePage.Name;
             string stencilPath = CaseTypes.stencilPath();
 
             // Not all pages has an associated stencil
@@ -109,9 +109,16 @@ namespace OOSD_CASE_Tool
                         {
                             foreach (var item in Utilities.getAllShapesOnPage(p))
                             {
-                                item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
-                                app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                foreach (Visio.Shape s in app.ActivePage.Shapes)
+	                            {
+		                            if (!s.NameU.Equals(item.NameU))
+                                    {
+                                        item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                        app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                    }
+	                            }
                             }
+                            break;
                         }
                     }
                     break;
