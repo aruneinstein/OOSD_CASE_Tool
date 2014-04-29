@@ -206,6 +206,7 @@
     <Compile Include="SM_Obj_Attribute_Form.Designer.cs">
       <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="State.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="ADT_Obj_Attribute_Form.resx">
       <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>

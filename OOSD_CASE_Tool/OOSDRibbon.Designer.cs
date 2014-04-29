@@ -45,9 +45,9 @@
             this.flowEditorGroup = this.Factory.CreateRibbonGroup();
             this.openFlowStencilBtn = this.Factory.CreateRibbonButton();
             this.convertToArchChartBtn = this.Factory.CreateRibbonButton();
+            this.stateDiagramToTable = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.shapeInfoButton = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
             this.oosdTab.SuspendLayout();
             this.objectEditorGroup.SuspendLayout();
             this.relationEditorGroup.SuspendLayout();
@@ -121,7 +121,7 @@
             // 
             this.flowEditorGroup.Items.Add(this.openFlowStencilBtn);
             this.flowEditorGroup.Items.Add(this.convertToArchChartBtn);
-            this.flowEditorGroup.Items.Add(this.button2);
+            this.flowEditorGroup.Items.Add(this.stateDiagramToTable);
             this.flowEditorGroup.Label = "Flow Editor";
             this.flowEditorGroup.Name = "flowEditorGroup";
             // 
@@ -141,6 +141,14 @@
             this.convertToArchChartBtn.ShowImage = true;
             this.convertToArchChartBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.convertToArchChartBtn_Click);
             // 
+            // stateDiagramToTable
+            // 
+            this.stateDiagramToTable.Image = global::OOSD_CASE_Tool.Properties.Resources.grid_view;
+            this.stateDiagramToTable.Label = "State Transition Table";
+            this.stateDiagramToTable.Name = "stateDiagramToTable";
+            this.stateDiagramToTable.ShowImage = true;
+            this.stateDiagramToTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.stateDiagramToTable_Click);
+            // 
             // group1
             // 
             this.group1.Items.Add(this.shapeInfoButton);
@@ -154,13 +162,6 @@
             this.shapeInfoButton.Name = "shapeInfoButton";
             this.shapeInfoButton.ShowImage = true;
             this.shapeInfoButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.shapeInfoButton_Click);
-            // 
-            // button2
-            // 
-            this.button2.Image = global::OOSD_CASE_Tool.Properties.Resources.grid_view;
-            this.button2.Label = "State Transition Table";
-            this.button2.Name = "button2";
-            this.button2.ShowImage = true;
             // 
             // OOSDRibbon
             // 
@@ -196,7 +197,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton shapeInfoButton;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton stateDiagramToTable;
     }
 
     partial class ThisRibbonCollection

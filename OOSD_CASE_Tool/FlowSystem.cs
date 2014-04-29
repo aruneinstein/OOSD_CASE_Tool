@@ -32,32 +32,58 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private List<Visio.Shape> transformCenters;
 
-
+        /// <summary>
+        /// Creates an instance of the FlowSystem to work with Flow Diagrams.
+        /// </summary>
         public FlowSystem()
         {
             app = Globals.ThisAddIn.Application;
             transformCenters = new List<Visio.Shape>();
-
-            
         }
+
+
+        #region Convet State Transition Diagram to State Transition Table
+
+        /// <summary>
+        /// Converts a State Transition Diagram to a State Transition Table.
+        /// </summary>
+        /// <param name="selection">Selection of Shape(s) which contains Diagram to convert.</param>
+        /// <param name="outputPage">Page to output the Chart.</param>
+        public void stateDiagramToTable(Visio.Selection selection, Visio.Page outputPage)
+        {
+            // Start at any node (that is a State) of the selected shapes to build a State Machine
+            
+
+            // Switches focus to resulting output
+            app.ActiveWindow.Page = outputPage;
+        }
+
+        #endregion
+
+
+        #region Convert Transform Center to Architecture Chart
 
         /// <summary>
         /// Converts a Flow Diagram to an Architecture Chart. By Default, retrieves
         /// shapes from the FLOW_PAGE and outputs to ARCHITECTURE_PAGE.
         /// </summary>
-        public void convertToArchitectureChart()
+        /// <param name="selection">Selection of Shapes which contains Diagram to convert.</param>
+        /// <param name="outputPage">Page to output the Chart.</param>
+        public void convertToArchitectureChart(Visio.Selection selection, Visio.Page outputPage)
         {
-            Visio.Page inputPage = Utilities.getDrawingPage(app, CaseTypes.FLOW_PAGE);
-            Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.ARCHITECTURE_PAGE);
-
-            // Grabs all shapes on the Flow Editor page and separate them by type flow diagram.
-            List<Visio.Shape> allShapes = Utilities.getAllShapesOnPage(inputPage);
+            List<Visio.Shape> allShapes = new List<Visio.Shape>();
+            // retrieve all shapes in the selection
+            foreach (Visio.Shape s in selection)
+            {
+                allShapes.Add(s);
+            }
 
             // grabs the root node of each Flow Diagram
             // i.e. a Transform-Center shape for a Transform Center Diagram,
             // a Transaction-Center shape for a Transaction Driven Diagram
             filterRootNodes(allShapes);
 
+            Visio.Page inputPage = selection.ContainingPage;
             foreach (Visio.Shape s in transformCenters)
             {
                 transformToArchChart(inputPage, outputPage, s);
@@ -202,6 +228,13 @@ namespace OOSD_CASE_Tool
             return shapesDropped;
         }
 
+        /// <summary>
+        /// Creates a Dynamic Connector and, for each child node, connect it to
+        /// the root node.
+        /// </summary>
+        /// <param name="page">Page on which to output the Shapes.</param>
+        /// <param name="root">The root node of the output Architecture Chart.</param>
+        /// <param name="children">The children nodes.</param>
         private void glueRootToChildren(Visio.Page page, Visio.Shape root, List<Visio.Shape> children)
         {
             // Since this is an Architecture Chart, all connection points of root
@@ -217,6 +250,27 @@ namespace OOSD_CASE_Tool
                     xGluePoint, rootYGluePoint, xGluePoint, childYGluePoint);
             }
         }
+
+        /// <summary>
+        /// Retrieves only the root Shape for each Flow Diagram system from a 
+        /// list of shapes.
+        /// </summary>
+        /// <param name="shapes">List of shapes to search and filter.</param>
+        private void filterRootNodes(List<Visio.Shape> shapes)
+        {
+            foreach (Visio.Shape s in shapes)
+            {
+                if (s.Master.Name == CaseTypes.TRANSFORM_CENTER_MASTER)
+                {
+                    transformCenters.Add(s);
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Flow System Utility Functions
 
         /// <summary>
         /// Sets the position to Drop a Shape into the drawX, drawY field variables.
@@ -247,22 +301,6 @@ namespace OOSD_CASE_Tool
             drawYPos -= 1;
         }
 
-        /// <summary>
-        /// Retrieves only the root Shape for each Flow Diagram system from a 
-        /// list of shapes.
-        /// </summary>
-        /// <param name="shapes">List of shapes to search and filter.</param>
-        private void filterRootNodes(List<Visio.Shape> shapes)
-        {
-            foreach (Visio.Shape s in shapes)
-            {
-                if (s.Master.Name == CaseTypes.TRANSFORM_CENTER_MASTER)
-                {
-                    transformCenters.Add(s);
-                }
-
-                // TODO: Add branches for Transaction-Driven Diagram
-            }
-        }
+        #endregion
     }
 }

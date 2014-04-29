@@ -46,14 +46,27 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
-        /// Converts a Flow Diagram to an Architecture Chart.
+        /// Converts the selected Flow Diagram to an Architecture Chart.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void convertToArchChartBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            FlowSystem flowEditor = new FlowSystem();
-            flowEditor.convertToArchitectureChart();
+            // The user needs to select one or more Transform Center node of a Transform
+            // Center Diagram to start the conversion.
+            Visio.Selection selection = app.ActiveWindow.Selection;
+
+            if (selection.Count == 0)
+            {
+                MessageBox.Show("Select a Data Flow Diagram to Convert.");
+            }
+            else
+            {
+                // Outputs the resulting Chart on the Architecture Chart Page.
+                Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.ARCHITECTURE_PAGE);
+                FlowSystem flowEditor = new FlowSystem();
+                flowEditor.convertToArchitectureChart(selection, outputPage);
+            }
         }
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
@@ -122,6 +135,25 @@ namespace OOSD_CASE_Tool
         {
             app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.FLOW_STENCIL,
                 (short)Visio.VisOpenSaveArgs.visOpenDocked);
+        }
+
+        private void stateDiagramToTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            // The user needs to select one or more State Transiton Diagram Node
+            // to start the conversion.
+            Visio.Selection selection = app.ActiveWindow.Selection;
+
+            if (selection.Count == 0)
+            {
+                MessageBox.Show("Select a State Transition Diagram to Convert.");
+            }
+            else
+            {
+                // Outputs the resulting State transition table to the State Transition Page
+                Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.STATE_TABLE_PAGE);
+                FlowSystem flowEditor = new FlowSystem();
+                flowEditor.convertToArchitectureChart(selection, outputPage);
+            }
         }
     }
 }
