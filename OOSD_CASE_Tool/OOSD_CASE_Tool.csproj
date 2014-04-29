@@ -347,6 +347,9 @@
     <None Include="Resources\video.png" />
     <None Include="Resources\views.png" />
     <None Include="Resources\wrench.png" />
+    <Content Include="ADT_Obj.xml" />
+    <Content Include="C_Obj.xml" />
+    <Content Include="SM_Obj.xml" />
     <Content Include="Stencils\Object Stencil.vssx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
