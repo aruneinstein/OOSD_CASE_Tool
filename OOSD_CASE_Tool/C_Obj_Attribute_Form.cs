@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 using Visio = Microsoft.Office.Interop.Visio;
 
 namespace OOSD_CASE_Tool
@@ -19,6 +22,14 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private Visio.Shape ownerShape;
 
+        [XmlElement("C_Obj_Name")]
+        public string C_Object_Name
+        { get; set; }
+
+        [XmlElement("C_Obj_Attribute")]
+        public string C_Object_Attribute
+        { get; set; }
+
         public C_Obj_Attribute_Form(Visio.Shape Shape)
         {
             InitializeComponent();
@@ -28,6 +39,15 @@ namespace OOSD_CASE_Tool
             // as defined by the user through this form.
             Utilities.insertShapeDataSection(ownerShape);
         }
+
+        static public void SerializeToXML(C_Obj_Attribute_Form C_Obj)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(C_Obj_Attribute_Form));
+            TextWriter textWriter = new StreamWriter("C_Obj.xml");
+            serializer.Serialize(textWriter, C_Obj);
+            textWriter.Close();
+        }
+
         private void C_Obj_Attribute_Form_Load(object sender, EventArgs e)
         {
             // Load C Object Name

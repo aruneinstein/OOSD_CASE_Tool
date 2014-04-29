@@ -208,6 +208,8 @@
     </Compile>
     <Compile Include="State.cs" />
     <Compile Include="Utilities.cs" />
+    <Content Include="C_Obj.xml" />
+    <Content Include="ADT_Obj.xml" />
     <EmbeddedResource Include="ADT_Obj_Attribute_Form.resx">
       <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -347,6 +349,7 @@
     <None Include="Resources\video.png" />
     <None Include="Resources\views.png" />
     <None Include="Resources\wrench.png" />
+    <Content Include="SM_Obj.xml" />
     <Content Include="Stencils\Object Stencil.vssx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

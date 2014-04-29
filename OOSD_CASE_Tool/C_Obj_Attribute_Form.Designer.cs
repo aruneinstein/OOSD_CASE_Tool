@@ -243,7 +243,7 @@
             this.Controls.Add(this.cObjectNameLbl);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.applyBtn);
-            this.Name = "C_Obj_Attribute_Form";
+            //this.cName = "C_Obj_Attribute_Form";
             this.Text = "C Object Attributes Editor";
             this.Load += new System.EventHandler(this.C_Obj_Attribute_Form_Load);
             this.attributePropGrpBox.ResumeLayout(false);
