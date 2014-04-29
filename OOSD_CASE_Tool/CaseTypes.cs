@@ -12,6 +12,9 @@ namespace OOSD_CASE_Tool
     /// </summary>
     public sealed class CaseTypes
     {
+
+        #region Page Names
+
         /// <summary>
         /// Name of the Object Editor Page.
         /// </summary>
@@ -46,6 +49,23 @@ namespace OOSD_CASE_Tool
         /// Name of the State Transition Table Page.
         /// </summary>
         public const string STATE_TABLE_PAGE = "State Transition Table";
+
+        #endregion
+
+
+        #region Stencil Master Names
+
+        /// <summary>
+        /// Name of the Dynamic Connector Shape as defined in the OOSD General Stencil.
+        /// A Dynamic Connector is a line shape that connects and glues two shapes together.
+        /// </summary>
+        public const string OOSD_CONNECTOR = "Connector";
+
+        /// <summary>
+        /// Name of a Rectangular Shape as defined in the OOSD General Stencil.
+        /// A Rectangle has connection points in which it can be connected to other shapes.
+        /// </summary>
+        public const string OOSD_RECTANGLE = "Rectangle";
 
         /// <summary>
         /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
@@ -83,21 +103,40 @@ namespace OOSD_CASE_Tool
         /// </summary>
         public const string TRANSFORM_CONNECTOR_MASTER = "Transform Connector";
 
+        /// <summary>
+        /// Name of the Transform Input Master Shape as defined in the Flow Diagram Stencil.
+        /// </summary>
         public const string TRANSFORM_INPUT_MASTER = "Transform Input";
 
+        /// <summary>
+        /// Name of the Transform Output Master Shape as defined in the Flow Diagram Stencil.
+        /// </summary>
         public const string TRANSFORM_OUTPUT_MASTER = "Transform Output";
 
         /// <summary>
-        /// Name of the Dynamic Connector Shape as defined in the OOSD General Stencil.
-        /// A Dynamic Connector is a line shape that connects and glues two shapes together.
+        /// Name of the State Master Shape as defined in the Flow Diagram Stencil.
         /// </summary>
-        public const string OOSD_CONNECTOR = "Connector";
+        public const string STATE_MASTER = "State";
 
         /// <summary>
-        /// Name of a Rectangular Shape as defined in the OOSD General Stencil.
-        /// A Rectangle has connection points in which it can be connected to other shapes.
+        /// Name of the Start State Master Shape as defined in the Flow Diagram Stencil.
         /// </summary>
-        public const string OOSD_RECTANGLE = "Rectangle";
+        public const string STATE_START_MASTER = "Start State";
+
+        /// <summary>
+        /// Name of the End State Master Shape as defined in the Flow Diagram Stencil.
+        /// </summary>
+        public const string STATE_END_MASTER = "End State";
+
+        /// <summary>
+        /// Name of the State Transition Master Shape as defined in the Flow Diagram Stencil.
+        /// </summary>
+        public const string STATE_TRANSITION_MASTER = "State Transition";
+
+        #endregion
+
+
+        #region Stencils
 
         /// <summary>
         /// The name of the stencil that contains general/miscellaneous shapes.
@@ -162,6 +201,8 @@ namespace OOSD_CASE_Tool
             Uri uriCodeBase = new Uri(assemblyInfo.CodeBase);
             return System.IO.Path.GetDirectoryName(uriCodeBase.LocalPath.ToString());
         }
+
+        #endregion
 
     }
 }

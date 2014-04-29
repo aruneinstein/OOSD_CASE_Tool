@@ -51,7 +51,8 @@ namespace OOSD_CASE_Tool
         /// <param name="outputPage">Page to output the Chart.</param>
         public void stateDiagramToTable(Visio.Selection selection, Visio.Page outputPage)
         {
-
+            // Start at any node (that is a State) of the selected shapes to build a State Machine
+            
 
             // Switches focus to resulting output
             app.ActiveWindow.Page = outputPage;
