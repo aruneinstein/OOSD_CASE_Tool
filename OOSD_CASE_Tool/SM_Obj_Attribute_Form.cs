@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using Visio = Microsoft.Office.Interop.Visio;
 
 namespace OOSD_CASE_Tool
@@ -24,6 +26,25 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private List<Visio.Shape> pageShapes;
 
+        [XmlElement("SM_Obj_Name")]
+        public string SM_Object_Name
+        { get; set; }
+
+        [XmlElement("SM_Obj_Operation")]
+        public string SM_Object_Operation
+        { get; set; }
+
+        [XmlElement("SM_Obj_State")]
+        public string SM_Object_State
+        { get; set; }
+
+        [XmlElement("SM_Obj_Event")]
+        public string SM_Object_Event
+        { get; set; }
+
+        [XmlElement("SM_Obj_Control")]
+        public string SM_Object_Control
+        { get; set; }
 
         public SM_Obj_Attribute_Form(Visio.Shape Shape)
         {
@@ -34,6 +55,14 @@ namespace OOSD_CASE_Tool
             // Shape Data section stores all attributes for the Shape
             // as defined by the user through this form.
             Utilities.insertShapeDataSection(ownerShape);
+        }
+
+        static public void SerializeToXML(SM_Obj_Attribute_Form SM_Obj)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SM_Obj_Attribute_Form));
+            TextWriter textWriter = new StreamWriter("SM_Obj.xml");
+            serializer.Serialize(textWriter, SM_Obj);
+            textWriter.Close();
         }
 
         private void SM_Obj_Attribute_Form_Load(object sender, EventArgs e)
