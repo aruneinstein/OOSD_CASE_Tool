@@ -41,6 +41,10 @@ namespace OOSD_CASE_Tool
             transformCenters = new List<Visio.Shape>();
         }
 
+
+
+        #region Convert Transform Center to Architecture Chart
+
         /// <summary>
         /// Converts a Flow Diagram to an Architecture Chart. By Default, retrieves
         /// shapes from the FLOW_PAGE and outputs to ARCHITECTURE_PAGE.
@@ -230,6 +234,27 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
+        /// Retrieves only the root Shape for each Flow Diagram system from a 
+        /// list of shapes.
+        /// </summary>
+        /// <param name="shapes">List of shapes to search and filter.</param>
+        private void filterRootNodes(List<Visio.Shape> shapes)
+        {
+            foreach (Visio.Shape s in shapes)
+            {
+                if (s.Master.Name == CaseTypes.TRANSFORM_CENTER_MASTER)
+                {
+                    transformCenters.Add(s);
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Flow System Utility Functions
+
+        /// <summary>
         /// Sets the position to Drop a Shape into the drawX, drawY field variables.
         /// This is a position at the top center of the Page if there are no shapes in it.
         /// Else, it's the bottom center of the BoundingBox that surrounds all the 
@@ -258,20 +283,6 @@ namespace OOSD_CASE_Tool
             drawYPos -= 1;
         }
 
-        /// <summary>
-        /// Retrieves only the root Shape for each Flow Diagram system from a 
-        /// list of shapes.
-        /// </summary>
-        /// <param name="shapes">List of shapes to search and filter.</param>
-        private void filterRootNodes(List<Visio.Shape> shapes)
-        {
-            foreach (Visio.Shape s in shapes)
-            {
-                if (s.Master.Name == CaseTypes.TRANSFORM_CENTER_MASTER)
-                {
-                    transformCenters.Add(s);
-                }
-            }
-        }
+        #endregion
     }
 }
