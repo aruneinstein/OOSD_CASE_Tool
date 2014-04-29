@@ -63,6 +63,7 @@ namespace OOSD_CASE_Tool
                 pages.Add().Name = CaseTypes.OBJECT_DIAGRAM_PAGE;
                 pages.Add().Name = CaseTypes.DATA_MODEL_DIAGRAM_PAGE;
                 pages.Add().Name = CaseTypes.ARCHITECTURE_PAGE;
+                pages.Add().Name = CaseTypes.STATE_TABLE_PAGE;
 
                 // By default, Visio opens with one page
                 // Rename first page to be for the Object Editor
@@ -118,8 +119,6 @@ namespace OOSD_CASE_Tool
                 case CaseTypes.FLOW_PAGE:
                     stencilPath += CaseTypes.FLOW_STENCIL;
                     break;
-                case CaseTypes.DATA_MODEL_DIAGRAM_PAGE:
-                case CaseTypes.OBJECT_DIAGRAM_PAGE:
                 default:
                     stencilExists = false;
                     break;

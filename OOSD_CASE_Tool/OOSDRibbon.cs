@@ -136,5 +136,24 @@ namespace OOSD_CASE_Tool
             app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.FLOW_STENCIL,
                 (short)Visio.VisOpenSaveArgs.visOpenDocked);
         }
+
+        private void stateDiagramToTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            // The user needs to select one or more State Transiton Diagram Node
+            // to start the conversion.
+            Visio.Selection selection = app.ActiveWindow.Selection;
+
+            if (selection.Count == 0)
+            {
+                MessageBox.Show("Select a State Transition Diagram to Convert.");
+            }
+            else
+            {
+                // Outputs the resulting State transition table to the State Transition Page
+                Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.STATE_TABLE_PAGE);
+                FlowSystem flowEditor = new FlowSystem();
+                flowEditor.convertToArchitectureChart(selection, outputPage);
+            }
+        }
     }
 }

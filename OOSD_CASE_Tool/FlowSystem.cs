@@ -42,6 +42,23 @@ namespace OOSD_CASE_Tool
         }
 
 
+        #region Convet State Transition Diagram to State Transition Table
+
+        /// <summary>
+        /// Converts a State Transition Diagram to a State Transition Table.
+        /// </summary>
+        /// <param name="selection">Selection of Shape(s) which contains Diagram to convert.</param>
+        /// <param name="outputPage">Page to output the Chart.</param>
+        public void stateDiagramToTable(Visio.Selection selection, Visio.Page outputPage)
+        {
+
+
+            // Switches focus to resulting output
+            app.ActiveWindow.Page = outputPage;
+        }
+
+        #endregion
+
 
         #region Convert Transform Center to Architecture Chart
 

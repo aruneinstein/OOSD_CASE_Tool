@@ -43,6 +43,11 @@ namespace OOSD_CASE_Tool
         public const string ARCHITECTURE_PAGE = "Architecture Chart";
 
         /// <summary>
+        /// Name of the State Transition Table Page.
+        /// </summary>
+        public const string STATE_TABLE_PAGE = "State Transition Table";
+
+        /// <summary>
         /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
         /// </summary>
         public const string C_OBJ_MASTER = "C-Object";
@@ -140,15 +145,15 @@ namespace OOSD_CASE_Tool
         /// <returns>Path to the Stencils folder including trailing '\'.</returns>
         public static string stencilPath()
         {
-            string pth = getClickOnceLocation();
-            return pth += @"\Stencils\";
+            string path = getClickOnceLocation();
+            return path += @"\Stencils\";
         }
 
         /// <summary>
         /// Returns the path of the code base.
         /// </summary>
         /// <returns> path of code base </returns>
-        public static string getClickOnceLocation()
+        private static string getClickOnceLocation()
         {
             // Get the assembly information, which has runtime info
             System.Reflection.Assembly assemblyInfo = System.Reflection.Assembly.GetExecutingAssembly();
