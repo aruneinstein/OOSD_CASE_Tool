@@ -52,10 +52,118 @@ namespace OOSD_CASE_Tool
         public void stateDiagramToTable(Visio.Selection selection, Visio.Page outputPage)
         {
             // Start at any node (that is a State) of the selected shapes to build a State Machine
-            
+            // Note: currently can't build a SM starting at the End State node.
+            Visio.Shape node = null;
+            foreach (Visio.Shape s in selection)
+            {
+                string masterName = s.Master.Name;
+                if (masterName == CaseTypes.STATE_START_MASTER ||
+                    masterName == CaseTypes.STATE_MASTER)
+                {
+                    node = s;
+                    break;
+                }
+            }
+
+            // Builds the State Machine, which lists all the States (& their Transitions)
+            List<State> stateMachine = buildStateMachine(node);
 
             // Switches focus to resulting output
             app.ActiveWindow.Page = outputPage;
+        }
+
+        /// <summary>
+        /// Builds a State Machine from a State Transition Diagram, starting at the given node.
+        /// </summary>
+        /// <param name="node">A starting node in the State Transition Diagram.</param>
+        /// <returns>The State Machine, in the form of a list of States.</returns>
+        private List<State> buildStateMachine(Visio.Shape node)
+        {
+            Visio.Shapes allShapesOnPage = node.ContainingPage.Shapes;
+
+            List<State> stateMachine = new List<State>();
+
+            // Lists the corresponding Shape for each State in the StateMachine list.
+            List<Visio.Shape> stateShapes = new List<Visio.Shape>();
+
+            // For each node, create a State for it (if it doesn't already exist)
+            // & adds the State to the stateMachine (if it isn't already in the list).
+            // Each node is connected to other nodes via a connector.
+            bool notDone = true;
+            int currentStateIndex = 0;
+            while (notDone)
+            {
+                // if current state is not part of the state machine, add it
+                string currentStateName = node.Text;
+                State currentState = stateExists(stateMachine, currentStateName);
+                if (currentState == null)
+                {
+                    currentState = new State(currentStateName);
+                    stateMachine.Add(currentState);
+                    stateShapes.Add(node);
+                }
+
+                // for the current state, get all transitions to its next state
+                long[] transitions = (long[]) node.GluedShapes(
+                    Visio.VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
+
+                // each transition leads to a next state
+                foreach (long t in transitions)
+                {
+                    Visio.Shape connector = allShapesOnPage[transitions[t]];
+                    long[] nextStateID = (long[]) connector.GluedShapes(
+                        Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
+
+                    // there's only one shape connected to one end of a 1-D connector,
+                    // but it could be a shape that's already been made into a State
+                    Visio.Shape nextStateShape = allShapesOnPage[nextStateID[0]];
+                    string nextStateName = nextStateShape.Text;
+                    State nextState = stateExists(stateMachine, nextStateName);
+                    if (nextState == null)
+                    {
+                        nextState = new State(nextStateName);
+                        stateMachine.Add(nextState);
+                        stateShapes.Add(nextStateShape);
+                    }
+
+                    // assumes that a Connector always has two data associated with it
+                    // separated by a ','
+                    string[] connectorData = connector.Text.Split(',');
+                    currentState.addNextState(connectorData[0], connectorData[1], nextState);
+                }
+
+                ++currentStateIndex;
+
+                // done if there are no more States to check in the StateMachine.
+                if (currentStateIndex >= stateMachine.Count)
+                {
+                    notDone = false;
+                } else
+                {
+                    node = stateShapes[currentStateIndex];
+                }
+            }
+
+            return stateMachine;
+        }
+
+        /// <summary>
+        /// Returns the State if the state exists in the given state machine.
+        /// </summary>
+        /// <param name="stateMachine">State machine.</param>
+        /// <param name="name">Name of state to find.</param>
+        /// <returns>The State if state exists in state machine, else null</returns>
+        private State stateExists(List<State> stateMachine, string name)
+        {
+            foreach (State s in stateMachine)
+            {
+                if (s.Name == name)
+                {
+                    return s;
+                }
+            }
+
+            return null;
         }
 
         #endregion
@@ -104,13 +212,13 @@ namespace OOSD_CASE_Tool
 
             // Gets all shapes that are connected to the root shape through a connector
             // (such as through a 1-D Dynamic Connector)
-            List<int> shapeIDs = new List<int>(
-                (int[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesAllNodes, ""));
+            List<long> shapeIDs = new List<long>(
+                (long[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesAllNodes, ""));
 
             // Gets all shapes that are glued to the root shape (as in, it is connected
             // directly to the root shape.
             shapeIDs.AddRange(
-                (int[]) root.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesAll1D, ""));
+                (long[]) root.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesAll1D, ""));
 
             List<Visio.Shape> inputs = new List<Visio.Shape>();
             List<Visio.Shape> process = new List<Visio.Shape>();
