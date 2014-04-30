@@ -98,30 +98,30 @@ namespace OOSD_CASE_Tool
                 State currentState = stateExists(stateMachine, currentStateName);
                 if (currentState == null)
                 {
-                    currentState = new State(currentStateName);
+                    currentState = new State(currentStateName, node.Master.Name);
                     stateMachine.Add(currentState);
                     stateShapes.Add(node);
                 }
 
                 // for the current state, get all transitions to its next state
-                long[] transitions = (long[]) node.GluedShapes(
+                int[] transitions = (int[]) node.GluedShapes(
                     Visio.VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
 
                 // each transition leads to a next state
-                foreach (long t in transitions)
+                foreach (int t in transitions)
                 {
-                    Visio.Shape connector = allShapesOnPage[transitions[t]];
-                    long[] nextStateID = (long[]) connector.GluedShapes(
+                    Visio.Shape connector = allShapesOnPage.get_ItemFromID(t);
+                    int[] nextStateID = (int[]) connector.GluedShapes(
                         Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
 
                     // there's only one shape connected to one end of a 1-D connector,
                     // but it could be a shape that's already been made into a State
-                    Visio.Shape nextStateShape = allShapesOnPage[nextStateID[0]];
+                    Visio.Shape nextStateShape = allShapesOnPage.get_ItemFromID(nextStateID[0]);
                     string nextStateName = nextStateShape.Text;
                     State nextState = stateExists(stateMachine, nextStateName);
                     if (nextState == null)
                     {
-                        nextState = new State(nextStateName);
+                        nextState = new State(nextStateName, nextStateShape.Master.Name);
                         stateMachine.Add(nextState);
                         stateShapes.Add(nextStateShape);
                     }
@@ -130,6 +130,36 @@ namespace OOSD_CASE_Tool
                     // separated by a ','
                     string[] connectorData = connector.Text.Split(',');
                     currentState.addNextState(connectorData[0], connectorData[1], nextState);
+                }
+                
+                // Needs to get states that lead to this state, else depending on the
+                // starting state, won't be able to reach all states if we use just
+                // next state transitions. Ex: starting at the End State, there are no
+                // transitions that leads to another state & so won't be able to find
+                // what other states are in the system.
+
+                // for the current state, get all transitions that led to this state
+                int[] backTransitions = (int[])node.GluedShapes(
+                    Visio.VisGluedShapesFlags.visGluedShapesIncoming1D, "");
+
+                // each backTransition points to a previous state
+                foreach (int t in backTransitions)
+                {
+                    Visio.Shape connector = allShapesOnPage.get_ItemFromID(t);
+                    int[] prevStateID = (int[])connector.GluedShapes(
+                        Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "");
+
+                    // there's only one shape connected to one end of a 1-D connector,
+                    // but it could be a shape that's already been made into a State
+                    Visio.Shape prevStateShape = allShapesOnPage.get_ItemFromID(prevStateID[0]);
+                    string prevStateName = prevStateShape.Text;
+                    State prevState = stateExists(stateMachine, prevStateName);
+                    if (prevState == null)
+                    {
+                        prevState = new State(prevStateName, prevStateShape.Master.Name);
+                        stateMachine.Add(prevState);
+                        stateShapes.Add(prevStateShape);
+                    }
                 }
 
                 ++currentStateIndex;
@@ -212,13 +242,13 @@ namespace OOSD_CASE_Tool
 
             // Gets all shapes that are connected to the root shape through a connector
             // (such as through a 1-D Dynamic Connector)
-            List<long> shapeIDs = new List<long>(
-                (long[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesAllNodes, ""));
+            List<int> shapeIDs = new List<int>(
+                (int[]) root.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesAllNodes, ""));
 
             // Gets all shapes that are glued to the root shape (as in, it is connected
             // directly to the root shape.
             shapeIDs.AddRange(
-                (long[]) root.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesAll1D, ""));
+                (int[]) root.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesAll1D, ""));
 
             List<Visio.Shape> inputs = new List<Visio.Shape>();
             List<Visio.Shape> process = new List<Visio.Shape>();
@@ -228,7 +258,7 @@ namespace OOSD_CASE_Tool
 
             foreach (int id in shapeIDs)
             {
-                Visio.Shape toShape = allShapes[id];
+                Visio.Shape toShape = allShapes.get_ItemFromID(id);
 
                 if (toShape.Master.Name == CaseTypes.TRANSFORM_PROCESS_MASTER)
                 {

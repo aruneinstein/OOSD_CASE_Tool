@@ -11,8 +11,17 @@ namespace OOSD_CASE_Tool
     /// </summary>
     public class State
     {
+        public const string END_STATE = "End State";
+        public const string START_STATE = "Start State";
+        public const string STATE = "State";
+
         /// <summary>Name of this State.</summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Type of State.
+        /// </summary>
+        public string Type { get; private set; }
 
         /// <summary>List of Transitions possible from this State.</summary>
         private List<Transition> transitions;
@@ -21,9 +30,11 @@ namespace OOSD_CASE_Tool
         /// Creates a new State.
         /// </summary>
         /// <param name="name">Name of this State.</param>
-        public State(string name)
+        /// <param name="type">Type of this State.</param>
+        public State(string name, string type)
         {
             this.Name = name;
+            this.Type = type;
             transitions = new List<Transition>();
         }
 
