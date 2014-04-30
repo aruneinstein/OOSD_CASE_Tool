@@ -68,8 +68,125 @@ namespace OOSD_CASE_Tool
             // Builds the State Machine, which lists all the States (& their Transitions)
             List<State> stateMachine = buildStateMachine(node);
 
+            // Creates and output the State Transition Table
+            outputStateTransitionTable(stateMachine, outputPage);
+
             // Switches focus to resulting output
             app.ActiveWindow.Page = outputPage;
+        }
+
+        /// <summary>
+        /// Creates and outputs a State Transition Table from the given State Machine.
+        /// </summary>
+        /// <param name="stateMachine">State Machine to convert to Transition Table.</param>
+        /// <param name="outputPage">Page to display the Table.</param>
+        private void outputStateTransitionTable(List<State> stateMachine, Visio.Page outputPage)
+        {
+            // drawing the table by drawing rectangles right next to each other
+            // and grouping them into a table.
+
+            // sets the drawing position to start at the left of the page
+            setShapeDropPosition(outputPage);
+            drawXPos = 1.0;
+            double leftDrawEdge = drawXPos;
+
+            double rectHeight = 0.5;
+            double rectWidth = 1.5;
+
+            // treat start state, end state (& states that are essentially end states:
+            // they don't transition to another state) differently
+            // Start the table with the start state & end state shouldn't be listed
+            // as a starting state in the table.
+            // Removes these states from the state machine to work on them separately.
+            State startState = null;
+            List<State> endStates = new List<State>();
+            for (int i = stateMachine.Count - 1; i >= 0; --i)
+            {
+                State state = stateMachine[i];
+                string type = state.Type;
+                if (type == State.START_STATE)
+                {
+                    startState = state;
+                    stateMachine.RemoveAt(i);
+                } 
+                else if (type == State.END_STATE || state.getNextStateCount() == 0)
+                {
+                    endStates.Add(state);
+                    stateMachine.RemoveAt(i);
+                }
+            }
+
+            // insert start state back into the beginning of the state machine, so
+            // it gets processed first.
+            if (startState != null)
+            {
+                stateMachine.Insert(0, startState);
+            }
+
+            // Table header
+            double newXPos = drawXPos + rectWidth;
+            double newYPos = drawYPos - rectHeight;
+            Visio.Shape rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+            rect.Text = "State";
+
+            drawXPos = newXPos + rectWidth;
+            rect = outputPage.DrawRectangle(newXPos, drawYPos, drawXPos, newYPos);
+            rect.Text = "Event";
+
+            newXPos = drawXPos + rectWidth;
+            rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+            rect.Text = "Operation";
+
+            drawXPos = newXPos + rectWidth;
+            rect = outputPage.DrawRectangle(newXPos, drawYPos, drawXPos, newYPos);
+            rect.Text = "Next State";
+
+            // Adjust the height of each start state rect depending on number of next states
+            drawXPos = leftDrawEdge;
+            drawYPos = newYPos;
+            double eventXPos = drawXPos + rectWidth; // X coordinate of start of event column.
+            double eventYPos = drawYPos; // Y coordinate of start of event column.
+            foreach (State s in stateMachine)
+            {
+                int numNextState = s.getNextStateCount();
+                // draw State column
+                newXPos = drawXPos + rectWidth;
+                newYPos = drawYPos - (rectHeight * numNextState);
+                rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                rect.Text = s.Name;
+
+                // draw transition columns
+                List<State.Transition> transitions = s.getTransitions();
+                foreach (State.Transition t in transitions)
+                {
+                    // event column
+                    drawXPos = eventXPos;
+                    newXPos = drawXPos + rectWidth;
+                    newYPos = drawYPos - rectHeight;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.Data;
+
+                    // operation column
+                    drawXPos = newXPos;
+                    newXPos = drawXPos + rectWidth;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.Operation;
+
+                    // next state column
+                    drawXPos = newXPos;
+                    newXPos = drawXPos + rectWidth;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.NextState.Name;
+
+                    // if there are multiple transitions, move one row down for next transition
+                    drawYPos = newYPos;
+                }
+
+                // reset the drawing position for the next state
+                drawXPos = leftDrawEdge;
+                drawYPos = newYPos;
+            }
+
         }
 
         /// <summary>
