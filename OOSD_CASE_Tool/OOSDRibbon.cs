@@ -167,7 +167,7 @@ namespace OOSD_CASE_Tool
                 // Outputs the resulting State transition table to the State Transition Page
                 Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.STATE_TABLE_PAGE);
                 FlowSystem flowEditor = new FlowSystem();
-                flowEditor.convertToArchitectureChart(selection, outputPage);
+                flowEditor.stateDiagramToTable(selection, outputPage);
             }
         }
     }
