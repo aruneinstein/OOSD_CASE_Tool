@@ -3,9 +3,27 @@
   <xs:element name="ADT_Obj_Attribute_Form">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="ADT_Obj_Name" />
-        <xs:element name="ADT_Obj_Operation" />
-        <xs:element name="ADT_Obj_Axiom" />
+        <xs:element name="ADT_Obj_Name">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value=".*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="ADT_Obj_Operation">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(.*)+"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="ADT_Obj_Axiom">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(.*)+"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
