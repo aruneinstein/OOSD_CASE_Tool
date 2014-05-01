@@ -36,7 +36,7 @@ namespace OOSD_CASE_Tool
             // Register event handlers
 
             /////////// TODO: Fix bug ///////////
-            /// app.ShapeAdded += app_ShapeAdded;
+            app.ShapeAdded += app_ShapeAdded;
             /// Danny: this event handler raises an exception when I try to call
             /// page.Draw... because the Draw method only returns a reference to
             /// the created Shape after it's done, but the ShapeAdded handler is called
@@ -49,15 +49,16 @@ namespace OOSD_CASE_Tool
 
         private void app_ShapeAdded(Visio.Shape Shape)
         {
-            string shapePage = Shape.ContainingPage.Name;
-            // Don't ask for information when generating or copying objects, since info is already 
-            // expected to be present in the shape at this point in time.
-            if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal) ||
-                shapePage.Equals(CaseTypes.FLOW_PAGE, StringComparison.Ordinal))
+            if (Shape != null)
             {
-                app_BeforeShapeTextEdit(Shape);    
+                string shapePage = Shape.ContainingPage.Name;
+                // Don't ask for information when generating or copying objects, since info is already 
+                // expected to be present in the shape at this point in time.
+                if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
+                {
+                    app_BeforeShapeTextEdit(Shape);
+                }    
             }
-            
         }
 
         /// <summary>
