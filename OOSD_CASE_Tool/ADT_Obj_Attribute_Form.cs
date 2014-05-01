@@ -91,6 +91,8 @@ namespace OOSD_CASE_Tool
                     string adtObjName = labelCellValue.Substring(startIndex, opNameLen);
                     // Display the object name in the editor
                     adtObjectNameTextBox.Text = adtObjName;
+                    ownerShape.Name = adtObjName;
+                    ownerShape.Text = adtObjName;
                 }
                 // Get the operation name from the shape data section
                 if (labelCellValue.EndsWith("name"))
@@ -467,6 +469,7 @@ namespace OOSD_CASE_Tool
                 Utilities.setDataSectionValueCell(ownerShape, rowName, adtObjectName);
                 // Change object name
                 ownerShape.Name = adtObjectName;
+                ownerShape.Text = adtObjectName;
             }
 
         }
