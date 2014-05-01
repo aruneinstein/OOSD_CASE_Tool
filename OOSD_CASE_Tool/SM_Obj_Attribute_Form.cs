@@ -48,8 +48,10 @@ namespace OOSD_CASE_Tool
 
         public SM_Obj_Attribute_Form(Visio.Shape Shape)
         {
+            // Initialize shape for visio
             InitializeComponent();
             ownerShape = Shape;
+            // Get content from visio page
             pageShapes = Utilities.getAllShapesOnPage(Shape.ContainingPage);
 
             // Shape Data section stores all attributes for the Shape
@@ -92,7 +94,9 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private void loadObjNameListBox()
         {
+            // Get list of objects from shape data section
             HashSet<string> objList = Utilities.getDSLabelCells(ownerShape, "obj_");
+            // And display the names of objects in the object name list box of editor
             objNameListBox.Items.AddRange(objList.ToArray());
         }
 
@@ -102,11 +106,15 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private void loadObjListListBox()
         {
+            // Go through each object that is in visio page
             foreach (Visio.Shape s in pageShapes)
             {
+                // Get name of object
                 string shapeMaster = s.Master.Name;
+                // If the object is not SM Object
                 if (shapeMaster != CaseTypes.SM_OBJ_MASTER)
                 {
+                    // Add the object to object list box of editor
                     objListListBox.Items.Add(s.Text);
                 }
             }
@@ -119,12 +127,15 @@ namespace OOSD_CASE_Tool
         /// <param name="operationName">Name of operation to display.</param>
         private void displayOperationProperties(string operationName)
         {
+            // Get name of the operation to display it in editor
             operationNameTextBox.Text = operationName;
-
+            // Format the name of operation to store in shape data
             string rowName = "op_" + operationName + "_";
-
+            // Store operation state
             nextStateTextBox.Text = Utilities.getDataSectionValueCell(ownerShape, rowName + "state");
+            // Store operation event
             eventTextBox.Text = Utilities.getDataSectionValueCell(ownerShape, rowName + "event");
+            // Store operation control
             controlTextBox.Text = Utilities.getDataSectionValueCell(ownerShape, rowName + "control");
         }
 
@@ -134,8 +145,9 @@ namespace OOSD_CASE_Tool
         /// </summary>
         private void loadOperationNameList()
         {
+            // Get operations from shape data section
             HashSet<string> opsList = Utilities.getDSLabelCells(ownerShape, "op_");
-
+            // And list them in operation list box in editor
             operationNameListBox.Items.AddRange(opsList.ToArray());
         }
 
@@ -146,11 +158,13 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void exitBtn_Click(object sender, EventArgs e)
         {
+            // If object is not modified
             if (ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION) == 0)
             {
+                // Delete empty object
                 ownerShape.Delete();
             }
-
+            // And close editor
             this.Close();
         }
 
@@ -166,6 +180,7 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void applyBtn_Click(object sender, EventArgs e)
         {
+            // Save operation when apply button is pressed
             saveOperation();
         }
 
@@ -176,33 +191,39 @@ namespace OOSD_CASE_Tool
         private void saveOperation()
         {
             // Shape Data section format
-            //    row name                 ::  Value cell
+            // Row Name                    ::  Value Cell
             // op_[operation name]_        :: [operation name]
             // op_[operation name]_state   :: [state name]
             // op_[operation name]_event   :: [event]
             // op_[operation name]_control :: [control]
-
+            
+            // Get operation name from text box in editor
             string opName = operationNameTextBox.Text.Trim();
             // Must have an operation name
             if (opName == "")
             {
+                // Send message to enter operation name
                 MessageBox.Show("Must enter an Operation Name.");
             }
-            else
+            else // There exists operation name in editor
             {
+                // Format string the way we want to store it in shape data
                 string rowName = "op_" + opName + "_";
-
+                // Store operation name in shape data
                 Utilities.setDataSectionValueCell(ownerShape, rowName, opName);
-
+                // Get operation state name
                 string stateName = nextStateTextBox.Text;
+                // Store operaion state value in shape data
                 Utilities.setDataSectionValueCell(ownerShape, rowName + "state", stateName);
-
+                // Get operation event value
                 string eventName = eventTextBox.Text;
+                // Store operation event value in shape data
                 Utilities.setDataSectionValueCell(ownerShape, rowName + "event", eventName);
-
+                // Get operation control value
                 string controlName = controlTextBox.Text;
+                // Store operation control value in shape data
                 Utilities.setDataSectionValueCell(ownerShape, rowName + "control", controlName);
-
+                // Update operation list
                 updateOperationsList(operationNameTextBox.Text);
             }
         }
@@ -216,16 +237,21 @@ namespace OOSD_CASE_Tool
         /// </param>
         private void updateOperationsList(string operationName)
         {
+            // Get list of operation names from operation list box
+            //  of the object editor
             ListBox.ObjectCollection opNames = operationNameListBox.Items;
-
-            // only add the operation name if it doesn't already exist
+            // Only add the operation name if it doesn't already exist
             int itemIndex = Utilities.itemExists(opNames, operationName);
+            // If operation does not exist
             if (itemIndex < 0)
             {
+                // Add it to operation name list
                 opNames.Add(operationName);
+                // Decrement index
                 itemIndex = opNames.Count - 1;
             }
-
+            // Select the new operation in the operation list box
+            //  in the object editor
             operationNameListBox.SetSelected(itemIndex, true);
         }
 
@@ -237,7 +263,9 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void newOperationBtn_Click(object sender, EventArgs e)
         {
+            // Clear text fields associated with operation in the editor
             Utilities.clearTextBoxInGroupBox(operationPropertiesGroupBox);
+            // Clear operation list box selected item
             operationNameListBox.ClearSelected();
         }
 
@@ -249,9 +277,12 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void deleteOperationBtn_Click(object sender, EventArgs e)
         {
+            // Get selected operation from operation list box in editor
             Object selectedItem = operationNameListBox.SelectedItem;
+            // If an valid operation is selected
             if (selectedItem != null)
             {
+                // Get the name of the operation
                 string selectedValue = selectedItem.ToString();
 
                 // Removes the item from the ListBox
@@ -262,7 +293,7 @@ namespace OOSD_CASE_Tool
                 Utilities.deleteDataSectionRow(ownerShape, "op_" + selectedValue);
                 Utilities.clearTextBoxInGroupBox(operationPropertiesGroupBox);
             } 
-            else
+            else // No Operation was selected
             {
                 MessageBox.Show("Select an Operation to delete.");
             }
@@ -276,11 +307,14 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void operationNameListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Operation selected in the operation name list box in the editor
             Object item = operationNameListBox.SelectedItem;
-
+            // If the operation exists
             if (item != null)
             {
+                // Get the name of the operation
                 string opName = operationNameListBox.SelectedItem.ToString();
+                // And display its properties in the editor
                 displayOperationProperties(opName);
             }
         }
@@ -302,14 +336,18 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void addObjBtn_Click(object sender, EventArgs e)
         {
+            // An object is selected in the object list box in the editor
             object selected = objListListBox.SelectedItem;
+            // If the object exists
             if (selected != null)
             {
+                // Add object to the object name list box in the editor
                 objNameListBox.Items.Add(selected);
-
-                // Adds the name of this item to this Shape's Data Section.
+                // Adds the name of this item to this Shape's Data Section
                 string objName = selected.ToString();
+                // Format string the way we want to store in shape data
                 string rowName = "obj_" + objName + "_";
+                // Update shape data
                 Utilities.setDataSectionValueCell(ownerShape, rowName, objName);
             }
         }
@@ -321,11 +359,13 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void removeObjBtn_Click(object sender, EventArgs e)
         {
+            // An object is selected for removal
             object selected = objNameListBox.SelectedItem;
+            // The object is a valid object
             if (selected != null)
             {
+                // Remove object from object list box in the editor
                 objNameListBox.Items.Remove(selected);
-
                 // Removes the name of this item from the Shape's Data Section.
                 string rowName = "obj_" + selected.ToString();
                 Utilities.deleteDataSectionRow(ownerShape, rowName);
