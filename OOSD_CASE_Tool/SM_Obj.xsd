@@ -3,13 +3,37 @@
   <xs:element name="SM_Obj_Attribute_Form">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="SM_Obj_Name" />
+        <xs:element name="SM_Obj_Name">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(.*)+"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
         <xs:element name="SM_Obj_Operation">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="SM_Obj_State" />
-              <xs:element name="SM_Obj_Event" />
-              <xs:element name="SM_Obj_Control" />
+              <xs:element name="SM_Obj_State">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value=".*"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SM_Obj_Event">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value=".*"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SM_Obj_Control">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value=".*"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
