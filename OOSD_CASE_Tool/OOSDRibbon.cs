@@ -71,7 +71,22 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            printProperties(app.ActivePage.Shapes);
+            Visio.Shape sh = app.ActivePage.Shapes[1];
+            //foreach (Visio.Shape sh in app.ActivePage.Shapes)
+            {
+                Array con = sh.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming1D,"", null);
+                foreach (int cn in con)
+                {
+                    Visio.Shape ts = app.ActivePage.Shapes.get_ItemFromID(cn);
+                    MessageBox.Show(ts.Name);
+                }
+
+                Array s = sh.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesIncomingNodes, "");
+                foreach (int id in s)
+                {
+                    MessageBox.Show(app.ActivePage.Shapes.get_ItemFromID(id).Name);
+                }
+            }
         }
 
         public static void printProperties(Visio.Shapes shapes)
@@ -152,7 +167,7 @@ namespace OOSD_CASE_Tool
                 // Outputs the resulting State transition table to the State Transition Page
                 Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.STATE_TABLE_PAGE);
                 FlowSystem flowEditor = new FlowSystem();
-                flowEditor.convertToArchitectureChart(selection, outputPage);
+                flowEditor.stateDiagramToTable(selection, outputPage);
             }
         }
     }

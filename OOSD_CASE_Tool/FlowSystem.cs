@@ -52,10 +52,265 @@ namespace OOSD_CASE_Tool
         public void stateDiagramToTable(Visio.Selection selection, Visio.Page outputPage)
         {
             // Start at any node (that is a State) of the selected shapes to build a State Machine
-            
+            // Note: currently can't build a SM starting at the End State node.
+            Visio.Shape node = null;
+            foreach (Visio.Shape s in selection)
+            {
+                string masterName = s.Master.Name;
+                if (masterName == CaseTypes.STATE_START_MASTER ||
+                    masterName == CaseTypes.STATE_MASTER)
+                {
+                    node = s;
+                    break;
+                }
+            }
+
+            // Builds the State Machine, which lists all the States (& their Transitions)
+            List<State> stateMachine = buildStateMachine(node);
+
+            // Creates and output the State Transition Table
+            outputStateTransitionTable(stateMachine, outputPage);
 
             // Switches focus to resulting output
             app.ActiveWindow.Page = outputPage;
+        }
+
+        /// <summary>
+        /// Creates and outputs a State Transition Table from the given State Machine.
+        /// </summary>
+        /// <param name="stateMachine">State Machine to convert to Transition Table.</param>
+        /// <param name="outputPage">Page to display the Table.</param>
+        private void outputStateTransitionTable(List<State> stateMachine, Visio.Page outputPage)
+        {
+            // drawing the table by drawing rectangles right next to each other
+            // and grouping them into a table.
+
+            // sets the drawing position to start at the left of the page
+            setShapeDropPosition(outputPage);
+            drawXPos = 1.0;
+            double leftDrawEdge = drawXPos;
+
+            double rectHeight = 0.5;
+            double rectWidth = 1.5;
+
+            // treat start state, end state (& states that are essentially end states:
+            // they don't transition to another state) differently
+            // Start the table with the start state & end state shouldn't be listed
+            // as a starting state in the table.
+            // Removes these states from the state machine to work on them separately.
+            State startState = null;
+            List<State> endStates = new List<State>();
+            for (int i = stateMachine.Count - 1; i >= 0; --i)
+            {
+                State state = stateMachine[i];
+                string type = state.Type;
+                if (type == State.START_STATE)
+                {
+                    startState = state;
+                    stateMachine.RemoveAt(i);
+                } 
+                else if (type == State.END_STATE || state.getNextStateCount() == 0)
+                {
+                    endStates.Add(state);
+                    stateMachine.RemoveAt(i);
+                }
+            }
+
+            // insert start state back into the beginning of the state machine, so
+            // it gets processed first.
+            if (startState != null)
+            {
+                stateMachine.Insert(0, startState);
+            }
+
+            // Table header
+            double newXPos = drawXPos + rectWidth;
+            double newYPos = drawYPos - rectHeight;
+            Visio.Shape rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+            rect.Text = "State";
+
+            drawXPos = newXPos + rectWidth;
+            rect = outputPage.DrawRectangle(newXPos, drawYPos, drawXPos, newYPos);
+            rect.Text = "Event";
+
+            newXPos = drawXPos + rectWidth;
+            rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+            rect.Text = "Operation";
+
+            drawXPos = newXPos + rectWidth;
+            rect = outputPage.DrawRectangle(newXPos, drawYPos, drawXPos, newYPos);
+            rect.Text = "Next State";
+
+            // Adjust the height of each start state rect depending on number of next states
+            drawXPos = leftDrawEdge;
+            drawYPos = newYPos;
+            double eventXPos = drawXPos + rectWidth; // X coordinate of start of event column.
+            double eventYPos = drawYPos; // Y coordinate of start of event column.
+            foreach (State s in stateMachine)
+            {
+                int numNextState = s.getNextStateCount();
+                // draw State column
+                newXPos = drawXPos + rectWidth;
+                newYPos = drawYPos - (rectHeight * numNextState);
+                rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                rect.Text = s.Name;
+
+                // draw transition columns
+                List<State.Transition> transitions = s.getTransitions();
+                foreach (State.Transition t in transitions)
+                {
+                    // event column
+                    drawXPos = eventXPos;
+                    newXPos = drawXPos + rectWidth;
+                    newYPos = drawYPos - rectHeight;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.Data;
+
+                    // operation column
+                    drawXPos = newXPos;
+                    newXPos = drawXPos + rectWidth;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.Operation;
+
+                    // next state column
+                    drawXPos = newXPos;
+                    newXPos = drawXPos + rectWidth;
+                    rect = outputPage.DrawRectangle(drawXPos, drawYPos, newXPos, newYPos);
+                    rect.Text = t.NextState.Name;
+
+                    // if there are multiple transitions, move one row down for next transition
+                    drawYPos = newYPos;
+                }
+
+                // reset the drawing position for the next state
+                drawXPos = leftDrawEdge;
+                drawYPos = newYPos;
+            }
+
+        }
+
+        /// <summary>
+        /// Builds a State Machine from a State Transition Diagram, starting at the given node.
+        /// </summary>
+        /// <param name="node">A starting node in the State Transition Diagram.</param>
+        /// <returns>The State Machine, in the form of a list of States.</returns>
+        private List<State> buildStateMachine(Visio.Shape node)
+        {
+            Visio.Shapes allShapesOnPage = node.ContainingPage.Shapes;
+
+            List<State> stateMachine = new List<State>();
+
+            // Lists the corresponding Shape for each State in the StateMachine list.
+            List<Visio.Shape> stateShapes = new List<Visio.Shape>();
+
+            // For each node, create a State for it (if it doesn't already exist)
+            // & adds the State to the stateMachine (if it isn't already in the list).
+            // Each node is connected to other nodes via a connector.
+            bool notDone = true;
+            int currentStateIndex = 0;
+            while (notDone)
+            {
+                // if current state is not part of the state machine, add it
+                string currentStateName = node.Text;
+                State currentState = stateExists(stateMachine, currentStateName);
+                if (currentState == null)
+                {
+                    currentState = new State(currentStateName, node.Master.Name);
+                    stateMachine.Add(currentState);
+                    stateShapes.Add(node);
+                }
+
+                // for the current state, get all transitions to its next state
+                int[] transitions = (int[]) node.GluedShapes(
+                    Visio.VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
+
+                // each transition leads to a next state
+                foreach (int t in transitions)
+                {
+                    Visio.Shape connector = allShapesOnPage.get_ItemFromID(t);
+                    int[] nextStateID = (int[]) connector.GluedShapes(
+                        Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
+
+                    // there's only one shape connected to one end of a 1-D connector,
+                    // but it could be a shape that's already been made into a State
+                    Visio.Shape nextStateShape = allShapesOnPage.get_ItemFromID(nextStateID[0]);
+                    string nextStateName = nextStateShape.Text;
+                    State nextState = stateExists(stateMachine, nextStateName);
+                    if (nextState == null)
+                    {
+                        nextState = new State(nextStateName, nextStateShape.Master.Name);
+                        stateMachine.Add(nextState);
+                        stateShapes.Add(nextStateShape);
+                    }
+
+                    // assumes that a Connector always has two data associated with it
+                    // separated by a ','
+                    string[] connectorData = connector.Text.Split(',');
+                    currentState.addNextState(connectorData[0], connectorData[1], nextState);
+                }
+                
+                // Needs to get states that lead to this state, else depending on the
+                // starting state, won't be able to reach all states if we use just
+                // next state transitions. Ex: starting at the End State, there are no
+                // transitions that leads to another state & so won't be able to find
+                // what other states are in the system.
+
+                // for the current state, get all transitions that led to this state
+                int[] backTransitions = (int[])node.GluedShapes(
+                    Visio.VisGluedShapesFlags.visGluedShapesIncoming1D, "");
+
+                // each backTransition points to a previous state
+                foreach (int t in backTransitions)
+                {
+                    Visio.Shape connector = allShapesOnPage.get_ItemFromID(t);
+                    int[] prevStateID = (int[])connector.GluedShapes(
+                        Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "");
+
+                    // there's only one shape connected to one end of a 1-D connector,
+                    // but it could be a shape that's already been made into a State
+                    Visio.Shape prevStateShape = allShapesOnPage.get_ItemFromID(prevStateID[0]);
+                    string prevStateName = prevStateShape.Text;
+                    State prevState = stateExists(stateMachine, prevStateName);
+                    if (prevState == null)
+                    {
+                        prevState = new State(prevStateName, prevStateShape.Master.Name);
+                        stateMachine.Add(prevState);
+                        stateShapes.Add(prevStateShape);
+                    }
+                }
+
+                ++currentStateIndex;
+
+                // done if there are no more States to check in the StateMachine.
+                if (currentStateIndex >= stateMachine.Count)
+                {
+                    notDone = false;
+                } else
+                {
+                    node = stateShapes[currentStateIndex];
+                }
+            }
+
+            return stateMachine;
+        }
+
+        /// <summary>
+        /// Returns the State if the state exists in the given state machine.
+        /// </summary>
+        /// <param name="stateMachine">State machine.</param>
+        /// <param name="name">Name of state to find.</param>
+        /// <returns>The State if state exists in state machine, else null</returns>
+        private State stateExists(List<State> stateMachine, string name)
+        {
+            foreach (State s in stateMachine)
+            {
+                if (s.Name == name)
+                {
+                    return s;
+                }
+            }
+
+            return null;
         }
 
         #endregion
@@ -120,7 +375,7 @@ namespace OOSD_CASE_Tool
 
             foreach (int id in shapeIDs)
             {
-                Visio.Shape toShape = allShapes[id];
+                Visio.Shape toShape = allShapes.get_ItemFromID(id);
 
                 if (toShape.Master.Name == CaseTypes.TRANSFORM_PROCESS_MASTER)
                 {
