@@ -29,8 +29,9 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            // Our layer will be called app
             app = this.Application;
-
+            // Initialize new object system
             objectSystem = new ObjectSystem();
 
             // Register event handlers
@@ -42,13 +43,15 @@ namespace OOSD_CASE_Tool
             /// the created Shape after it's done, but the ShapeAdded handler is called
             /// before a reference to new Shape could be passed to it.
 
-
+            // Adding new shape text edit
             app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
+            // Adding document created
             app.DocumentCreated += app_DocumentCreated;
         }
 
         private void app_ShapeAdded(Visio.Shape Shape)
         {
+            // Get Visio pallete page name
             string shapePage = Shape.ContainingPage.Name;
             // Don't ask for information when generating or copying objects, since info is already 
             // expected to be present in the shape at this point in time.
@@ -74,11 +77,17 @@ namespace OOSD_CASE_Tool
                 Visio.Pages pages = doc.Pages;
 
                 // Adds a different page for each remaining Subsystem.
+                // Relationship editor page
                 pages.Add().Name = CaseTypes.RELATION_PAGE;
+                // Flow diagram editor page
                 pages.Add().Name = CaseTypes.FLOW_PAGE;
+                // Object diagram editor page
                 pages.Add().Name = CaseTypes.OBJECT_DIAGRAM_PAGE;
+                // Data modelling diagram editor page
                 pages.Add().Name = CaseTypes.DATA_MODEL_DIAGRAM_PAGE;
+                // Architecture diagram editor page
                 pages.Add().Name = CaseTypes.ARCHITECTURE_PAGE;
+                // State table editor page
                 pages.Add().Name = CaseTypes.STATE_TABLE_PAGE;
 
                 // By default, Visio opens with one page
@@ -106,35 +115,46 @@ namespace OOSD_CASE_Tool
         /// <param name="Window"></param>
         private void app_WindowTurnedToPage(Visio.Window Window)
         {
+            // Get name of active page
             string activePage = app.ActivePage.Name;
+            // Get Stencil path of associated editor page
             string stencilPath = CaseTypes.stencilPath();
 
             // Not all pages has an associated stencil
             bool stencilExists = true;
-
+            // Choose stencil to load
             switch (activePage)
             {
+                    // Stencils for object editor page
                 case CaseTypes.OBJECT_PAGE:
                     stencilPath += CaseTypes.OBJECT_STENCIL;
                     break;
+                    // Stencils for relationship editor page
                 case CaseTypes.RELATION_PAGE:
                     stencilPath += CaseTypes.RELATION_STENCIL;
-
+                    // Create empty HashSet to store current page shapes
                     HashSet<string> currentPageShapes = new HashSet<string>();
+                    // Iterate through each shape
                     foreach (Visio.Shape s in app.ActivePage.Shapes)
                     {
+                        // Add shape name to HashSet
                         currentPageShapes.Add(s.NameU);
                     }
-
+                    // Iterate through pages
                     foreach (Visio.Page p in Window.Document.Pages)
                     {
+                        // If object name found
                         if (p.Name == CaseTypes.OBJECT_PAGE)
                         {
+                            // For each item on page
                             foreach (var item in Utilities.getAllShapesOnPage(p))
-                            {            
+                            {   
+                                // If the item does not exists
 		                        if (!currentPageShapes.Contains(item.NameU))
                                 {
+                                    // Copy item
                                     item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                                    // And Paste it on active page
                                     app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
                                 }
                             }
@@ -142,14 +162,16 @@ namespace OOSD_CASE_Tool
                         }
                     }
                     break;
+                    // Stencils for flow diagram editor
                 case CaseTypes.FLOW_PAGE:
                     stencilPath += CaseTypes.FLOW_STENCIL;
                     break;
+                    // Default to no stencils on page
                 default:
                     stencilExists = false;
                     break;
             }
-
+            // If stencil 
             if (stencilExists)
             {
                 app.Documents.OpenEx(stencilPath,
