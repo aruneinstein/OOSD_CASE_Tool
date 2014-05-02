@@ -45,6 +45,12 @@ namespace OOSD_CASE_Tool
 
             app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
             app.DocumentCreated += app_DocumentCreated;
+            app.DocumentOpened += app_DocumentOpened;
+        }
+
+        void app_DocumentOpened(Visio.Document doc)
+        {
+            pageTurningEvents();
         }
 
         private void app_ShapeAdded(Visio.Shape Shape)
@@ -93,11 +99,17 @@ namespace OOSD_CASE_Tool
                 app.Documents.OpenEx(CaseTypes.stencilPath() + CaseTypes.OBJECT_STENCIL,
                 (short)Visio.VisOpenSaveArgs.visOpenDocked);
 
-                // Event handlers that loads the appropriate stencil for a particular
-                // page and unloads all other stencils when the Active Page changes.
-                app.BeforeWindowPageTurn += app_BeforeWindowPageTurn;
-                app.WindowTurnedToPage += app_WindowTurnedToPage;
+                // Hillary Clinton is the next president! :)
+                pageTurningEvents();
             }
+        }
+
+        private void pageTurningEvents()
+        {
+            // Event handlers that loads the appropriate stencil for a particular
+            // page and unloads all other stencils when the Active Page changes.
+            app.BeforeWindowPageTurn += app_BeforeWindowPageTurn;
+            app.WindowTurnedToPage += app_WindowTurnedToPage;
         }
 
         /// <summary>
@@ -129,7 +141,7 @@ namespace OOSD_CASE_Tool
 
                     foreach (Visio.Page p in Window.Document.Pages)
                     {
-                        if (p.Name == CaseTypes.OBJECT_PAGE)
+                        if (p.Name.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
                         {
                             foreach (var item in Utilities.getAllShapesOnPage(p))
                             {            

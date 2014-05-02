@@ -48,6 +48,7 @@
             this.stateDiagramToTable = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.shapeInfoButton = this.Factory.CreateRibbonButton();
+            this.genDBButton = this.Factory.CreateRibbonButton();
             this.oosdTab.SuspendLayout();
             this.objectEditorGroup.SuspendLayout();
             this.relationEditorGroup.SuspendLayout();
@@ -91,6 +92,7 @@
             this.relationEditorGroup.Items.Add(this.openRelationStencilBtn);
             this.relationEditorGroup.Items.Add(this.erToObjHierBtn);
             this.relationEditorGroup.Items.Add(this.button1);
+            this.relationEditorGroup.Items.Add(this.genDBButton);
             this.relationEditorGroup.Label = "Relation Editor";
             this.relationEditorGroup.Name = "relationEditorGroup";
             // 
@@ -163,6 +165,14 @@
             this.shapeInfoButton.ShowImage = true;
             this.shapeInfoButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.shapeInfoButton_Click);
             // 
+            // genDBButton
+            // 
+            this.genDBButton.Image = global::OOSD_CASE_Tool.Properties.Resources.coins;
+            this.genDBButton.Label = "Generate DB";
+            this.genDBButton.Name = "genDBButton";
+            this.genDBButton.ShowImage = true;
+            this.genDBButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.genDBButton_Click);
+            // 
             // OOSDRibbon
             // 
             this.Name = "OOSDRibbon";
@@ -198,6 +208,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton shapeInfoButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton stateDiagramToTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton genDBButton;
     }
 
     partial class ThisRibbonCollection

@@ -157,5 +157,10 @@ namespace OOSD_CASE_Tool
                 flowEditor.stateDiagramToTable(selection, outputPage);
             }
         }
+
+        private void genDBButton_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }
