@@ -27,15 +27,57 @@ namespace OOSD_CASE_Tool
 
         [XmlElement("ADT_Obj_Name")]
         public string ADT_Object_Name
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                if (ownerShape.Name.StartsWith("adt_"))
+                    ADT_Object_Name = ownerShape.Name;
+            }
+        }
 
         [XmlElement("ADT_Obj_Operation")]
         public string ADT_Object_Operation
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var operation = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("adt_") && String.Equals((String)operation[2], "Operation"))
+                    ADT_Object_Operation = (String)operation[3];
+                }
+            }
+        }
 
         [XmlElement("ADT_Obj_Axiom")]
         public string ADT_Object_Axiom
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var axiom = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("adt_") && String.Equals((String)axiom[2], "Axiom"))
+                        ADT_Object_Axiom = (String)axiom[3];
+                }
+            }
+        }
 
         public ADT_Obj_Attribute_Form(Visio.Shape shape)
         {
@@ -91,6 +133,8 @@ namespace OOSD_CASE_Tool
                     string adtObjName = labelCellValue.Substring(startIndex, opNameLen);
                     // Display the object name in the editor
                     adtObjectNameTextBox.Text = adtObjName;
+                    ownerShape.Name = adtObjName;
+                    ownerShape.Text = adtObjName;
                 }
                 // Get the operation name from the shape data section
                 if (labelCellValue.EndsWith("name"))
@@ -467,6 +511,7 @@ namespace OOSD_CASE_Tool
                 Utilities.setDataSectionValueCell(ownerShape, rowName, adtObjectName);
                 // Change object name
                 ownerShape.Name = adtObjectName;
+                ownerShape.Text = adtObjectName;
             }
 
         }

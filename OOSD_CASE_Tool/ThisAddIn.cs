@@ -145,7 +145,7 @@ namespace OOSD_CASE_Tool
                         {
                             foreach (var item in Utilities.getAllShapesOnPage(p))
                             {            
-		                        if (!currentPageShapes.Contains(item.NameU))
+                                if (!currentPageShapes.Contains(item.NameU))
                                 {
                                     item.Copy(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
                                     app.ActivePage.Paste(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);

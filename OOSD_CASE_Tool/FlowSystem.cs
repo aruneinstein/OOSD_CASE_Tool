@@ -246,7 +246,17 @@ namespace OOSD_CASE_Tool
                     // assumes that a Connector always has two data associated with it
                     // separated by a ','
                     string[] connectorData = connector.Text.Split(',');
-                    currentState.addNextState(connectorData[0], connectorData[1], nextState);
+                    string stateEvent = "";
+                    string stateOp = "";
+                    if (connectorData.Length >= 2)
+                    {
+                        stateEvent = connectorData[0];
+                        stateOp = connectorData[1];
+                    } else if (connectorData.Length >= 1)
+                    {
+                        stateEvent = connectorData[0];
+                    }
+                    currentState.addNextState(stateEvent, stateOp, nextState);
                 }
                 
                 // Needs to get states that lead to this state, else depending on the

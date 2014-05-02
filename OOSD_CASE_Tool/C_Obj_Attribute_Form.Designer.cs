@@ -52,7 +52,7 @@
             this.applyBtn.Location = new System.Drawing.Point(9, 126);
             this.applyBtn.Name = "applyBtn";
             this.applyBtn.Size = new System.Drawing.Size(101, 31);
-            this.applyBtn.TabIndex = 0;
+            this.applyBtn.TabIndex = 3;
             this.applyBtn.Text = "Add / Save";
             this.applyBtn.UseVisualStyleBackColor = true;
             this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
@@ -62,7 +62,7 @@
             this.exitBtn.Location = new System.Drawing.Point(371, 393);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(105, 28);
-            this.exitBtn.TabIndex = 1;
+            this.exitBtn.TabIndex = 5;
             this.exitBtn.Text = "Exit";
             this.exitBtn.UseVisualStyleBackColor = true;
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
@@ -73,7 +73,7 @@
             this.cObjectNameLbl.Location = new System.Drawing.Point(9, 24);
             this.cObjectNameLbl.Name = "cObjectNameLbl";
             this.cObjectNameLbl.Size = new System.Drawing.Size(82, 13);
-            this.cObjectNameLbl.TabIndex = 2;
+            this.cObjectNameLbl.TabIndex = 0;
             this.cObjectNameLbl.Text = "C Object Name:";
             this.cObjectNameLbl.Click += new System.EventHandler(this.label1_Click);
             // 
@@ -82,7 +82,7 @@
             this.cObjectNameText.Location = new System.Drawing.Point(97, 24);
             this.cObjectNameText.Name = "cObjectNameText";
             this.cObjectNameText.Size = new System.Drawing.Size(223, 20);
-            this.cObjectNameText.TabIndex = 3;
+            this.cObjectNameText.TabIndex = 1;
             this.cObjectNameText.TextChanged += new System.EventHandler(this.cObjectNameText_TextChanged);
             // 
             // attributeListLbl
@@ -101,7 +101,7 @@
             this.attributeListBox.Location = new System.Drawing.Point(12, 82);
             this.attributeListBox.Name = "attributeListBox";
             this.attributeListBox.Size = new System.Drawing.Size(311, 108);
-            this.attributeListBox.TabIndex = 5;
+            this.attributeListBox.TabIndex = 2;
             this.attributeListBox.SelectedIndexChanged += new System.EventHandler(this.attributeListBox_SelectedIndexChanged);
             // 
             // newAttributeBtn
@@ -109,7 +109,7 @@
             this.newAttributeBtn.Location = new System.Drawing.Point(358, 126);
             this.newAttributeBtn.Name = "newAttributeBtn";
             this.newAttributeBtn.Size = new System.Drawing.Size(97, 31);
-            this.newAttributeBtn.TabIndex = 6;
+            this.newAttributeBtn.TabIndex = 4;
             this.newAttributeBtn.Text = "Clear Form";
             this.newAttributeBtn.UseVisualStyleBackColor = true;
             this.newAttributeBtn.Click += new System.EventHandler(this.newAttributeBtn_Click);
@@ -119,7 +119,7 @@
             this.delAttributeBtn.Location = new System.Drawing.Point(379, 82);
             this.delAttributeBtn.Name = "delAttributeBtn";
             this.delAttributeBtn.Size = new System.Drawing.Size(97, 23);
-            this.delAttributeBtn.TabIndex = 7;
+            this.delAttributeBtn.TabIndex = 3;
             this.delAttributeBtn.Text = "Delete Attribute";
             this.delAttributeBtn.UseVisualStyleBackColor = true;
             this.delAttributeBtn.Click += new System.EventHandler(this.delAttributeBtn_Click);
@@ -166,21 +166,21 @@
             this.attributeDiscriptionText.Name = "attributeDiscriptionText";
             this.attributeDiscriptionText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.attributeDiscriptionText.Size = new System.Drawing.Size(389, 38);
-            this.attributeDiscriptionText.TabIndex = 12;
+            this.attributeDiscriptionText.TabIndex = 2;
             // 
             // attributeDomainText
             // 
             this.attributeDomainText.Location = new System.Drawing.Point(307, 29);
             this.attributeDomainText.Name = "attributeDomainText";
             this.attributeDomainText.Size = new System.Drawing.Size(148, 20);
-            this.attributeDomainText.TabIndex = 13;
+            this.attributeDomainText.TabIndex = 1;
             // 
             // attributeNameText
             // 
             this.attributeNameText.Location = new System.Drawing.Point(66, 29);
             this.attributeNameText.Name = "attributeNameText";
             this.attributeNameText.Size = new System.Drawing.Size(166, 20);
-            this.attributeNameText.TabIndex = 14;
+            this.attributeNameText.TabIndex = 0;
             // 
             // attributePropGrpBox
             // 
@@ -196,7 +196,7 @@
             this.attributePropGrpBox.Location = new System.Drawing.Point(13, 215);
             this.attributePropGrpBox.Name = "attributePropGrpBox";
             this.attributePropGrpBox.Size = new System.Drawing.Size(463, 163);
-            this.attributePropGrpBox.TabIndex = 15;
+            this.attributePropGrpBox.TabIndex = 4;
             this.attributePropGrpBox.TabStop = false;
             this.attributePropGrpBox.Text = "Attribute Property";
             this.attributePropGrpBox.Enter += new System.EventHandler(this.groupBox1_Enter);

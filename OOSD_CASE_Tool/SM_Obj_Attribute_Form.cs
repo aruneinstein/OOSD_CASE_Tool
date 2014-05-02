@@ -28,23 +28,97 @@ namespace OOSD_CASE_Tool
 
         [XmlElement("SM_Obj_Name")]
         public string SM_Object_Name
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                if (ownerShape.Name.StartsWith("sm_"))
+                    SM_Object_Name = ownerShape.Name;
+            }
+        }
 
         [XmlElement("SM_Obj_Operation")]
         public string SM_Object_Operation
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var operation = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)operation[2], "Operation"))
+                        SM_Object_Operation = (String)operation[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_State")]
         public string SM_Object_State
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var state = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)state[2], "State"))
+                        SM_Object_State = (String)state[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_Event")]
         public string SM_Object_Event
-        { get; set; }
+        { 
+            get 
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var eve = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)eve[2], "Event"))
+                        SM_Object_Event = (String)eve[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_Control")]
         public string SM_Object_Control
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var control = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)control[2], "Control"))
+                        SM_Object_Control = (String)control[3];
+                }
+            }
+        }
 
         public SM_Obj_Attribute_Form(Visio.Shape Shape)
         {
@@ -69,6 +143,7 @@ namespace OOSD_CASE_Tool
 
         private void SM_Obj_Attribute_Form_Load(object sender, EventArgs e)
         {
+            loadObjNameTextBox();
             // Loads all of the page's list of objects into objListListBox.
             loadObjListListBox();
 
@@ -88,7 +163,36 @@ namespace OOSD_CASE_Tool
                 displayOperationProperties(opName);
             }
         }
-
+        private void loadObjNameTextBox()
+        {
+            // Get the number of rows from shape data section of the object
+            short numRows = ownerShape.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+            // Loop throught each row
+            for (short r = 0; r < numRows; ++r)
+            {
+                // Initialize label cell from shape data section
+                Visio.Cell labelCell = ownerShape.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION,
+                    r, CaseTypes.DS_LABEL_CELL);
+                // Get the lavel cell's value
+                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+                // Get object name first from shape data section
+                if (labelCellValue.StartsWith("sm_"))
+                {
+                    // Get start index of object name
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    // Get end index of object name
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    // Get the length of object name
+                    int smNameLen = endIndex - startIndex;
+                    // Get the object name
+                    string smObjName = labelCellValue.Substring(startIndex, smNameLen);
+                    // Display the object name in the editor
+                    smObjectNameTextBox.Text = smObjName;
+                    ownerShape.Text = smObjName;
+                    ownerShape.Name = smObjName;
+                }
+            }
+        }
         /// <summary>
         /// Loads the list of names tied to this Shape from its Shape Data Section.
         /// </summary>
@@ -180,10 +284,32 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void applyBtn_Click(object sender, EventArgs e)
         {
+            saveObjectName();
             // Save operation when apply button is pressed
             saveOperation();
         }
-
+        private void saveObjectName()
+        {
+            // Shape Data section format
+            // Row Name                     ::  Value Cell
+            // sm_[object name]_            :: [object name]
+            string smName =  smObjectNameTextBox.Text.Trim();
+            // Must have an operation name
+            if (smName == "")
+            {
+                // Send message to enter operation name
+                MessageBox.Show("Must enter an SM Object Name before proceeding.");
+            }
+            else // There exists object name in editor
+            {
+                // Format string the way we want to store it in shape data
+                string rowName = "sm_" + smName + "_";
+                // Store object name in shape data
+                Utilities.setDataSectionValueCell(ownerShape, rowName, smName);
+            }
+            ownerShape.Name = smName;
+            ownerShape.Text = smName;
+        }
         /// <summary>
         /// Saves an operation and its properties, taken from the operationPropertiesGroupBox
         /// input text boxes, in the Shapesheet Data Section.
@@ -336,6 +462,8 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void addObjBtn_Click(object sender, EventArgs e)
         {
+            // Must name sm object before proceeding
+            saveObjectName();
             // An object is selected in the object list box in the editor
             object selected = objListListBox.SelectedItem;
             // If the object exists
@@ -370,6 +498,11 @@ namespace OOSD_CASE_Tool
                 string rowName = "obj_" + selected.ToString();
                 Utilities.deleteDataSectionRow(ownerShape, rowName);
             }
+        }
+
+        private void smObjectNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
     }

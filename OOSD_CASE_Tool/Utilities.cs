@@ -407,6 +407,51 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
+        /// Connects a fromShape to a toShape using a Connector.
+        /// </summary>
+        /// <param name="page">Page to drop the Shapes in.</param>
+        /// <param name="fromShape">The Shape to start the connection at.</param>
+        /// <param name="toShape">The Shape to end the connection at.</param>
+        /// <param name="fromXPercent">
+        /// X coordinate (in percent of the fromShape's width) to Glue</param>
+        /// <param name="fromYPercent">
+        /// Y coordinate (in percent of the fromShape's height) to Glue.</param>
+        /// <param name="toXPercent">
+        /// X coordinate (in percent of the toShape's width) to Glue.</param>
+        /// <param name="toYPercent">
+        /// X coordinate (in percent of the toShape's width) to Glue.</param>
+        /// <param name="connectorMasterName">Name of the Connector Master in the General Stencil.</param>
+        public static void glueShapesWithConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
+            double fromXPercent, double fromYPercent, double toXPercent, double toYPercent, string connectorMasterName)
+        {
+            Visio.Documents appDocuments = page.Application.Documents;
+
+            // We only want to get the Connector Master from the Stencil,
+            // so keep the stencil hidden since user won't need to use it.
+            Visio.Document stencil = getStencil(appDocuments, CaseTypes.OOSD_GENERAL_STENCIL,
+                Visio.VisOpenSaveArgs.visOpenHidden);
+
+            Visio.Master connectorMaster = stencil.Masters[connectorMasterName];
+            Visio.Shape connector = page.Drop(connectorMaster, 0, 0);
+
+            // The Connector has an end point and a begin point, which are
+            // the glue points used to connect to shapes. These points are stored 
+            // in the 1-D Endpoints Shapesheet section.
+            Visio.Cell beginCell = connector.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowXForm1D,
+                (short)Visio.VisCellIndices.vis1DBeginX);
+            Visio.Cell endCell = connector.get_CellsSRC(
+                (short)Visio.VisSectionIndices.visSectionObject,
+                (short)Visio.VisRowIndices.visRowXForm1D,
+                (short)Visio.VisCellIndices.vis1DEndX);
+
+            // Connect the connector end points to the from and to shapes
+            beginCell.GlueToPos(fromShape, fromXPercent, fromYPercent);
+            endCell.GlueToPos(toShape, toXPercent, toYPercent);
+        }
+
+        /// <summary>
         /// Returns the Height of Page in inches.
         /// </summary>
         /// <param name="page">Page.</param>

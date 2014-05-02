@@ -74,19 +74,19 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            //try
+            try
             {
                 this.relEditor.generateObjectHierarchy();
             }
-            //catch (Exception err)
+            catch (Exception err)
             {
-               // Debug.WriteLine(err.Message);
-              //  throw err;
+                Debug.WriteLine(err.Message);
+                throw err;
             }
             
         }
 
-        public static void printProperties(Visio.Shapes shapes)
+        public static string printProperties(Visio.Shapes shapes)
         {
             string res = "";
             // Look at each shape in the collection.
@@ -130,6 +130,7 @@ namespace OOSD_CASE_Tool
                     printProperties(shape.Shapes);
             }
             MessageBox.Show(res);
+            return res;
         }
 
         private void shapeInfoButton_Click(object sender, RibbonControlEventArgs e)
@@ -168,9 +169,28 @@ namespace OOSD_CASE_Tool
             }
         }
 
+        /// <summary>
+        /// Generates a Database of Relationships from a Relation Editor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void genDBButton_Click(object sender, RibbonControlEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Converts a Relation Diagram to Data Model (is-a & has relationships).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataModelBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            Visio.Page inputPage = Utilities.getDrawingPage(app, CaseTypes.RELATION_PAGE);
+            Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.DATA_MODEL_DIAGRAM_PAGE);
+
+            RelationEditor relationEditor = new RelationEditor();
+            relationEditor.toDataModel(inputPage, outputPage);
         }
     }
 }

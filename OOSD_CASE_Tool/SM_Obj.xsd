@@ -6,11 +6,11 @@
         <xs:element name="SM_Obj_Name">
           <xs:simpleType>
             <xs:restriction base="xs:string">
-              <xs:pattern value=".*"/>
+              <xs:pattern value="(.*)+"/>
             </xs:restriction>
           </xs:simpleType>
         </xs:element>
-        <xs:element name="SM_Obj_Operation">
+        <xs:element name="SM_Obj_Operation" minOccurs="1">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="SM_Obj_State">
