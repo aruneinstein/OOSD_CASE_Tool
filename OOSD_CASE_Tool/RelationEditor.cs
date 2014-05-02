@@ -279,10 +279,11 @@ namespace OOSD_CASE_Tool
                 }
 
                 // connects both shapes depending on its relationship
+#if false // unused variables warning
                 Visio.Shape fromShape = null;
                 Visio.Shape toShape = null;
                 string connectorName = CaseTypes.OOSD_ONE_N_CONNECTOR;
-
+#endif
 
 
                 // resets drawing point to left edge of page
