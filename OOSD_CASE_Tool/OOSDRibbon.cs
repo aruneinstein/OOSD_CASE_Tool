@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using Visio = Microsoft.Office.Interop.Visio;
+using Debug = System.Diagnostics.Debug;
 using System.Windows.Forms;
 
 namespace OOSD_CASE_Tool
@@ -73,7 +74,16 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            this.relEditor.generateObjectHierarchy();
+            //try
+            {
+                this.relEditor.generateObjectHierarchy();
+            }
+            //catch (Exception err)
+            {
+               // Debug.WriteLine(err.Message);
+              //  throw err;
+            }
+            
         }
 
         public static void printProperties(Visio.Shapes shapes)

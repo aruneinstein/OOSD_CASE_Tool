@@ -376,7 +376,7 @@ namespace OOSD_CASE_Tool
         /// X coordinate (in percent of the toShape's width) to Glue.</param>
         /// <param name="toYPercent">
         /// X coordinate (in percent of the toShape's width) to Glue.</param>
-        public static void glueShapesWithDynamicConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
+        public static void glueShapesWithDynamicConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape, string connectorName,
             double fromXPercent, double fromYPercent, double toXPercent, double toYPercent)
         {
             Visio.Documents appDocuments = page.Application.Documents;
@@ -386,7 +386,7 @@ namespace OOSD_CASE_Tool
             Visio.Document stencil = getStencil(appDocuments, CaseTypes.OOSD_GENERAL_STENCIL,
                 Visio.VisOpenSaveArgs.visOpenHidden);
 
-            Visio.Master connectorMaster = stencil.Masters[CaseTypes.OOSD_CONNECTOR];
+            Visio.Master connectorMaster = stencil.Masters[connectorName];
             Visio.Shape connector = page.Drop(connectorMaster, 0, 0);
 
             // The Dynamic Connector has an end point and a begin point, which are
