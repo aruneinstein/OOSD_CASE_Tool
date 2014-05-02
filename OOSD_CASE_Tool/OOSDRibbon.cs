@@ -74,19 +74,15 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-#if false
             try
             {
-#endif
                 this.relEditor.generateObjectHierarchy();
-#if false
             }
             catch (Exception err)
             {
                 Debug.WriteLine(err.Message);
                 throw err;
             }
-#endif       
         }
 
         public static string printProperties(Visio.Shape shapes)

@@ -148,28 +148,7 @@ namespace OOSD_CASE_Tool
             {
                 Visio.Shape ch = drawObject(pg, child, ref height, ref sibling);
                 sibling += OFFSET;
-#if false
-                Visio.Shape connector = pg.Drop(this.connector, sibling, height);
-
-                Visio.Cell beginX = connector.get_CellsSRC( (short) Visio.VisSectionIndices.visSectionObject, 
-                    (short) Visio.VisRowIndices.visRowXForm1D, 
-                    (short) Visio.VisCellIndices.vis1DBeginX);
-
-                beginX.GlueTo(ch.get_CellsSRC((short)Visio.VisSectionIndices.visSectionObject,
-                                                (short)Visio.VisRowIndices.visRowXFormOut,
-                                                (short)Visio.VisCellIndices.visXFormPinX));
-
-                Visio.Cell endX = connector.get_CellsSRC((short)Visio.VisSectionIndices.visSectionObject,
-                    (short)Visio.VisRowIndices.visRowXForm1D,
-                    (short)Visio.VisCellIndices.vis1DEndX);
-
-                endX.GlueTo(parent.get_CellsSRC((short)Visio.VisSectionIndices.visSectionObject,
-                                                (short)Visio.VisRowIndices.visRowXFormOut,
-                                                (short)Visio.VisCellIndices.visXFormPinX));
-#else
                 ch.AutoConnect(parent, Visio.VisAutoConnectDir.visAutoConnectDirUp, this.connector);
-#endif
-
                 Debug.WriteLine(String.Format("Connecting {0} to {1}", parent.Text, ch.Text));
             }
 
