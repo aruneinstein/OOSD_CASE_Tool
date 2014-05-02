@@ -68,6 +68,61 @@ namespace OOSD_CASE_Tool
         public const string OOSD_RECTANGLE = "Rectangle";
 
         /// <summary>
+        /// Name of Is-A Relation connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string IS_A_MASTER = "Is-A Relation";
+
+        /// <summary>
+        /// Name of 1:1 connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONE_ONE_MASTER = "1:1";
+
+        /// <summary>
+        /// Name of 1:M connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONE_M_MASTER = "1:M";
+
+        /// <summary>
+        /// Name of M:M connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string M_M_MASTER = "M:M";
+
+        /// <summary>
+        /// Name of 1:1c connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONE_ONEC_MASTER = "1:1c";
+
+        /// <summary>
+        /// Name of 1c:1c connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONEC_ONEC_MASTER = "1c:1c";
+
+        /// <summary>
+        /// Name of 1:Mc connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONE_MC_MASTER = "1:Mc";
+
+        /// <summary>
+        /// Name of 1c:M connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONEC_M_MASTER = "1c:M";
+
+        /// <summary>
+        /// Name of 1c:Mc connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string ONEC_MC_MASTER = "1c:Mc";
+
+        /// <summary>
+        /// Name of M:Mc connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string M_MC_MASTER = "M:Mc";
+
+        /// <summary>
+        /// Name of Mc:Mc connector as defined in the Relation Editor Stencil.
+        /// </summary>
+        public const string MC_MC_MASTER = "Mc:Mc";
+
+        /// <summary>
         /// Name of the Concrete Object Master Shape as defined in the Object Stencil.
         /// </summary>
         public const string C_OBJ_MASTER = "C-Object";
