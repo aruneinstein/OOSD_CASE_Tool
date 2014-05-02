@@ -122,7 +122,8 @@ namespace OOSD_CASE_Tool
                 sibling = 0;
 	        }
             closeStencil();
-            pg.Layout();
+            pg.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
+                Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
         }
 
         private double[] getVBBox(Visio.Page pg)
@@ -147,9 +148,9 @@ namespace OOSD_CASE_Tool
             {
                 Visio.Shape ch = drawObject(pg, child, ref height, ref sibling);
                 sibling += OFFSET;
-
-               // Visio.Shape connector = pg.Drop(this.connector, sibling, height);
 #if false
+                Visio.Shape connector = pg.Drop(this.connector, sibling, height);
+
                 Visio.Cell beginX = connector.get_CellsSRC( (short) Visio.VisSectionIndices.visSectionObject, 
                     (short) Visio.VisRowIndices.visRowXForm1D, 
                     (short) Visio.VisCellIndices.vis1DBeginX);
@@ -184,7 +185,7 @@ namespace OOSD_CASE_Tool
         private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item, ref double height, ref double sibling)
         {
             Visio.Shape sh = pg.Drop(item, sibling, height);
-            pg.AutoSizeDrawing();
+            pg.ResizeToFitContents();
             sh.Text += ("\r\n_________________\r\n" + rectangleToObjectBox(pg, sh));
             return sh;
         }
