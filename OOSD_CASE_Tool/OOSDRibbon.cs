@@ -34,6 +34,16 @@ namespace OOSD_CASE_Tool
         }
 
         /// <summary>
+        /// Generates a Database of Relationships from a Relation Editor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void genDBButton_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        /// <summary>
         /// On click of Open Stencil button, open and display the Object Stencil
         /// in the stencil dock in Visio.
         /// </summary>
@@ -175,6 +185,20 @@ namespace OOSD_CASE_Tool
         internal static string printProperties(Visio.Shape ownerShape)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Converts a Relation Diagram to Data Model (is-a & has relationships).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataModelBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            Visio.Page inputPage = Utilities.getDrawingPage(app, CaseTypes.RELATION_PAGE);
+            Visio.Page outputPage = Utilities.getDrawingPage(app, CaseTypes.DATA_MODEL_DIAGRAM_PAGE);
+
+            RelationEditor relationEditor = new RelationEditor();
+            relationEditor.toDataModel(inputPage, outputPage);
         }
     }
 }

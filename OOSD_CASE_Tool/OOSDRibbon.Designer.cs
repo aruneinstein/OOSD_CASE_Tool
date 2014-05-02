@@ -41,14 +41,14 @@
             this.relationEditorGroup = this.Factory.CreateRibbonGroup();
             this.openRelationStencilBtn = this.Factory.CreateRibbonButton();
             this.erToObjHierBtn = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.dataModelBtn = this.Factory.CreateRibbonButton();
+            this.genDBButton = this.Factory.CreateRibbonButton();
             this.flowEditorGroup = this.Factory.CreateRibbonGroup();
             this.openFlowStencilBtn = this.Factory.CreateRibbonButton();
             this.convertToArchChartBtn = this.Factory.CreateRibbonButton();
             this.stateDiagramToTable = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.shapeInfoButton = this.Factory.CreateRibbonButton();
-            this.genDBButton = this.Factory.CreateRibbonButton();
             this.oosdTab.SuspendLayout();
             this.objectEditorGroup.SuspendLayout();
             this.relationEditorGroup.SuspendLayout();
@@ -91,7 +91,7 @@
             // 
             this.relationEditorGroup.Items.Add(this.openRelationStencilBtn);
             this.relationEditorGroup.Items.Add(this.erToObjHierBtn);
-            this.relationEditorGroup.Items.Add(this.button1);
+            this.relationEditorGroup.Items.Add(this.dataModelBtn);
             this.relationEditorGroup.Items.Add(this.genDBButton);
             this.relationEditorGroup.Label = "Relation Editor";
             this.relationEditorGroup.Name = "relationEditorGroup";
@@ -112,12 +112,21 @@
             this.erToObjHierBtn.ShowImage = true;
             this.erToObjHierBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.erToObjHierBtn_Click);
             // 
-            // button1
+            // dataModelBtn
             // 
-            this.button1.Image = global::OOSD_CASE_Tool.Properties.Resources.activity;
-            this.button1.Label = "Association Diagram";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
+            this.dataModelBtn.Image = global::OOSD_CASE_Tool.Properties.Resources.activity;
+            this.dataModelBtn.Label = "Data Model";
+            this.dataModelBtn.Name = "dataModelBtn";
+            this.dataModelBtn.ShowImage = true;
+            this.dataModelBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.dataModelBtn_Click);
+            // 
+            // genDBButton
+            // 
+            this.genDBButton.Image = global::OOSD_CASE_Tool.Properties.Resources.coins;
+            this.genDBButton.Label = "Generate DB";
+            this.genDBButton.Name = "genDBButton";
+            this.genDBButton.ShowImage = true;
+            this.genDBButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.genDBButton_Click);
             // 
             // flowEditorGroup
             // 
@@ -165,14 +174,6 @@
             this.shapeInfoButton.ShowImage = true;
             this.shapeInfoButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.shapeInfoButton_Click);
             // 
-            // genDBButton
-            // 
-            this.genDBButton.Image = global::OOSD_CASE_Tool.Properties.Resources.coins;
-            this.genDBButton.Label = "Generate DB";
-            this.genDBButton.Name = "genDBButton";
-            this.genDBButton.ShowImage = true;
-            this.genDBButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.genDBButton_Click);
-            // 
             // OOSDRibbon
             // 
             this.Name = "OOSDRibbon";
@@ -204,7 +205,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton convertToArchChartBtn;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton objToDictBtn;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton erToObjHierBtn;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton dataModelBtn;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton shapeInfoButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton stateDiagramToTable;

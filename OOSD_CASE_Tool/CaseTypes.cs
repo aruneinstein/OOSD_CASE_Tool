@@ -67,6 +67,9 @@ namespace OOSD_CASE_Tool
         /// </summary>
         public const string OOSD_RECTANGLE = "Rectangle";
 
+        public const string OOSD_ONE_ONE_CONNECTOR = "1:1";
+        public const string OOSD_ONE_N_CONNECTOR = "1:n";
+
         /// <summary>
         /// Name of Is-A Relation connector as defined in the Relation Editor Stencil.
         /// </summary>
