@@ -53,10 +53,11 @@ namespace OOSD_CASE_Tool
         {
             if (Shape != null)
             {
-                string shapePage = Shape.ContainingPage.Name;
+                string shapePageName = Shape.ContainingPage.Name;
+                //Visio.Page shapePage = Shape.ContainingPage;
                 // Don't ask for information when generating or copying objects, since info is already 
                 // expected to be present in the shape at this point in time.
-                if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
+                if (shapePageName.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
                 {
                     app_BeforeShapeTextEdit(Shape);
                 }
@@ -141,6 +142,7 @@ namespace OOSD_CASE_Tool
                         currentPageShapes.Add(s.NameU);
                     }
                     System.Threading.Thread.Sleep(1000);
+                   
                     // Iterate through pages
                     foreach (Visio.Page p in Window.Document.Pages)
                     {
@@ -162,6 +164,28 @@ namespace OOSD_CASE_Tool
                             break;
                         }
                     }
+                    //Visio.Page shapePage = Shape.ContainingPage;
+                     if (app.ActivePage.Shapes.Count < 5)
+                    {
+                        MessageBox.Show("Relationship editor must contain atleast 5 objects. Add more objects.");
+                        app.ActiveWindow.Page = app.ActiveDocument.Pages[CaseTypes.OBJECT_PAGE];
+                    }
+ 
+	            	/*if (app.ActivePage.Shapes.Count > 9)
+                    {
+                        int count = app.ActivePage.Shapes.Count - 5;
+                        for (int i = 1; i < count+1; i++ )
+                        {
+                            //app.ActivePage.Drop(getShapeToMove(i), -1 + i, -1 + 1);
+                            //app.ActivePage.Shapes[i].Delete();
+                            getShapeToMove(i).Cut(Visio.VisCutCopyPasteCodes.visCopyPasteNormal);
+                            app.ActivePage.PasteToLocation( -1 + i, -1 + i, 0);
+                            app.ActivePage.ResizeToFitContents();
+                            app.ActivePage.AutoSizeDrawing();
+                        }
+                    }  */
+
+                    
                     break;
                     // Stencils for flow diagram editor
                 case CaseTypes.FLOW_PAGE:
@@ -178,6 +202,11 @@ namespace OOSD_CASE_Tool
                 app.Documents.OpenEx(stencilPath,
                     (short)Visio.VisOpenSaveArgs.visOpenDocked);
             }
+        }
+
+        Visio.Shape getShapeToMove(int i)
+        {
+            return app.ActivePage.Shapes[i];
         }
 
         /// <summary>
