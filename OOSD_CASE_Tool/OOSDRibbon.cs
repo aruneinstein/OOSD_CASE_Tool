@@ -14,7 +14,6 @@ namespace OOSD_CASE_Tool
         /// The Application hosting this addin.
         /// </summary>
         Visio.Application app;
-        RelationEditor relEditor;
 
         /// <summary>
         /// Loads this custom ribbon.
@@ -32,7 +31,6 @@ namespace OOSD_CASE_Tool
         private void OOSDRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             app = Globals.ThisAddIn.Application;
-            relEditor = new RelationEditor();
         }
 
         /// <summary>
@@ -73,10 +71,25 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            this.relEditor.generateObjectHierarchy();
+            Visio.Shape sh = app.ActivePage.Shapes[1];
+            //foreach (Visio.Shape sh in app.ActivePage.Shapes)
+            {
+                Array con = sh.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming1D,"", null);
+                foreach (int cn in con)
+                {
+                    Visio.Shape ts = app.ActivePage.Shapes.get_ItemFromID(cn);
+                    MessageBox.Show(ts.Name);
+                }
+
+                Array s = sh.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesIncomingNodes, "");
+                foreach (int id in s)
+                {
+                    MessageBox.Show(app.ActivePage.Shapes.get_ItemFromID(id).Name);
+                }
+            }
         }
 
-        public static void printProperties(Visio.Shapes shapes)
+        public static string printProperties(Visio.Shapes shapes)
         {
             string res = "";
             // Look at each shape in the collection.
@@ -120,6 +133,7 @@ namespace OOSD_CASE_Tool
                     printProperties(shape.Shapes);
             }
             MessageBox.Show(res);
+            return res;
         }
 
         private void shapeInfoButton_Click(object sender, RibbonControlEventArgs e)
@@ -158,9 +172,9 @@ namespace OOSD_CASE_Tool
             }
         }
 
-        private void genDBButton_Click(object sender, RibbonControlEventArgs e)
+        internal static string printProperties(Visio.Shape ownerShape)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

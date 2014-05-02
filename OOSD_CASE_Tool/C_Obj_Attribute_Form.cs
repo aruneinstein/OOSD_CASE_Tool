@@ -23,11 +23,37 @@ namespace OOSD_CASE_Tool
 
         [XmlElement("C_Obj_Name")]
         public string C_Object_Name
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                if (ownerShape.Name.StartsWith("c_"))
+                    C_Object_Name = ownerShape.Name;
+            }
+        }
 
         [XmlElement("C_Obj_Attribute")]
         public string C_Object_Attribute
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var attribute = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("c_") && String.Equals((String)attribute[2], "Attribute"))
+                        C_Object_Attribute = (String)attribute[3];
+                }
+            }
+        }
 
         public C_Obj_Attribute_Form(Visio.Shape Shape)
         {

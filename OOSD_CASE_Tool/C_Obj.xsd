@@ -12,7 +12,7 @@
         </xs:element>
         <xs:element name="C_Obj_Attribute" minOccurs="1">
           <xs:complexType>
-            <xs:attribute name="key" type="xs:string" use="required" />
+            <xs:attribute name="key" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
