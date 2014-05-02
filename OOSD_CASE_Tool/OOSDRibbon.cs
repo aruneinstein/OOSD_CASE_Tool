@@ -89,7 +89,7 @@ namespace OOSD_CASE_Tool
             }
         }
 
-        public static void printProperties(Visio.Shapes shapes)
+        public static string printProperties(Visio.Shapes shapes)
         {
             string res = "";
             // Look at each shape in the collection.
@@ -133,6 +133,7 @@ namespace OOSD_CASE_Tool
                     printProperties(shape.Shapes);
             }
             MessageBox.Show(res);
+            return res;
         }
 
         private void shapeInfoButton_Click(object sender, RibbonControlEventArgs e)
@@ -169,6 +170,11 @@ namespace OOSD_CASE_Tool
                 FlowSystem flowEditor = new FlowSystem();
                 flowEditor.stateDiagramToTable(selection, outputPage);
             }
+        }
+
+        internal static string printProperties(Visio.Shape ownerShape)
+        {
+            throw new NotImplementedException();
         }
     }
 }
