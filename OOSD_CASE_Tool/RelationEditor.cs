@@ -184,9 +184,11 @@ namespace OOSD_CASE_Tool
 
         private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item, ref double height, ref double sibling)
         {
-            Visio.Shape sh = pg.Drop(item, sibling, height);
-            pg.ResizeToFitContents();
-            sh.Text += ("\r\n_________________\r\n" + rectangleToObjectBox(pg, sh));
+            string text = "";
+            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item));
+            Visio.Shape sh = pg.Drop(this.rect, sibling, height);
+            sh.Text = text;
+            pg.AutoSizeDrawing();
             return sh;
         }
 
