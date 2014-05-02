@@ -86,6 +86,11 @@ namespace OOSD_CASE_Tool
             
         }
 
+        public static string printProperties(Visio.Shape shapes)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string printProperties(Visio.Shapes shapes)
         {
             string res = "";
