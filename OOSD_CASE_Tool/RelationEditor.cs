@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace OOSD_CASE_Tool
         public void generateObjectHierarchy()
         {
             refreshShapes();
+            Hashtable nodes = new Hashtable();
 
             foreach (Visio.Shape sh in this.relShapes)
             {
@@ -38,18 +40,43 @@ namespace OOSD_CASE_Tool
                 {
                     Visio.Shape ts = this.relShapes.get_ItemFromID(cn);
                     
-                    if (ts.Master.Name.Equals("Is-A Relationship"))
+                    if (ts.Master.Name.Equals("Is-A Relation"))
                     {
-                        IEnumerable<long> subclass = ts.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "").Cast<long>();
+                        nodes[ts] = new List<Visio.Shape>();
+                        IEnumerable<int> subclass = ts.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "").Cast<int>();
 
                         foreach (int shid in subclass)
                         {
-                            MessageBox.Show( this.relShapes.get_ItemFromID(shid).Name );
+                            Visio.Shape sub = this.relShapes.get_ItemFromID(shid);
+                            ((List<Visio.Shape>) nodes[ts]).Add(sub);
                         }
                     }
                 }
 
+                drawObjHierarchy(nodes);
+                nodes.Clear();
             }
+        }
+
+        private void drawObjHierarchy(Hashtable nd)
+        {
+            Visio.Page pg = Utilities.getDrawingPage(app, CaseTypes.OBJECT_DIAGRAM_PAGE);
+
+            foreach (Visio.Shape item in nd.Keys)
+	        {
+                Visio.Shape parent = drawObject(pg, item);
+                var s = (List<Visio.Shape>) nd[item];
+                foreach (var child in s)
+                {
+                    Visio.Shape ch = drawObject(pg, child);
+                    Utilities.glueShapesWithDynamicConnector(pg, ch, parent, 0, 1, 0.5, 0);
+                }
+	        }
+        }
+
+        private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item)
+        {
+            return null;
         }
 
         #endregion

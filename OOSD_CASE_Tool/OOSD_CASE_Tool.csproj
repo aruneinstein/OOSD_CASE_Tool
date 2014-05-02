@@ -144,6 +144,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -195,6 +196,7 @@
       <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="FlowSystem.cs" />
+    <Compile Include="Generator.cs" />
     <Compile Include="ObjectSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -208,6 +210,8 @@
     </Compile>
     <Compile Include="State.cs" />
     <Compile Include="Utilities.cs" />
+    <Content Include="C_Obj.xml" />
+    <Content Include="ADT_Obj.xml" />
     <EmbeddedResource Include="ADT_Obj_Attribute_Form.resx">
       <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -347,8 +351,6 @@
     <None Include="Resources\video.png" />
     <None Include="Resources\views.png" />
     <None Include="Resources\wrench.png" />
-    <Content Include="ADT_Obj.xml" />
-    <Content Include="C_Obj.xml" />
     <Content Include="SM_Obj.xml" />
     <Content Include="Stencils\Object Stencil.vssx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

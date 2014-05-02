@@ -28,23 +28,97 @@ namespace OOSD_CASE_Tool
 
         [XmlElement("SM_Obj_Name")]
         public string SM_Object_Name
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                if (ownerShape.Name.StartsWith("sm_"))
+                    SM_Object_Name = ownerShape.Name;
+            }
+        }
 
         [XmlElement("SM_Obj_Operation")]
         public string SM_Object_Operation
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var operation = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)operation[2], "Operation"))
+                        SM_Object_Operation = (String)operation[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_State")]
         public string SM_Object_State
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var state = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)state[2], "State"))
+                        SM_Object_State = (String)state[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_Event")]
         public string SM_Object_Event
-        { get; set; }
+        { 
+            get 
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var eve = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)eve[2], "Event"))
+                        SM_Object_Event = (String)eve[3];
+                }
+            }
+        }
 
         [XmlElement("SM_Obj_Control")]
         public string SM_Object_Control
-        { get; set; }
+        {
+            get
+            {
+                return OOSDRibbon.printProperties(ownerShape);
+            }
+            set
+            {
+                string Result = OOSDRibbon.printProperties(ownerShape);
+                var obj = Result.Split('\n');
+                foreach (string s in obj)
+                {
+                    var control = s.Split(' ');
+                    if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)control[2], "Control"))
+                        SM_Object_Control = (String)control[3];
+                }
+            }
+        }
 
         public SM_Obj_Attribute_Form(Visio.Shape Shape)
         {
