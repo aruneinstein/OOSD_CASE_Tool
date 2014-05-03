@@ -173,6 +173,32 @@ namespace OOSD_CASE_Tool
                 MessageBox.Show("Must have more than 4 Objects before creating relationship. Please create more objects.");
                 app.ActiveWindow.Page = CaseTypes.OBJECT_PAGE;
             }
+            else if ((app.ActivePage.Name == CaseTypes.RELATION_PAGE) && (app.ActivePage.Shapes.Count > 9))
+            {
+#if false
+                MessageBox.Show("You have more than 9 objects on 1 page. Some of your objects will be moved to a new work area.");
+                int count = app.ActivePage.Shapes.Count;
+#endif
+                Visio.Shape tmp_min = null;
+                double t = 10000000000.0;
+
+                foreach (Visio.Shape sh in app.ActivePage.Shapes)
+                {
+                    double t2 = 0.0;
+
+                    t2 = sh.get_Cells("PinX").get_Result(Visio.VisUnitCodes.visCentimeters);
+                    if (t2 < t)
+                    {
+                        t = t2;
+                        tmp_min = sh;
+                    }
+                }
+
+                app.ActiveWindow.Select(tmp_min, (short) Visio.VisSelectArgs.visSelect);
+                app.ActiveWindow.Selection.Move(-t - 1.5, 0, Visio.VisUnitCodes.visPageUnits);
+                app.ActiveWindow.Select(tmp_min, (short)Visio.VisSelectArgs.visDeselectAll);
+                app.ActivePage.Layout();
+            }
         }
 
         /// <summary>
