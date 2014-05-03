@@ -46,8 +46,16 @@ namespace OOSD_CASE_Tool
             this.relPage = app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE];
             this.relShapes = this.relPage.Shapes;
             app.ActiveWindow.Page = app.ActiveDocument.Pages[CaseTypes.OBJECT_DIAGRAM_PAGE];
-            app.ActiveWindow.SelectAll();
-            app.ActiveWindow.Selection.Delete();
+            try
+            {
+                app.ActiveWindow.SelectAll();
+                app.ActiveWindow.Selection.Delete();
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine(err.Message);
+            }
+            
             this.relToObjMap.Clear();
         }
 
