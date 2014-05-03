@@ -188,5 +188,15 @@ namespace OOSD_CASE_Tool
             RelationEditor relationEditor = new RelationEditor();
             relationEditor.toDataModel(inputPage, outputPage);
         }
+
+        /// <summary>
+        /// Converts Objects to a Data Dictionary.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void objToDictBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Generator().objToDataDictionary(app.ActivePage);
+        }
     }
 }
