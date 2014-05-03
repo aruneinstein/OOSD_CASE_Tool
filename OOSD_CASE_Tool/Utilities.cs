@@ -376,7 +376,7 @@ namespace OOSD_CASE_Tool
         /// X coordinate (in percent of the toShape's width) to Glue.</param>
         /// <param name="toYPercent">
         /// X coordinate (in percent of the toShape's width) to Glue.</param>
-        public static void glueShapesWithDynamicConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape, string connectorName,
+        public static Visio.Shape glueShapesWithDynamicConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
             double fromXPercent, double fromYPercent, double toXPercent, double toYPercent)
         {
             Visio.Documents appDocuments = page.Application.Documents;
@@ -386,7 +386,7 @@ namespace OOSD_CASE_Tool
             Visio.Document stencil = getStencil(appDocuments, CaseTypes.OOSD_GENERAL_STENCIL,
                 Visio.VisOpenSaveArgs.visOpenHidden);
 
-            Visio.Master connectorMaster = stencil.Masters[connectorName];
+            Visio.Master connectorMaster = stencil.Masters[CaseTypes.OOSD_CONNECTOR];
             Visio.Shape connector = page.Drop(connectorMaster, 0, 0);
 
             // The Dynamic Connector has an end point and a begin point, which are
@@ -404,6 +404,8 @@ namespace OOSD_CASE_Tool
             // Connect the connector end points to the from and to shapes
             beginCell.GlueToPos(fromShape, fromXPercent, fromYPercent);
             endCell.GlueToPos(toShape, toXPercent, toYPercent);
+
+            return connector;
         }
 
         /// <summary>
@@ -421,7 +423,7 @@ namespace OOSD_CASE_Tool
         /// <param name="toYPercent">
         /// X coordinate (in percent of the toShape's width) to Glue.</param>
         /// <param name="connectorMasterName">Name of the Connector Master in the General Stencil.</param>
-        public static void glueShapesWithConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
+        public static Visio.Shape glueShapesWithConnector(Visio.Page page, Visio.Shape fromShape, Visio.Shape toShape,
             double fromXPercent, double fromYPercent, double toXPercent, double toYPercent, string connectorMasterName)
         {
             Visio.Documents appDocuments = page.Application.Documents;
@@ -449,6 +451,8 @@ namespace OOSD_CASE_Tool
             // Connect the connector end points to the from and to shapes
             beginCell.GlueToPos(fromShape, fromXPercent, fromYPercent);
             endCell.GlueToPos(toShape, toXPercent, toYPercent);
+
+            return connector;
         }
 
         /// <summary>

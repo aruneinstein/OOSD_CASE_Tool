@@ -511,8 +511,8 @@ namespace OOSD_CASE_Tool
 
             foreach (Visio.Shape child in children)
             {
-                Utilities.glueShapesWithDynamicConnector(page, root, child, CaseTypes.OOSD_CONNECTOR,
-                    xGluePoint, rootYGluePoint, xGluePoint, childYGluePoint);
+                Utilities.glueShapesWithConnector(page, root, child,
+                    xGluePoint, rootYGluePoint, xGluePoint, childYGluePoint, CaseTypes.OOSD_CONNECTOR);
             }
         }
 
