@@ -113,14 +113,14 @@ namespace OOSD_CASE_Tool
             loadStencil();
 
             foreach (Visio.Shape tree in trList)
-	        {
+            {
                 double[] d = getVBBox(pg);
                 double height = d[3];
                 double sibling = OFFSET;
                 traverseTree(pg, tree, nd, ref height, ref sibling);
                 height = 0;
                 sibling = 0;
-	        }
+            }
             closeStencil();
             pg.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
                 Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
@@ -305,6 +305,75 @@ namespace OOSD_CASE_Tool
                     drawYPos = drawYPos - padY;
                 }
                 
+            }
+
+            // Layout
+            outputPage.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
+                Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
+        }
+
+        /// <summary>
+        /// Returns location (in percentage) to pin X & pin Y
+        /// </summary>
+        private PinLoc calculatePinLoc(Visio.Shape fromShape, Visio.Shape toShape)
+        {
+            PinLoc pinLoc = new PinLoc();
+
+            // gets the x, y position of from shape
+            double fromPinX = fromShape.get_Cells("PinX").get_Result("inches");
+            double fromPinY = fromShape.get_Cells("PinY").get_Result("inches");
+
+            // gets x, y position of the to shape
+            double toPinX = toShape.get_Cells("PinX").get_Result("inches");
+            double toPinY = toShape.get_Cells("PinY").get_Result("inches");
+
+            // checks position of shapes in relation to each other
+            if (fromPinX < toPinX)
+            {
+                pinLoc.FromPinX = 1.0;
+                pinLoc.ToPinX = 0.0;
+            } 
+            else
+            {
+                pinLoc.FromPinX = 0.0;
+                pinLoc.ToPinX = 1.0;
+            }
+
+            if (fromPinY < toPinY)
+            {
+                pinLoc.FromPinY = 1.0;
+                pinLoc.ToPinY = 0.0;
+            } else
+            {
+                pinLoc.FromPinY = 0.0;
+                pinLoc.FromPinY = 1.0;
+            }
+            
+
+            return pinLoc;
+        }
+
+        private class PinLoc
+        {
+            public double FromPinX { get; set; }
+            public double FromPinY { get; set; }
+            public double ToPinX { get; set; }
+            public double ToPinY { get; set; }
+
+            public PinLoc(double fromX, double fromY, double toX, double toY)
+            {
+                FromPinX = fromX;
+                FromPinY = fromY;
+                ToPinX = toX;
+                ToPinY = toY;
+            }
+
+            public PinLoc()
+            {
+                FromPinX = 0;
+                FromPinY = 0;
+                ToPinX = 0;
+                ToPinY = 0;
             }
         }
 
