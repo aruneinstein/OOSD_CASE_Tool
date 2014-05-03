@@ -43,7 +43,7 @@ namespace OOSD_CASE_Tool
 
             // Register event handlers
             app.ShapeAdded += app_ShapeAdded;
-            app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE].ShapeAdded += lf.checkConstraints;
+            //app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE].ShapeAdded += lf.checkConstraints;
 
 
 
