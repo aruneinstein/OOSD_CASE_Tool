@@ -71,8 +71,16 @@ namespace OOSD_CASE_Tool
             // Creates and output the State Transition Table
             outputStateTransitionTable(stateMachine, outputPage);
 
-            // Switches focus to resulting output
-            app.ActiveWindow.Page = outputPage;
+            try
+            {
+                // Switches focus to resulting output
+                app.ActiveWindow.Page = outputPage;
+            }
+            catch (Exception err)
+            {
+                System.Diagnostics.Debug.WriteLine(err.Message);
+            }
+            
         }
 
         /// <summary>
@@ -354,8 +362,16 @@ namespace OOSD_CASE_Tool
                 transformToArchChart(inputPage, outputPage, s);
             }
 
-            // switches active window to display the architecture chart page
-            app.ActiveWindow.Page = outputPage;
+            try
+            {
+                // switches active window to display the architecture chart page
+                app.ActiveWindow.Page = outputPage;
+            }
+            catch (Exception err)
+            {
+                System.Diagnostics.Debug.WriteLine(err.Message);
+            }
+            
         }
 
         /// <summary>

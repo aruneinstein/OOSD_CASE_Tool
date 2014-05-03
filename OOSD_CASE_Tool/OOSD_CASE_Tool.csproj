@@ -199,7 +199,6 @@
     </Compile>
     <Compile Include="FlowSystem.cs" />
     <Compile Include="Generator.cs" />
-    <Compile Include="LayoutEnforcer.cs" />
     <Compile Include="ObjectSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

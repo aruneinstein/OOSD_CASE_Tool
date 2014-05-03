@@ -45,9 +45,9 @@ namespace OOSD_CASE_Tool
         {
             this.relPage = app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE];
             this.relShapes = this.relPage.Shapes;
-            app.ActiveWindow.Page = app.ActiveDocument.Pages[CaseTypes.OBJECT_DIAGRAM_PAGE];
             try
             {
+                app.ActiveWindow.Page = app.ActiveDocument.Pages[CaseTypes.OBJECT_DIAGRAM_PAGE];
                 app.ActiveWindow.SelectAll();
                 app.ActiveWindow.Selection.Delete();
             }
@@ -69,23 +69,28 @@ namespace OOSD_CASE_Tool
             foreach (Visio.Shape sh in this.relShapes)
             {
                 Array con = sh.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming1D, "", null);
+                
                 foreach (int cn in con)
                 {
                     Visio.Shape ts = this.relShapes.get_ItemFromID(cn);
                     
                     if (ts.Master.Name.Equals(CaseTypes.IS_A_STENCIL_MASTER, StringComparison.Ordinal))
                     {
-                        nodes[sh] = new List<Visio.Shape>();
+                        if (!nodes.ContainsKey(sh))
+                        {
+                            nodes[sh] = new List<Visio.Shape>();
+                        }
                         IEnumerable<int> subclass = ts.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "").Cast<int>();
 
                         foreach (int shid in subclass)
                         {
                             Visio.Shape sub = this.relShapes.get_ItemFromID(shid);
                             ((List<Visio.Shape>) nodes[sh]).Add(sub);
+                            Debug.WriteLine(String.Format("Added {0} to child list for {1}", sub.Text, sh.Text));
                         }
                     }
-                        }
-                    }
+                }
+            }
             List<Visio.Shape> treeRoots = constructForest(nodes);
             drawObjHierarchy(treeRoots, nodes);
         }
@@ -158,17 +163,18 @@ namespace OOSD_CASE_Tool
 
         private void traverseTree(Visio.Page pg, Visio.Shape tree, Hashtable nd, ref double height, ref double sibling)
         {
+            Visio.Shape parent;
             if (!nd.ContainsKey(tree))
             {
                 return;
             }
 
-            Visio.Shape parent = drawObject(pg, tree, ref height, ref sibling);
+            parent = drawObject(pg, tree, ref height, ref sibling);
             height += OFFSET;
             
             var s = (List<Visio.Shape>) nd[tree];
-                foreach (var child in s)
-                {
+            foreach (var child in s)
+            {
                 Visio.Shape ch = drawObject(pg, child, ref height, ref sibling);
                 sibling += OFFSET;
                 ch.AutoConnect(parent, Visio.VisAutoConnectDir.visAutoConnectDirUp, this.connector);
@@ -180,9 +186,9 @@ namespace OOSD_CASE_Tool
             foreach (var i in s)
             {
                 traverseTree(pg, i, nd, ref height, ref sibling);
-                }
-            
             }
+            
+        }
 
         private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item, ref double height, ref double sibling)
         {
@@ -373,7 +379,15 @@ namespace OOSD_CASE_Tool
             }
 
             // switch to new page
-            app.ActiveWindow.Page = outputPage;
+            try
+            {
+                app.ActiveWindow.Page = outputPage;
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine(err.Message);
+            }
+            
         }
 
         /// <summary>
