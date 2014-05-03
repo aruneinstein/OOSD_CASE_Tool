@@ -31,7 +31,7 @@ namespace OOSD_CASE_Tool
             set
             {
                 if (ownerShape.Name.StartsWith("c_"))
-                    C_Object_Name = ownerShape.Name;
+                    c_object_name = ownerShape.Name;
             }
         }
 
@@ -50,7 +50,7 @@ namespace OOSD_CASE_Tool
                 {
                     var attribute = s.Split(' ');
                     if (ownerShape.Name.StartsWith("c_") && String.Equals((String)attribute[2], "Attribute"))
-                        C_Object_Attribute = (String)attribute[3];
+                        c_object_attribute = (String)attribute[3];
                 }
             }
         }
@@ -334,5 +334,9 @@ namespace OOSD_CASE_Tool
 
         }
 
+
+        public string c_object_name { get; set; }
+
+        public string c_object_attribute { get; set; }
     }
 }
