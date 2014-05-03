@@ -172,11 +172,13 @@ namespace OOSD_CASE_Tool
                 app.Documents.OpenEx(stencilPath,
                     (short)Visio.VisOpenSaveArgs.visOpenDocked);
             }
-            //if ((app.ActivePage.Name == CaseTypes.RELATION_PAGE) && (app.ActivePage.Shapes.Count < 5))
-            //{
-            //    MessageBox.Show("Must have more than 4 Objects before creating relationship. Please create more objects.");
-            //    app.ActiveWindow.Page = CaseTypes.OBJECT_PAGE;
-            //}
+
+
+            if ((app.ActivePage.Name == CaseTypes.RELATION_PAGE) && (app.ActivePage.Shapes.Count < 5))
+            {
+                MessageBox.Show("Must have more than 4 Objects before creating relationship. Please create more objects.");
+                app.ActiveWindow.Page = CaseTypes.OBJECT_PAGE;
+            }
             else if ((app.ActivePage.Name == CaseTypes.RELATION_PAGE) && (app.ActivePage.Shapes.Count > 9))
             {
 #if false
