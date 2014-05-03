@@ -58,7 +58,8 @@ namespace OOSD_CASE_Tool
             foreach (Visio.Shape s in cObjects)
             {
                 short numRows = s.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
-                XElement attrRoot = new XElement("C-Object");
+                XElement objRoot = new XElement("C-Object");
+                XElement attrRoot = null;
                 int attrNum = 0;
                 string attrName = "";
                 for (short row = 0; row < numRows; ++row)
@@ -71,20 +72,29 @@ namespace OOSD_CASE_Tool
                     if (row == 0)
                     {
 
-                        attrRoot.SetAttributeValue("name", valCell);
+                        objRoot.SetAttributeValue("name", valCell);
                     } else
                     {
                         string[] labelArr = labelCell.Split('_');
 
-                        attrRoot.Add(
-                            new XElement("attribute_" + labelArr[1] + "_" + labelArr[2], valCell));
+                        if (labelArr[2] == "name")
+                        {
+                            attrRoot = new XElement("Attribute");
+                            attrRoot.SetAttributeValue("name", valCell);
+                            objRoot.Add(attrRoot);
+                        }
+                        else
+                        {
+                            attrRoot.Add(
+                                new XElement(labelArr[2], valCell));
+                        }
                     }
 
                     
                 }
                 objNum++;
 
-                doc.Add(attrRoot);
+                doc.Add(objRoot);
 
             }
         }
