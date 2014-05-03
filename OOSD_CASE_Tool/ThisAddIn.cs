@@ -39,7 +39,7 @@ namespace OOSD_CASE_Tool
             app = this.Application;
 
             this.objectSystem = new ObjectSystem();
-            this.lf = new LayoutEnforcer(app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE]);
+            //this.lf = new LayoutEnforcer(app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE]);
 
             // Register event handlers
 
