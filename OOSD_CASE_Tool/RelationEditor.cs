@@ -17,13 +17,16 @@ namespace OOSD_CASE_Tool
         Visio.Shapes relShapes;
         Visio.Document stencil;
         Visio.Master connector, rect;
+        Dictionary<Visio.Shape, Visio.Shape> relToObjMap;
         private const double OFFSET = 1.5;
 
         public RelationEditor()
         {
             this.app = Globals.ThisAddIn.Application;
+            this.relToObjMap = new Dictionary<Visio.Shape, Visio.Shape>();
         }
 
+        #region Object Hierarchy Diagram
         private void loadStencil()
         {
             this.stencil = Utilities.getStencil(app.Documents, CaseTypes.OOSD_GENERAL_STENCIL, Visio.VisOpenSaveArgs.visOpenHidden);
@@ -42,9 +45,13 @@ namespace OOSD_CASE_Tool
         {
             this.relPage = app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE];
             this.relShapes = this.relPage.Shapes;
+            app.ActiveWindow.Page = app.ActiveDocument.Pages[CaseTypes.OBJECT_DIAGRAM_PAGE];
+            app.ActiveWindow.SelectAll();
+            app.ActiveWindow.Selection.Delete();
+            this.relToObjMap.Clear();
         }
 
-        #region Object Hierarchy Diagram
+        
 
         public void generateObjectHierarchy()
         {
@@ -109,13 +116,21 @@ namespace OOSD_CASE_Tool
         private void drawObjHierarchy(List<Visio.Shape> trList, Hashtable nd)
         {
             Visio.Page pg = Utilities.getDrawingPage(app, CaseTypes.OBJECT_DIAGRAM_PAGE);
-            app.ActiveWindow.Page = pg;
             loadStencil();
 
             foreach (Visio.Shape tree in trList)
 	        {
+                double height;
                 double[] d = getVBBox(pg);
-                double height = d[3];
+                if (pg.Shapes.Count > 0)
+                {
+                    height = d[3];
+                }
+                else
+                {
+                    height = Utilities.getPageHeight(pg) / 2;
+                }
+                
                 double sibling = OFFSET;
                 traverseTree(pg, tree, nd, ref height, ref sibling);
                 height = 0;
@@ -163,9 +178,19 @@ namespace OOSD_CASE_Tool
 
         private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item, ref double height, ref double sibling)
         {
+            Visio.Shape sh = null;
+            if (this.relToObjMap.Keys.Contains<Visio.Shape>(item))
+            {
+                sh = this.relToObjMap[item];
+            }
+            else
+            {
+                sh = pg.Drop(this.rect, sibling, height);
+                this.relToObjMap[item] = sh;
+            }
+
             string text = "";
-            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item));
-            Visio.Shape sh = pg.Drop(this.rect, sibling, height);
+            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item)); 
             sh.Text = text;
             pg.AutoSizeDrawing();
             return sh;
@@ -174,6 +199,7 @@ namespace OOSD_CASE_Tool
         private string rectangleToObjectBox(Visio.Page pg, Visio.Shape inp)
         {
             string attributeSet = "";
+            string operatioSet = "";
             // All attribute rows are stored in the form: 
             // at_[attribute_name]_[attribute_property] in the Label Cell
             // Get number of rows in c object shape data section
@@ -194,9 +220,31 @@ namespace OOSD_CASE_Tool
                     string atName = labelCellValue.Substring(startIndex, atNameLen);
                     attributeSet += (Utilities.underscoreToSpace(atName) + "\r\n");
                 }
+
+                
             }
 
-            return attributeSet;
+            attributeSet += "\r\n_________________\r\n";
+            numRows = inp.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+            // Loop through each row of shape data section
+            for (short r = 0; r < numRows; ++r)
+            {
+                Visio.Cell labelCell = inp.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, r, CaseTypes.DS_LABEL_CELL);
+
+                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+                
+                if (labelCellValue.StartsWith("op_") && labelCellValue.EndsWith("_name"))
+                {
+                    // We are only interested in the attribute name
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    int opNameLen = endIndex - startIndex;
+                    string opName = labelCellValue.Substring(startIndex, opNameLen);
+                    operatioSet += (Utilities.underscoreToSpace(opName) + "\r\n");
+                }
+            }
+            
+            return attributeSet + operatioSet;
         }
 
         #endregion
