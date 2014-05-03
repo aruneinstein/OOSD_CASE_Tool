@@ -177,6 +177,9 @@ namespace OOSD_CASE_Tool
             saveObjectName();
             // Save attributes when apply button is presed
             saveAttribute();
+            this.attributeNameText.Text = "";
+            this.attributeDomainText.Text = "";
+            this.attributeDiscriptionText.Text = "";
         }
         private void saveObjectName()
         {
