@@ -127,7 +127,7 @@ namespace OOSD_CASE_Tool
             loadStencil();
 
             foreach (Visio.Shape tree in trList)
-	        {
+            {
                 double height;
                 double[] d = getVBBox(pg);
                 if (pg.Shapes.Count > 0)
@@ -143,7 +143,7 @@ namespace OOSD_CASE_Tool
                 traverseTree(pg, tree, nd, ref height, ref sibling);
                 height = 0;
                 sibling = 0;
-	        }
+            }
             closeStencil();
             pg.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
                 Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);

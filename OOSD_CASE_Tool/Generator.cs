@@ -40,7 +40,83 @@ namespace OOSD_CASE_Tool
         /// <param name="page"></param>
         public void erToRelationshipsDB(Visio.Page page)
         {
-            throw new NotImplementedException();
+            // XML Document to hold all Objects Data Dictionary.
+            XElement doc = new XElement(
+                new XElement("ER-DB"));
+            XElement isARoot = new XElement(new XElement("Is-A-Relationships"));
+            XElement multiRoot = new XElement(new XElement("Multiplicity-Relationships"));
+
+            // output in form of: obj1_multiplicity-multiplicity_obj2
+            // or obj1_is-a_obj2
+            List<string> isA = new List<string>();
+            List<string> multi = new List<string>();
+
+            Visio.Shapes allShapes = page.Shapes;
+            List<Visio.Shape> all1DShapes = getAll1DConnectors(page);
+
+            // for each connector, get the type of connect (1:1, 1:M, ..., is-a)
+            // and the begin & end shapes
+            foreach (Visio.Shape connector in all1DShapes)
+            {
+                int beginShapeID = ((int[])connector.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, ""))[0];
+                int endShapeID = ((int[])connector.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, ""))[0];
+
+                string relationship = allShapes.get_ItemFromID(beginShapeID).Text + " : ";
+
+                string connectorType = connector.Master.Name;
+                if (connectorType == CaseTypes.IS_A_MASTER)
+                {
+                    relationship += "is a" +  " : " + allShapes.get_ItemFromID(endShapeID).Text;
+                    isA.Add(relationship);
+                } 
+                else
+                {
+                    string[] multiplicities = connector.Master.Name.Split(':');
+                    relationship += multiplicities[0] + " :: " + multiplicities[1]
+                        + " : " + allShapes.get_ItemFromID(endShapeID).Text;
+                    multi.Add(relationship);
+                }
+
+            }
+
+            // convert to XML element
+            for (int i = 0; i < isA.Count; ++i)
+            {
+                isARoot.Add(new XElement("r" + i, isA[i]));
+            }
+
+            for (int i = 0; i < multi.Count; ++i)
+            {
+                multiRoot.Add(new XElement("r" + i, multi[i]));
+            }
+
+            doc.Add(isARoot);
+            doc.Add(multiRoot);
+
+            // Save to file
+            doc.Save(this.DirPath);
+        }
+
+        /// <summary>
+        /// Returns only 1D Connector Shapes.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        private List<Visio.Shape> getAll1DConnectors(Visio.Page page)
+        {
+            List<Visio.Shape> all1DShapes = new List<Visio.Shape>();
+
+            List<Visio.Shape> allShapes = Utilities.getAllShapesOnPage(page);
+            foreach (Visio.Shape s in allShapes)
+            {
+                // OneD returns -1 if it's a 1D Shape
+                if (s.OneD < 0)
+                {
+                    all1DShapes.Add(s);
+                }
+            }
+
+            return all1DShapes;
         }
 
         #endregion
@@ -54,8 +130,6 @@ namespace OOSD_CASE_Tool
         /// <param name="page"></param>
         public void objToDataDictionary(Visio.Page page)
         {
-            //string dirPath = System.Environment.GetFolderPath(
-            //        System.Environment.SpecialFolder.Desktop) + @"\ObjectsDB.xml";
 
             // XML Document to hold all Objects Data Dictionary.
             XElement doc = new XElement(
