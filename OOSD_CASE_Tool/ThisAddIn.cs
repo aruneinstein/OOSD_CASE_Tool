@@ -34,15 +34,7 @@ namespace OOSD_CASE_Tool
             objectSystem = new ObjectSystem();
 
             // Register event handlers
-
-            /////////// TODO: Fix bug ///////////
             app.ShapeAdded += app_ShapeAdded;
-            /// Danny: this event handler raises an exception when I try to call
-            /// page.Draw... because the Draw method only returns a reference to
-            /// the created Shape after it's done, but the ShapeAdded handler is called
-            /// before a reference to new Shape could be passed to it.
-
-
             app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
             app.DocumentCreated += app_DocumentCreated;
             app.DocumentOpened += app_DocumentOpened;
