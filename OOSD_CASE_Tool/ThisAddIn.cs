@@ -67,7 +67,7 @@ namespace OOSD_CASE_Tool
                 if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
                 {
                     app_BeforeShapeTextEdit(Shape);
-                }    
+                }
             }
         }
 
