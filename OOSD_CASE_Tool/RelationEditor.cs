@@ -112,10 +112,10 @@ namespace OOSD_CASE_Tool
             Visio.Master rect = Utilities.getMasterFromStencil(app, CaseTypes.OOSD_GENERAL_STENCIL,
                 CaseTypes.OOSD_RECTANGLE);
             
-            foreach (Visio.Shape s in dataModelConnectors)
+            foreach (Visio.Shape con in dataModelConnectors)
             {
                 // Get both shapes connected to it
-                int[] shapeIDs = (int[]) s.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "");
+                int[] shapeIDs = (int[]) con.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "");
                 Visio.Shape gluedShape = allShapes.get_ItemFromID(shapeIDs[0]);
 
                 Visio.Shape beginDroppedShape = getShapeByName(drawnShapes, gluedShape.Text);
@@ -128,7 +128,7 @@ namespace OOSD_CASE_Tool
                     drawXPos = drawXPos + padX;
                 }
 
-                shapeIDs = (int[])s.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
+                shapeIDs = (int[])con.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
                 gluedShape = allShapes.get_ItemFromID(shapeIDs[0]);
 
                 Visio.Shape endDroppedShape = getShapeByName(drawnShapes, gluedShape.Text);
@@ -142,11 +142,42 @@ namespace OOSD_CASE_Tool
                 }
 
                 // connects both shapes depending on its relationship
-                Visio.Shape fromShape = null;
-                Visio.Shape toShape = null;
-                string connectorName = CaseTypes.OOSD_ONE_N_CONNECTOR;
-                
 
+                // connection point
+                double pinX = 0.5, pinY = 0.5;
+
+                string conMasterName = con.Master.Name;
+                // is-a relationships are connected by a "is-a" connector
+                if (conMasterName == CaseTypes.IS_A_MASTER)
+                {
+                    Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
+                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
+                    rel.Text = "is-a";
+                } 
+                else if (conMasterName == CaseTypes.ONE_ONEC_MASTER)
+                {
+                    // 1:1 has-a relationship
+                    Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
+                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
+                    rel.Text = "has " + endDroppedShape.Text;
+                } 
+                else if (conMasterName == CaseTypes.ONE_MC_MASTER)
+                {
+                    // 1:Mc has-a relationship
+                    Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
+                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                    rel.Text = "has " + endDroppedShape.Text + "s";
+                } 
+                else if (conMasterName == CaseTypes.M_MC_MASTER)
+                {
+                    Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
+                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                    rel.Text = "has " + endDroppedShape.Text + "s";
+
+                    rel = Utilities.glueShapesWithConnector(outputPage,
+                        endDroppedShape, beginDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                    rel.Text = "is in " + beginDroppedShape.Text + "s";
+                }
 
                 // resets drawing point to left edge of page
                 if (drawXPos >= pageW)
@@ -181,8 +212,8 @@ namespace OOSD_CASE_Tool
             List<Visio.Shape> dataModelConnectors = new List<Visio.Shape>();
             foreach (Visio.Shape s in allConnectors)
             {
-                if (s.Master.Name != CaseTypes.ONE_ONE_MASTER ||
-                    s.Master.Name != CaseTypes.ONE_M_MASTER ||
+                if (s.Master.Name != CaseTypes.ONE_ONE_MASTER &&
+                    s.Master.Name != CaseTypes.ONE_M_MASTER &&
                     s.Master.Name != CaseTypes.M_M_MASTER)
                 {
                     dataModelConnectors.Add(s);
