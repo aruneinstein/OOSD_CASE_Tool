@@ -42,14 +42,9 @@ namespace OOSD_CASE_Tool
             //this.lf = new LayoutEnforcer(app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE]);
 
             // Register event handlers
-
-            /////////// TODO: Fix bug ///////////
             app.ShapeAdded += app_ShapeAdded;
             app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE].ShapeAdded += lf.checkConstraints;
-            /// Danny: this event handler raises an exception when I try to call
-            /// page.Draw... because the Draw method only returns a reference to
-            /// the created Shape after it's done, but the ShapeAdded handler is called
-            /// before a reference to new Shape could be passed to it.
+
 
 
             app.BeforeShapeTextEdit += app_BeforeShapeTextEdit;
@@ -72,7 +67,7 @@ namespace OOSD_CASE_Tool
                 if (shapePage.Equals(CaseTypes.OBJECT_PAGE, StringComparison.Ordinal))
                 {
                     app_BeforeShapeTextEdit(Shape);
-                }
+                }    
             }
         }
 
