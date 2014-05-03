@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using Visio = Microsoft.Office.Interop.Visio;
+using Debug = System.Diagnostics.Debug;
 using System.Windows.Forms;
 
 namespace OOSD_CASE_Tool
@@ -14,6 +15,7 @@ namespace OOSD_CASE_Tool
         /// The Application hosting this addin.
         /// </summary>
         Visio.Application app;
+        RelationEditor relEditor;
 
         /// <summary>
         /// Loads this custom ribbon.
@@ -31,16 +33,7 @@ namespace OOSD_CASE_Tool
         private void OOSDRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             app = Globals.ThisAddIn.Application;
-        }
-
-        /// <summary>
-        /// Generates a Database of Relationships from a Relation Editor.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void genDBButton_Click(object sender, RibbonControlEventArgs e)
-        {
-
+            relEditor = new RelationEditor();
         }
 
         /// <summary>
@@ -81,22 +74,20 @@ namespace OOSD_CASE_Tool
 
         private void erToObjHierBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            Visio.Shape sh = app.ActivePage.Shapes[1];
-            //foreach (Visio.Shape sh in app.ActivePage.Shapes)
+            try
             {
-                Array con = sh.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming1D,"", null);
-                foreach (int cn in con)
-                {
-                    Visio.Shape ts = app.ActivePage.Shapes.get_ItemFromID(cn);
-                    MessageBox.Show(ts.Name);
-                }
-
-                Array s = sh.ConnectedShapes(Visio.VisConnectedShapesFlags.visConnectedShapesIncomingNodes, "");
-                foreach (int id in s)
-                {
-                    MessageBox.Show(app.ActivePage.Shapes.get_ItemFromID(id).Name);
-                }
+                this.relEditor.generateObjectHierarchy();
             }
+            catch (Exception err)
+            {
+                Debug.WriteLine(err.Message);
+                throw err;
+            }
+        }
+
+        public static string printProperties(Visio.Shape shapes)
+        {
+            throw new NotImplementedException();
         }
 
         public static string printProperties(Visio.Shapes shapes)
@@ -182,9 +173,14 @@ namespace OOSD_CASE_Tool
             }
         }
 
-        internal static string printProperties(Visio.Shape ownerShape)
+        /// <summary>
+        /// Generates a Database of Relationships from a Relation Editor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void genDBButton_Click(object sender, RibbonControlEventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         /// <summary>

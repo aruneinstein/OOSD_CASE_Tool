@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Debug = System.Diagnostics.Debug;
 using Visio = Microsoft.Office.Interop.Visio;
 
 namespace OOSD_CASE_Tool
@@ -14,10 +15,27 @@ namespace OOSD_CASE_Tool
         Visio.Application app;
         Visio.Page relPage;
         Visio.Shapes relShapes;
+        Visio.Document stencil;
+        Visio.Master connector, rect;
+        private const double OFFSET = 1.5;
 
         public RelationEditor()
         {
-            app = Globals.ThisAddIn.Application;
+            this.app = Globals.ThisAddIn.Application;
+        }
+
+        private void loadStencil()
+        {
+            this.stencil = Utilities.getStencil(app.Documents, CaseTypes.OOSD_GENERAL_STENCIL, Visio.VisOpenSaveArgs.visOpenHidden);
+            this.connector = this.stencil.Masters[CaseTypes.OBJECT_HIERARCHY_CONNECTOR];
+            this.rect = this.stencil.Masters[CaseTypes.OBJECT_HIERARCHY_RECT];
+        }
+
+        private void closeStencil()
+        {
+            this.stencil.Close();
+            this.connector = null;
+            this.rect = null;
         }
 
         public void refreshShapes()
@@ -40,47 +58,148 @@ namespace OOSD_CASE_Tool
                 {
                     Visio.Shape ts = this.relShapes.get_ItemFromID(cn);
                     
-                    if (ts.Master.Name.Equals("Is-A Relation"))
+                    if (ts.Master.Name.Equals(CaseTypes.IS_A_STENCIL_MASTER, StringComparison.Ordinal))
                     {
-                        nodes[ts] = new List<Visio.Shape>();
+                        nodes[sh] = new List<Visio.Shape>();
                         IEnumerable<int> subclass = ts.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "").Cast<int>();
 
                         foreach (int shid in subclass)
                         {
                             Visio.Shape sub = this.relShapes.get_ItemFromID(shid);
-                            ((List<Visio.Shape>) nodes[ts]).Add(sub);
+                            ((List<Visio.Shape>) nodes[sh]).Add(sub);
                         }
                     }
+                        }
+                    }
+            List<Visio.Shape> treeRoots = constructForest(nodes);
+            drawObjHierarchy(treeRoots, nodes);
+        }
+
+        /// <summary>
+        /// Get to know the roots of each trees.
+        /// </summary>
+        /// <param name="nodes"> Node connections. (Adjacency list) </param>
+        /// <returns> List of tree roots. </returns>
+        private List<Visio.Shape> constructForest(Hashtable nodes)
+        {
+            List<Visio.Shape> treeRoots = new List<Visio.Shape>();
+            HashSet<Visio.Shape> tparent = new HashSet<Visio.Shape>();
+            
+            foreach (Visio.Shape s in nodes.Keys)
+            {
+                tparent.UnionWith((List<Visio.Shape>) nodes[s]);
                 }
 
-                drawObjHierarchy(nodes);
-                nodes.Clear();
+            foreach (Visio.Shape nd in nodes.Keys)
+            {
+                if (!tparent.Contains(nd))
+                {
+                    treeRoots.Add((Visio.Shape)nd);
             }
         }
 
-        private void drawObjHierarchy(Hashtable nd)
+            return treeRoots;
+        }
+
+        /// <summary>
+        /// Draws the object onto screen.
+        /// </summary>
+        /// <param name="trList"> Tree root list. </param>
+        /// <param name="nd"> Node connections. (Adjacency list) </param>
+        private void drawObjHierarchy(List<Visio.Shape> trList, Hashtable nd)
         {
             Visio.Page pg = Utilities.getDrawingPage(app, CaseTypes.OBJECT_DIAGRAM_PAGE);
+            app.ActiveWindow.Page = pg;
+            loadStencil();
 
-            foreach (Visio.Shape item in nd.Keys)
-            {
-                Visio.Shape parent = drawObject(pg, item);
-                var s = (List<Visio.Shape>) nd[item];
-                foreach (var child in s)
-                {
-                    Visio.Shape ch = drawObject(pg, child);
-                    Utilities.glueShapesWithDynamicConnector(pg, ch, parent, 0, 1, 0.5, 0);
-                }
-            }
+            foreach (Visio.Shape tree in trList)
+	        {
+                double[] d = getVBBox(pg);
+                double height = d[3];
+                double sibling = OFFSET;
+                traverseTree(pg, tree, nd, ref height, ref sibling);
+                height = 0;
+                sibling = 0;
+	        }
+            closeStencil();
+            pg.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
+                Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
         }
 
-        private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item)
+        private double[] getVBBox(Visio.Page pg)
+            {
+            double[] dir = new double[4];
+            pg.VisualBoundingBox((short) Visio.VisBoundingBoxArgs.visBBoxDrawingCoords, out dir[0], out dir[1], out dir[2], out dir[3]);
+            return dir;
+        }
+
+        private void traverseTree(Visio.Page pg, Visio.Shape tree, Hashtable nd, ref double height, ref double sibling)
         {
-            return null;
+            if (!nd.ContainsKey(tree))
+            {
+                return;
+            }
+
+            Visio.Shape parent = drawObject(pg, tree, ref height, ref sibling);
+            height += OFFSET;
+            
+            var s = (List<Visio.Shape>) nd[tree];
+                foreach (var child in s)
+                {
+                Visio.Shape ch = drawObject(pg, child, ref height, ref sibling);
+                sibling += OFFSET;
+                ch.AutoConnect(parent, Visio.VisAutoConnectDir.visAutoConnectDirUp, this.connector);
+                Debug.WriteLine(String.Format("Connecting {0} to {1}", parent.Text, ch.Text));
+            }
+
+            height += OFFSET;
+            sibling = OFFSET;
+            foreach (var i in s)
+            {
+                traverseTree(pg, i, nd, ref height, ref sibling);
+                }
+            
+            }
+
+        private Visio.Shape drawObject(Visio.Page pg, Visio.Shape item, ref double height, ref double sibling)
+        {
+            string text = "";
+            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item));
+            Visio.Shape sh = pg.Drop(this.rect, sibling, height);
+            sh.Text = text;
+            pg.AutoSizeDrawing();
+            return sh;
+        }
+
+        private string rectangleToObjectBox(Visio.Page pg, Visio.Shape inp)
+        {
+            string attributeSet = "";
+            // All attribute rows are stored in the form: 
+            // at_[attribute_name]_[attribute_property] in the Label Cell
+            // Get number of rows in c object shape data section
+            short numRows = inp.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+            // Loop through each row of shape data section
+            for (short r = 0; r < numRows; ++r)
+            {
+                Visio.Cell labelCell = inp.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, r, CaseTypes.DS_LABEL_CELL);
+                
+                string labelCellValue = labelCell.get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+
+                if (labelCellValue.StartsWith("at_") && labelCellValue.EndsWith("_name"))
+        {
+                    // We are only interested in the attribute name
+                    int startIndex = labelCellValue.IndexOf('_') + 1;
+                    int endIndex = labelCellValue.LastIndexOf('_');
+                    int atNameLen = endIndex - startIndex;
+                    string atName = labelCellValue.Substring(startIndex, atNameLen);
+                    attributeSet += (Utilities.underscoreToSpace(atName) + "\r\n");
+                }
+            }
+
+            return attributeSet;
         }
 
         #endregion
-
 
         #region Data Model Generation
 
@@ -119,7 +238,7 @@ namespace OOSD_CASE_Tool
                 Visio.Shape gluedShape = allShapes.get_ItemFromID(shapeIDs[0]);
 
                 Visio.Shape beginDroppedShape = getShapeByName(drawnShapes, gluedShape.Text);
-                if ( beginDroppedShape == null)
+                if (beginDroppedShape == null)
                 {
                     Visio.Shape droppedShape = outputPage.Drop(rect, drawXPos, drawYPos);
                     droppedShape.Text = gluedShape.Text;

@@ -141,6 +141,21 @@ namespace OOSD_CASE_Tool
         public const string SM_OBJ_MASTER = "SM-Object";
 
         /// <summary>
+        /// Name of the stencil master that represents an Is-A relationship between objects.
+        /// </summary>
+        public const string IS_A_STENCIL_MASTER = "Is-A Relation";
+
+        /// <summary>
+        /// Name of the connector for object hierarchy.
+        /// </summary>
+        public const string OBJECT_HIERARCHY_CONNECTOR = "Obj Connector";
+
+        /// <summary>
+        /// Name of the rectangle box for object hierarchy.
+        /// </summary>
+        public const string OBJECT_HIERARCHY_RECT = "Object Box";
+
+        /// <summary>
         /// Name of the Transform-Center Master Shape as defined in the Flow Diagram Stencil.
         /// A transform center shape is the root of a Transform Center and is the root
         /// of all processes active in the Transform Center.
