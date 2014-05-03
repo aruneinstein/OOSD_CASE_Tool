@@ -364,9 +364,8 @@ namespace OOSD_CASE_Tool
                 
             }
 
-            // Layout
-            //outputPage.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
-            //    Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
+            // switch to new page
+            app.ActiveWindow.Page = outputPage;
         }
 
         /// <summary>
