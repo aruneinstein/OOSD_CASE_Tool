@@ -48,20 +48,69 @@ namespace OOSD_CASE_Tool
             filterObjectTypes(allShapes);
 
             writeCObjToXML(doc);
+            writeADTObjToXML(doc);
 
             doc.Save(dirPath);
         }
 
+        private void writeADTObjToXML(XElement doc)
+        {
+            foreach (Visio.Shape s in adtObjects)
+            {
+                short numRows = s.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
+                XElement objRoot = new XElement("ADT-Object");
+                XElement opRoot = null;
+                XElement axiomRoot = null;
+
+                for (short row = 0; row < numRows; ++row)
+                {
+                    string valCell = valCell = s.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, row, CaseTypes.DS_VALUE_CELL)
+                            .get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+                    string labelCell = labelCell = s.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, row, CaseTypes.DS_LABEL_CELL)
+                            .get_ResultStr(Visio.VisUnitCodes.visUnitsString);
+                    // the first row gives the name of the Obj
+                    if (row == 0)
+                    {
+
+                        objRoot.SetAttributeValue("name", valCell);
+                    }
+                    else
+                    {
+                        string[] labelArr = labelCell.Split('_');
+
+                        if (labelArr.Length > 2 && labelArr[2] == "name")
+                        {
+                            opRoot = new XElement("Operation");
+                            opRoot.SetAttributeValue("name", valCell);
+                            objRoot.Add(opRoot);
+                        }
+                        else if (labelArr[0] == "op")
+                        {
+                            opRoot.Add(
+                                new XElement(labelArr[2], valCell));
+                        } else if (labelArr[0] == "axiom")
+                        {
+                            axiomRoot = new XElement("Axioms", valCell);
+                        }
+                    }
+
+
+                }
+                objRoot.Add(axiomRoot);
+                doc.Add(objRoot);
+
+            }
+        }
+
+
         private void writeCObjToXML(XElement doc)
         {
-            int objNum = 0;
             foreach (Visio.Shape s in cObjects)
             {
                 short numRows = s.get_RowCount(CaseTypes.SHAPE_DATA_SECTION);
                 XElement objRoot = new XElement("C-Object");
                 XElement attrRoot = null;
-                int attrNum = 0;
-                string attrName = "";
+
                 for (short row = 0; row < numRows; ++row)
                 {
                     string valCell = valCell = s.get_CellsSRC(CaseTypes.SHAPE_DATA_SECTION, row, CaseTypes.DS_VALUE_CELL)
@@ -92,7 +141,6 @@ namespace OOSD_CASE_Tool
 
                     
                 }
-                objNum++;
 
                 doc.Add(objRoot);
 
