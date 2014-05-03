@@ -23,6 +23,13 @@ namespace OOSD_CASE_Tool
         private ObjectSystem objectSystem;
 
         /// <summary>
+        /// Object responsible for enforcing layout restrictions on page.
+        /// </summary>
+        private LayoutEnforcer lf;
+
+
+
+        /// <summary>
         /// Loads this addin in Visio.
         /// </summary>
         /// <param name="sender"></param>
@@ -31,12 +38,14 @@ namespace OOSD_CASE_Tool
         {
             app = this.Application;
 
-            objectSystem = new ObjectSystem();
+            this.objectSystem = new ObjectSystem();
+            this.lf = new LayoutEnforcer(app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE]);
 
             // Register event handlers
 
             /////////// TODO: Fix bug ///////////
             app.ShapeAdded += app_ShapeAdded;
+            app.ActiveDocument.Pages[CaseTypes.RELATION_PAGE].ShapeAdded += lf.checkConstraints;
             /// Danny: this event handler raises an exception when I try to call
             /// page.Draw... because the Draw method only returns a reference to
             /// the created Shape after it's done, but the ShapeAdded handler is called
