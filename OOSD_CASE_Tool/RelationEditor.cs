@@ -76,8 +76,8 @@ namespace OOSD_CASE_Tool
                             ((List<Visio.Shape>) nodes[sh]).Add(sub);
                         }
                     }
-                        }
-                    }
+                }
+            }
             List<Visio.Shape> treeRoots = constructForest(nodes);
             drawObjHierarchy(treeRoots, nodes);
         }
