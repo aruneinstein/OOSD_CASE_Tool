@@ -48,7 +48,6 @@
             this.applyBtn = new System.Windows.Forms.Button();
             this.exitBtn = new System.Windows.Forms.Button();
             this.separatorLine1 = new System.Windows.Forms.GroupBox();
-            this.separatorLine2 = new System.Windows.Forms.GroupBox();
             this.objListListBox = new System.Windows.Forms.ListBox();
             this.smObjectNameLbl = new System.Windows.Forms.Label();
             this.smObjectNameTextBox = new System.Windows.Forms.TextBox();
@@ -60,7 +59,7 @@
             this.removeObjBtn.Location = new System.Drawing.Point(185, 110);
             this.removeObjBtn.Name = "removeObjBtn";
             this.removeObjBtn.Size = new System.Drawing.Size(86, 23);
-            this.removeObjBtn.TabIndex = 11;
+            this.removeObjBtn.TabIndex = 5;
             this.removeObjBtn.Text = "---> Remove";
             this.removeObjBtn.UseVisualStyleBackColor = true;
             this.removeObjBtn.Click += new System.EventHandler(this.removeObjBtn_Click);
@@ -70,7 +69,7 @@
             this.addObjBtn.Location = new System.Drawing.Point(185, 77);
             this.addObjBtn.Name = "addObjBtn";
             this.addObjBtn.Size = new System.Drawing.Size(86, 23);
-            this.addObjBtn.TabIndex = 9;
+            this.addObjBtn.TabIndex = 4;
             this.addObjBtn.Text = "Add <---";
             this.addObjBtn.UseVisualStyleBackColor = true;
             this.addObjBtn.Click += new System.EventHandler(this.addObjBtn_Click);
@@ -81,7 +80,7 @@
             this.objListLbl.Location = new System.Drawing.Point(15, 52);
             this.objListLbl.Name = "objListLbl";
             this.objListLbl.Size = new System.Drawing.Size(65, 13);
-            this.objListLbl.TabIndex = 7;
+            this.objListLbl.TabIndex = 2;
             this.objListLbl.Text = "Objects List:";
             // 
             // objNameListBox
@@ -90,7 +89,7 @@
             this.objNameListBox.Location = new System.Drawing.Point(15, 77);
             this.objNameListBox.Name = "objNameListBox";
             this.objNameListBox.Size = new System.Drawing.Size(159, 56);
-            this.objNameListBox.TabIndex = 5;
+            this.objNameListBox.TabIndex = 3;
             this.objNameListBox.SelectedIndexChanged += new System.EventHandler(this.objNameListBox_SelectedIndexChanged);
             // 
             // deleteOperationBtn
@@ -98,7 +97,7 @@
             this.deleteOperationBtn.Location = new System.Drawing.Point(312, 213);
             this.deleteOperationBtn.Name = "deleteOperationBtn";
             this.deleteOperationBtn.Size = new System.Drawing.Size(106, 23);
-            this.deleteOperationBtn.TabIndex = 13;
+            this.deleteOperationBtn.TabIndex = 11;
             this.deleteOperationBtn.Text = "Delete Operation";
             this.deleteOperationBtn.UseVisualStyleBackColor = true;
             this.deleteOperationBtn.Click += new System.EventHandler(this.deleteOperationBtn_Click);
@@ -119,6 +118,7 @@
             this.operationPropertiesGroupBox.TabIndex = 12;
             this.operationPropertiesGroupBox.TabStop = false;
             this.operationPropertiesGroupBox.Text = "Operation Properties";
+            this.operationPropertiesGroupBox.Enter += new System.EventHandler(this.operationPropertiesGroupBox_Enter);
             // 
             // controlTextBox
             // 
@@ -187,11 +187,11 @@
             // 
             // newOperationBtn
             // 
-            this.newOperationBtn.Location = new System.Drawing.Point(312, 180);
+            this.newOperationBtn.Location = new System.Drawing.Point(15, 389);
             this.newOperationBtn.Name = "newOperationBtn";
             this.newOperationBtn.Size = new System.Drawing.Size(106, 23);
-            this.newOperationBtn.TabIndex = 10;
-            this.newOperationBtn.Text = "New Operation";
+            this.newOperationBtn.TabIndex = 13;
+            this.newOperationBtn.Text = "Clear ";
             this.newOperationBtn.UseVisualStyleBackColor = true;
             this.newOperationBtn.Click += new System.EventHandler(this.newOperationBtn_Click);
             // 
@@ -210,25 +210,25 @@
             this.operationNameListBox.Location = new System.Drawing.Point(15, 180);
             this.operationNameListBox.Name = "operationNameListBox";
             this.operationNameListBox.Size = new System.Drawing.Size(251, 56);
-            this.operationNameListBox.TabIndex = 6;
+            this.operationNameListBox.TabIndex = 9;
             this.operationNameListBox.SelectedIndexChanged += new System.EventHandler(this.operationNameListBox_SelectedIndexChanged);
             // 
             // applyBtn
             // 
-            this.applyBtn.Location = new System.Drawing.Point(15, 398);
+            this.applyBtn.Location = new System.Drawing.Point(312, 180);
             this.applyBtn.Name = "applyBtn";
-            this.applyBtn.Size = new System.Drawing.Size(75, 23);
-            this.applyBtn.TabIndex = 15;
-            this.applyBtn.Text = "Apply";
+            this.applyBtn.Size = new System.Drawing.Size(106, 23);
+            this.applyBtn.TabIndex = 10;
+            this.applyBtn.Text = "Add Operation";
             this.applyBtn.UseVisualStyleBackColor = true;
             this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
             // 
             // exitBtn
             // 
-            this.exitBtn.Location = new System.Drawing.Point(368, 398);
+            this.exitBtn.Location = new System.Drawing.Point(368, 389);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(75, 23);
-            this.exitBtn.TabIndex = 17;
+            this.exitBtn.TabIndex = 14;
             this.exitBtn.Text = "Exit";
             this.exitBtn.UseVisualStyleBackColor = true;
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
@@ -238,16 +238,8 @@
             this.separatorLine1.Location = new System.Drawing.Point(15, 139);
             this.separatorLine1.Name = "separatorLine1";
             this.separatorLine1.Size = new System.Drawing.Size(428, 10);
-            this.separatorLine1.TabIndex = 18;
+            this.separatorLine1.TabIndex = 7;
             this.separatorLine1.TabStop = false;
-            // 
-            // separatorLine2
-            // 
-            this.separatorLine2.Location = new System.Drawing.Point(17, 373);
-            this.separatorLine2.Name = "separatorLine2";
-            this.separatorLine2.Size = new System.Drawing.Size(428, 10);
-            this.separatorLine2.TabIndex = 19;
-            this.separatorLine2.TabStop = false;
             // 
             // objListListBox
             // 
@@ -255,7 +247,7 @@
             this.objListListBox.Location = new System.Drawing.Point(284, 77);
             this.objListListBox.Name = "objListListBox";
             this.objListListBox.Size = new System.Drawing.Size(159, 56);
-            this.objListListBox.TabIndex = 20;
+            this.objListListBox.TabIndex = 6;
             this.objListListBox.SelectedIndexChanged += new System.EventHandler(this.objListListBox_SelectedIndexChanged);
             // 
             // smObjectNameLbl
@@ -264,7 +256,7 @@
             this.smObjectNameLbl.Location = new System.Drawing.Point(15, 21);
             this.smObjectNameLbl.Name = "smObjectNameLbl";
             this.smObjectNameLbl.Size = new System.Drawing.Size(91, 13);
-            this.smObjectNameLbl.TabIndex = 21;
+            this.smObjectNameLbl.TabIndex = 0;
             this.smObjectNameLbl.Text = "SM Object Name:";
             // 
             // smObjectNameTextBox
@@ -272,7 +264,7 @@
             this.smObjectNameTextBox.Location = new System.Drawing.Point(113, 18);
             this.smObjectNameTextBox.Name = "smObjectNameTextBox";
             this.smObjectNameTextBox.Size = new System.Drawing.Size(158, 20);
-            this.smObjectNameTextBox.TabIndex = 22;
+            this.smObjectNameTextBox.TabIndex = 1;
             this.smObjectNameTextBox.TextChanged += new System.EventHandler(this.smObjectNameTextBox_TextChanged);
             // 
             // SM_Obj_Attribute_Form
@@ -283,7 +275,6 @@
             this.Controls.Add(this.smObjectNameTextBox);
             this.Controls.Add(this.smObjectNameLbl);
             this.Controls.Add(this.objListListBox);
-            this.Controls.Add(this.separatorLine2);
             this.Controls.Add(this.separatorLine1);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.applyBtn);
@@ -328,7 +319,6 @@
         private System.Windows.Forms.Button applyBtn;
         private System.Windows.Forms.Button exitBtn;
         private System.Windows.Forms.GroupBox separatorLine1;
-        private System.Windows.Forms.GroupBox separatorLine2;
         private System.Windows.Forms.ListBox objListListBox;
         private System.Windows.Forms.Label smObjectNameLbl;
         private System.Windows.Forms.TextBox smObjectNameTextBox;

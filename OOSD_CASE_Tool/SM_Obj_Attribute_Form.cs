@@ -36,7 +36,7 @@ namespace OOSD_CASE_Tool
             set
             {
                 if (ownerShape.Name.StartsWith("sm_"))
-                    sm_object_name = ownerShape.Name;
+                    SM_Object_Name = ownerShape.Name;
             }
         }
 
@@ -55,7 +55,7 @@ namespace OOSD_CASE_Tool
                 {
                     var operation = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)operation[2], "Operation"))
-                        sm_object_operation = (String)operation[3];
+                        SM_Object_Operation = (String)operation[3];
                 }
             }
         }
@@ -75,15 +75,15 @@ namespace OOSD_CASE_Tool
                 {
                     var state = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)state[2], "State"))
-                        sm_object_state = (String)state[3];
+                        SM_Object_State = (String)state[3];
                 }
             }
         }
 
         [XmlElement("SM_Obj_Event")]
         public string SM_Object_Event
-        { 
-            get 
+        {
+            get
             {
                 return OOSDRibbon.printProperties(ownerShape);
             }
@@ -95,7 +95,7 @@ namespace OOSD_CASE_Tool
                 {
                     var eve = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)eve[2], "Event"))
-                        sm_object_event = (String)eve[3];
+                        SM_Object_Event = (String)eve[3];
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace OOSD_CASE_Tool
                 {
                     var control = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)control[2], "Control"))
-                        sm_object_control = (String)control[3];
+                        SM_Object_Control = (String)control[3];
                 }
             }
         }
@@ -287,13 +287,17 @@ namespace OOSD_CASE_Tool
             saveObjectName();
             // Save operation when apply button is pressed
             saveOperation();
+            this.operationNameTextBox.Text = "";
+            this.nextStateTextBox.Text = "";
+            this.eventTextBox.Text = "";
+            this.controlTextBox.Text = "";
         }
         private void saveObjectName()
         {
             // Shape Data section format
             // Row Name                     ::  Value Cell
             // sm_[object name]_            :: [object name]
-            string smName =  smObjectNameTextBox.Text.Trim();
+            string smName = smObjectNameTextBox.Text.Trim();
             // Must have an operation name
             if (smName == "")
             {
@@ -322,7 +326,7 @@ namespace OOSD_CASE_Tool
             // op_[operation name]_state   :: [state name]
             // op_[operation name]_event   :: [event]
             // op_[operation name]_control :: [control]
-            
+
             // Get operation name from text box in editor
             string opName = operationNameTextBox.Text.Trim();
             // Must have an operation name
@@ -418,7 +422,7 @@ namespace OOSD_CASE_Tool
                 // All operation rows are prefixed with 'op_' in its name
                 Utilities.deleteDataSectionRow(ownerShape, "op_" + selectedValue);
                 Utilities.clearTextBoxInGroupBox(operationPropertiesGroupBox);
-            } 
+            }
             else // No Operation was selected
             {
                 MessageBox.Show("Select an Operation to delete.");
@@ -505,15 +509,10 @@ namespace OOSD_CASE_Tool
 
         }
 
+        private void operationPropertiesGroupBox_Enter(object sender, EventArgs e)
+        {
 
-        public string sm_object_name { get; set; }
+        }
 
-        public string sm_object_operation { get; set; }
-
-        public string sm_object_state { get; set; }
-
-        public string sm_object_event { get; set; }
-
-        public string sm_object_control { get; set; }
     }
 }
