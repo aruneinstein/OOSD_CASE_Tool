@@ -172,6 +172,17 @@ namespace OOSD_CASE_Tool
         /// <param name="e"></param>
         private void genDBButton_Click(object sender, RibbonControlEventArgs e)
         {
+            using (var dialog = new System.Windows.Forms.SaveFileDialog())
+            {
+                dialog.DefaultExt = "*.xml";
+                dialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    string filename = dialog.FileName;
+                    new Generator(filename).erToRelationshipsDB(app.ActivePage);
+                }
+            }
 
         }
 
@@ -187,6 +198,27 @@ namespace OOSD_CASE_Tool
 
             RelationEditor relationEditor = new RelationEditor();
             relationEditor.toDataModel(inputPage, outputPage);
+        }
+
+        /// <summary>
+        /// Converts Objects to a Data Dictionary.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void objToDictBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+           
+            using (var dialog = new System.Windows.Forms.SaveFileDialog())
+            {
+                dialog.DefaultExt = "*.xml";
+                dialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    string filename = dialog.FileName;
+                    new Generator(filename).objToDataDictionary(app.ActivePage);
+                }
+            }
         }
     }
 }

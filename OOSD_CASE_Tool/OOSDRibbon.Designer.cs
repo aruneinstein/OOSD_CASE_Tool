@@ -86,6 +86,7 @@
             this.objToDictBtn.Label = "Data Dictionary";
             this.objToDictBtn.Name = "objToDictBtn";
             this.objToDictBtn.ShowImage = true;
+            this.objToDictBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.objToDictBtn_Click);
             // 
             // relationEditorGroup
             // 
