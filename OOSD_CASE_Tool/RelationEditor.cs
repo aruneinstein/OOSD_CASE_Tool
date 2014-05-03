@@ -51,7 +51,7 @@ namespace OOSD_CASE_Tool
             this.relToObjMap.Clear();
         }
 
-        
+
 
         public void generateObjectHierarchy()
         {
@@ -76,8 +76,8 @@ namespace OOSD_CASE_Tool
                             ((List<Visio.Shape>) nodes[sh]).Add(sub);
                         }
                     }
-                }
-            }
+                        }
+                    }
             List<Visio.Shape> treeRoots = constructForest(nodes);
             drawObjHierarchy(treeRoots, nodes);
         }
@@ -190,7 +190,7 @@ namespace OOSD_CASE_Tool
             }
 
             string text = "";
-            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item)); 
+            text += (item.Text + "\r\n_________________\r\n" + rectangleToObjectBox(pg, item));
             sh.Text = text;
             pg.AutoSizeDrawing();
             return sh;
@@ -243,7 +243,7 @@ namespace OOSD_CASE_Tool
                     operatioSet += (Utilities.underscoreToSpace(opName) + "\r\n");
                 }
             }
-            
+
             return attributeSet + operatioSet;
         }
 
@@ -284,6 +284,8 @@ namespace OOSD_CASE_Tool
                 // Get both shapes connected to it
                 int[] shapeIDs = (int[]) con.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesIncoming2D, "");
                 Visio.Shape gluedShape = allShapes.get_ItemFromID(shapeIDs[0]);
+                drawXPos = gluedShape.get_Cells("PinX").get_Result("inches");
+                drawYPos = gluedShape.get_Cells("PinY").get_Result("inches");
 
                 Visio.Shape beginDroppedShape = getShapeByName(drawnShapes, gluedShape.Text);
                 if (beginDroppedShape == null)
@@ -297,6 +299,8 @@ namespace OOSD_CASE_Tool
 
                 shapeIDs = (int[])con.GluedShapes(Visio.VisGluedShapesFlags.visGluedShapesOutgoing2D, "");
                 gluedShape = allShapes.get_ItemFromID(shapeIDs[0]);
+                drawXPos = gluedShape.get_Cells("PinX").get_Result("inches");
+                drawYPos = gluedShape.get_Cells("PinY").get_Result("inches");
 
                 Visio.Shape endDroppedShape = getShapeByName(drawnShapes, gluedShape.Text);
                 if (endDroppedShape == null)
@@ -311,39 +315,44 @@ namespace OOSD_CASE_Tool
                 // connects both shapes depending on its relationship
 
                 // connection point
-                double pinX = 0.5, pinY = 0.5;
+                PinLoc pinLocs = calculatePinLoc(beginDroppedShape, endDroppedShape);
 
                 string conMasterName = con.Master.Name;
                 // is-a relationships are connected by a "is-a" connector
                 if (conMasterName == CaseTypes.IS_A_MASTER)
                 {
                     Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
-                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
+                        beginDroppedShape, endDroppedShape, pinLocs.FromPinX, pinLocs.FromPinY, 
+                        pinLocs.ToPinX, pinLocs.ToPinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
                     rel.Text = "is-a";
                 } 
                 else if (conMasterName == CaseTypes.ONE_ONEC_MASTER)
                 {
                     // 1:1 has-a relationship
                     Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
-                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
+                        beginDroppedShape, endDroppedShape, pinLocs.FromPinX, pinLocs.FromPinY, 
+                        pinLocs.ToPinX, pinLocs.ToPinY, CaseTypes.OOSD_ONE_ONE_CONNECTOR);
                     rel.Text = "has " + endDroppedShape.Text;
                 } 
                 else if (conMasterName == CaseTypes.ONE_MC_MASTER)
                 {
                     // 1:Mc has-a relationship
                     Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
-                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                        beginDroppedShape, endDroppedShape, pinLocs.FromPinX, pinLocs.FromPinY,
+                        pinLocs.ToPinX, pinLocs.ToPinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
                     rel.Text = "has " + endDroppedShape.Text + "s";
                 } 
                 else if (conMasterName == CaseTypes.M_MC_MASTER)
                 {
                     Visio.Shape rel = Utilities.glueShapesWithConnector(outputPage,
-                        beginDroppedShape, endDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                        beginDroppedShape, endDroppedShape, pinLocs.FromPinX, pinLocs.FromPinY,
+                        pinLocs.ToPinX, pinLocs.ToPinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
                     rel.Text = "has " + endDroppedShape.Text + "s";
 
-                    rel = Utilities.glueShapesWithConnector(outputPage,
-                        endDroppedShape, beginDroppedShape, pinX, pinY, pinX, pinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
-                    rel.Text = "is in " + beginDroppedShape.Text + "s";
+                    //rel = Utilities.glueShapesWithConnector(outputPage,
+                    //    endDroppedShape, beginDroppedShape, pinLocs.ToPinX, pinLocs.ToPinY, 
+                    //    pinLocs.FromPinX, pinLocs.FromPinY, CaseTypes.OOSD_ONE_N_CONNECTOR);
+                    //rel.Text = "is in " + beginDroppedShape.Text + "s";
                 }
 
                 // resets drawing point to left edge of page
@@ -353,6 +362,82 @@ namespace OOSD_CASE_Tool
                     drawYPos = drawYPos - padY;
                 }
                 
+            }
+
+            // Layout
+            //outputPage.LayoutIncremental(Visio.VisLayoutIncrementalType.visLayoutIncrAlign | Visio.VisLayoutIncrementalType.visLayoutIncrSpace,
+            //    Visio.VisLayoutHorzAlignType.visLayoutHorzAlignCenter, Visio.VisLayoutVertAlignType.visLayoutVertAlignMiddle, 1.5, 1.5, Visio.VisUnitCodes.visPageUnits);
+        }
+
+        /// <summary>
+        /// Returns location (in percentage) to pin X & pin Y
+        /// </summary>
+        private PinLoc calculatePinLoc(Visio.Shape fromShape, Visio.Shape toShape)
+        {
+            PinLoc pinLoc = new PinLoc();
+
+            // gets the x, y position of from shape
+            double fromPinX = fromShape.get_Cells("PinX").get_Result("inches");
+            double fromPinY = fromShape.get_Cells("PinY").get_Result("inches");
+
+            // gets x, y position of the to shape
+            double toPinX = toShape.get_Cells("PinX").get_Result("inches");
+            double toPinY = toShape.get_Cells("PinY").get_Result("inches");
+
+
+            if (fromPinX < toPinX && Math.Abs(fromPinY - toPinY) < 1.0)
+            {
+                pinLoc.FromPinX = 1.0;
+                pinLoc.ToPinX = 0.0;
+                pinLoc.FromPinY = .5;
+                pinLoc.ToPinY = .5;
+            }
+            else if (fromPinX > toPinX && Math.Abs(fromPinY - toPinY) < 1.0)
+            {
+                pinLoc.FromPinX = 0.0;
+                pinLoc.ToPinX = 1.0;
+                pinLoc.FromPinY = .5;
+                pinLoc.ToPinY = .5;
+            }
+            else if (fromPinY > toPinY)
+            {
+                pinLoc.FromPinX = .5;
+                pinLoc.ToPinX = 0.5;
+                pinLoc.FromPinY = 0.0;
+                pinLoc.ToPinY = 1.0;
+            }
+            else 
+            {
+                pinLoc.FromPinX = .5;
+                pinLoc.ToPinX = 0.5;
+                pinLoc.FromPinY = 1.0;
+                pinLoc.ToPinY = 0;
+            }
+
+            return pinLoc;
+        }
+
+        private class PinLoc
+        {
+            public double FromPinX { get; set; }
+            public double FromPinY { get; set; }
+            public double ToPinX { get; set; }
+            public double ToPinY { get; set; }
+
+            public PinLoc(double fromX, double fromY, double toX, double toY)
+            {
+                FromPinX = fromX;
+                FromPinY = fromY;
+                ToPinX = toX;
+                ToPinY = toY;
+            }
+
+            public PinLoc()
+            {
+                FromPinX = 0;
+                FromPinY = 0;
+                ToPinX = 0;
+                ToPinY = 0;
             }
         }
 
