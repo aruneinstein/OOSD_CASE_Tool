@@ -82,8 +82,8 @@ namespace OOSD_CASE_Tool
 
         [XmlElement("SM_Obj_Event")]
         public string SM_Object_Event
-        { 
-            get 
+        {
+            get
             {
                 return OOSDRibbon.printProperties(ownerShape);
             }
@@ -287,13 +287,17 @@ namespace OOSD_CASE_Tool
             saveObjectName();
             // Save operation when apply button is pressed
             saveOperation();
+            this.operationNameTextBox.Text = "";
+            this.nextStateTextBox.Text = "";
+            this.eventTextBox.Text = "";
+            this.controlTextBox.Text = "";
         }
         private void saveObjectName()
         {
             // Shape Data section format
             // Row Name                     ::  Value Cell
             // sm_[object name]_            :: [object name]
-            string smName =  smObjectNameTextBox.Text.Trim();
+            string smName = smObjectNameTextBox.Text.Trim();
             // Must have an operation name
             if (smName == "")
             {
@@ -322,7 +326,7 @@ namespace OOSD_CASE_Tool
             // op_[operation name]_state   :: [state name]
             // op_[operation name]_event   :: [event]
             // op_[operation name]_control :: [control]
-            
+
             // Get operation name from text box in editor
             string opName = operationNameTextBox.Text.Trim();
             // Must have an operation name
@@ -418,7 +422,7 @@ namespace OOSD_CASE_Tool
                 // All operation rows are prefixed with 'op_' in its name
                 Utilities.deleteDataSectionRow(ownerShape, "op_" + selectedValue);
                 Utilities.clearTextBoxInGroupBox(operationPropertiesGroupBox);
-            } 
+            }
             else // No Operation was selected
             {
                 MessageBox.Show("Select an Operation to delete.");
@@ -501,6 +505,11 @@ namespace OOSD_CASE_Tool
         }
 
         private void smObjectNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void operationPropertiesGroupBox_Enter(object sender, EventArgs e)
         {
 
         }
