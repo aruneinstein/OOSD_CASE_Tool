@@ -36,7 +36,7 @@ namespace OOSD_CASE_Tool
             set
             {
                 if (ownerShape.Name.StartsWith("sm_"))
-                    SM_Object_Name = ownerShape.Name;
+                    sm_object_name = ownerShape.Name;
             }
         }
 
@@ -55,7 +55,7 @@ namespace OOSD_CASE_Tool
                 {
                     var operation = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)operation[2], "Operation"))
-                        SM_Object_Operation = (String)operation[3];
+                        sm_object_operation = (String)operation[3];
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace OOSD_CASE_Tool
                 {
                     var state = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)state[2], "State"))
-                        SM_Object_State = (String)state[3];
+                        sm_object_state = (String)state[3];
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace OOSD_CASE_Tool
                 {
                     var eve = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)eve[2], "Event"))
-                        SM_Object_Event = (String)eve[3];
+                        sm_object_event = (String)eve[3];
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace OOSD_CASE_Tool
                 {
                     var control = s.Split(' ');
                     if (ownerShape.Name.StartsWith("sm_") && String.Equals((String)control[2], "Control"))
-                        SM_Object_Control = (String)control[3];
+                        sm_object_control = (String)control[3];
                 }
             }
         }
@@ -505,5 +505,15 @@ namespace OOSD_CASE_Tool
 
         }
 
+
+        public string sm_object_name { get; set; }
+
+        public string sm_object_operation { get; set; }
+
+        public string sm_object_state { get; set; }
+
+        public string sm_object_event { get; set; }
+
+        public string sm_object_control { get; set; }
     }
 }
