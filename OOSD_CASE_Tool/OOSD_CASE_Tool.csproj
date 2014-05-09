@@ -27,17 +27,40 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>OOSD_CASE_Tool</RootNamespace>
     <AssemblyName>OOSD_CASE_Tool</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
+    <PublishUrl>C:\Users\Rupesh Dada\Desktop\Visio\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>1.0.0.69</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>OOSD_CASE_Tool</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>OOSD_CASE_Tool</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
       <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
@@ -81,6 +104,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -113,6 +138,7 @@
     <Reference Include="Accessibility" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -120,6 +146,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -156,9 +183,44 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ADT_Obj_Attribute_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ADT_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BoundingBox.cs" />
+    <Compile Include="CaseTypes.cs" />
+    <Compile Include="C_Obj_Attribute_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="C_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlowSystem.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="LayoutEnforcer.cs" />
+    <Compile Include="ObjectSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RelationEditor.cs" />
+    <Compile Include="SM_Obj_Attribute_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SM_Obj_Attribute_Form.Designer.cs">
+      <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="State.cs" />
+    <Compile Include="Utilities.cs" />
+    <Content Include="C_Obj.xml" />
+    <Content Include="ADT_Obj.xml" />
+    <EmbeddedResource Include="ADT_Obj_Attribute_Form.resx">
+      <DependentUpon>ADT_Obj_Attribute_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="C_Obj_Attribute_Form.resx">
+      <DependentUpon>C_Obj_Attribute_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -167,7 +229,138 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="OOSDRibbon.resx">
+      <DependentUpon>OOSDRibbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\activity.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\add-folder.png" />
+    <None Include="Resources\add-location.png" />
+    <None Include="Resources\add-page.png" />
+    <None Include="Resources\airplane-1.png" />
+    <None Include="Resources\airplane-2.png" />
+    <None Include="Resources\anchor.png" />
+    <None Include="Resources\apple-1.png" />
+    <None Include="Resources\apple-2.png" />
+    <None Include="Resources\backward.png" />
+    <None Include="Resources\battery-1.png" />
+    <None Include="Resources\battery-2.png" />
+    <None Include="Resources\battery-3.png" />
+    <None Include="Resources\birdhouse.png" />
+    <None Include="Resources\book.png" />
+    <None Include="Resources\browser.png" />
+    <None Include="Resources\buy.png" />
+    <None Include="Resources\calendar.png" />
+    <None Include="Resources\call.png" />
+    <None Include="Resources\camera.png" />
+    <None Include="Resources\charge.png" />
+    <None Include="Resources\chrome.png" />
+    <None Include="Resources\clock.png" />
+    <None Include="Resources\cloud-1.png" />
+    <None Include="Resources\cloud-2.png" />
+    <None Include="Resources\coffee.png" />
+    <None Include="Resources\coins.png" />
+    <None Include="Resources\color.png" />
+    <None Include="Resources\comments.png" />
+    <None Include="Resources\compass.png" />
+    <None Include="Resources\copy-1.png" />
+    <None Include="Resources\copy-2.png" />
+    <None Include="Resources\credit-card.png" />
+    <None Include="Resources\cross.png" />
+    <None Include="Resources\delete-folder.png" />
+    <None Include="Resources\delete-page.png" />
+    <None Include="Resources\down.png" />
+    <None Include="Resources\download.png" />
+    <None Include="Resources\download-files.png" />
+    <None Include="Resources\dribbble-player.png" />
+    <None Include="Resources\end-call.png" />
+    <None Include="Resources\facebook.png" />
+    <None Include="Resources\fast-backward.png" />
+    <None Include="Resources\fast-forward.png" />
+    <None Include="Resources\fat-brush.png" />
+    <None Include="Resources\female.png" />
+    <None Include="Resources\files.png" />
+    <None Include="Resources\flag.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\forward.png" />
+    <None Include="Resources\grid-view.png" />
+    <None Include="Resources\heart.png" />
+    <None Include="Resources\hold.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\home-2.png" />
+    <None Include="Resources\image.png" />
+    <None Include="Resources\iPhone.png" />
+    <None Include="Resources\leaf.png" />
+    <None Include="Resources\left.png" />
+    <None Include="Resources\link.png" />
+    <None Include="Resources\list-view.png" />
+    <None Include="Resources\location.png" />
+    <None Include="Resources\locked.png" />
+    <None Include="Resources\mail-back.png" />
+    <None Include="Resources\mail-front.png" />
+    <None Include="Resources\male.png" />
+    <None Include="Resources\mastercard.png" />
+    <None Include="Resources\medal.png" />
+    <None Include="Resources\members.png" />
+    <None Include="Resources\microphone-1.png" />
+    <None Include="Resources\microphone-2.png" />
+    <None Include="Resources\money.png" />
+    <None Include="Resources\mouse.png" />
+    <None Include="Resources\music-note.png" />
+    <None Include="Resources\next.png" />
+    <None Include="Resources\notepad.png" />
+    <None Include="Resources\page.png" />
+    <None Include="Resources\paper-plane.png" />
+    <None Include="Resources\pause.png" />
+    <None Include="Resources\pen.png" />
+    <None Include="Resources\pencil.png" />
+    <None Include="Resources\phone.png" />
+    <None Include="Resources\play.png" />
+    <None Include="Resources\plug.png" />
+    <None Include="Resources\previous.png" />
+    <None Include="Resources\rate-down.png" />
+    <None Include="Resources\rate-up.png" />
+    <None Include="Resources\remove-location.png" />
+    <None Include="Resources\retweet.png" />
+    <None Include="Resources\ribbon.png" />
+    <None Include="Resources\right.png" />
+    <None Include="Resources\ruler.png" />
+    <None Include="Resources\screen.png" />
+    <None Include="Resources\screw-driver.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\sell.png" />
+    <None Include="Resources\servers.png" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\shopping-cart.png" />
+    <None Include="Resources\skinny-brush.png" />
+    <None Include="Resources\stacked-papers.png" />
+    <None Include="Resources\star.png" />
+    <None Include="Resources\stats.png" />
+    <None Include="Resources\stats-down.png" />
+    <None Include="Resources\stats-up.png" />
+    <None Include="Resources\stop.png" />
+    <None Include="Resources\target.png" />
+    <None Include="Resources\tick.png" />
+    <None Include="Resources\trash.png" />
+    <None Include="Resources\trophy.png" />
+    <None Include="Resources\tv.png" />
+    <None Include="Resources\twitter.png" />
+    <None Include="Resources\unlocked.png" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\upload.png" />
+    <None Include="Resources\upload-files.png" />
+    <None Include="Resources\video.png" />
+    <None Include="Resources\views.png" />
+    <None Include="Resources\wrench.png" />
+    <Content Include="SM_Obj.xml" />
+    <Content Include="Stencils\Object Stencil.vssx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="SM_Obj_Attribute_Form.resx">
+      <DependentUpon>SM_Obj_Attribute_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="OOSD_CASE_Tool_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -177,10 +370,24 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Test\Ribbon1.cs" />
+    <Compile Include="OOSDRibbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OOSDRibbon.Designer.cs">
+      <DependentUpon>OOSDRibbon.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="Stencils\Flow Diagram Stencil.vssx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Stencils\Relation Editor Stencil.vssx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Stencils\OOSD General Stencil.vssx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>
@@ -188,10 +395,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="Test\Ribbon1.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -204,7 +407,13 @@
     <ManifestKeyFile>OOSD_CASE_Tool_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>86EEE5700E43863293DA38DADB5DA7F67736F84E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A3F434DC4F948E7D45A1CBC72EB7FDEE5894E2BC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -215,8 +424,8 @@
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Visio" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Visio" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\15.0\Visio\InstallRoot\Path#visio.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Visio" GeneratedCodeNamespace="OOSD_CASE_Tool" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        <Host Name="Visio" GeneratedCodeNamespace="OOSD_CASE_Tool" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="762AA144BDAF798C0DEE9407071873C0538A1A98" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
